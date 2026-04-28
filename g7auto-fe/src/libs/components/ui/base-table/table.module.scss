@@ -1,0 +1,32 @@
+.table-btn-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.total-records {
+  font-size: 13px;
+  color: #5f6368;
+  margin-bottom: 8px;
+
+  span {
+    font-weight: 600;
+    color: #1a73e8;
+  }
+}
+
+.table-container {
+  font-size: 13px;
+}
+
+.btn-group {
+  white-space: nowrap;
+  vertical-align: middle !important;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.row-selected {
+  background-color: #e8f0fe !important;
+}

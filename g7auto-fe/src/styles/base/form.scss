@@ -1,0 +1,17 @@
+@import "../abstracts/variables.scss";
+
+.form-label {
+  font-weight: 500;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.select-input {
+  &>div {
+    height: 36px;
+  }
+}
+
+.form-control-custom {
+  height: 38px;
+}

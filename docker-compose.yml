@@ -1,0 +1,48 @@
+services:
+  backend:
+    build:
+      context: ./g7auto-be
+      dockerfile: Dockerfile
+    container_name: g7auto-be
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_HOST: host.docker.internal
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-g7auto}
+      DB_USERNAME: ${DB_USERNAME:-devuser}
+      DB_PASSWORD: ${DB_PASSWORD:-change_me_in_production}
+      SPRING_JPA_DDL_AUTO: ${SPRING_JPA_DDL_AUTO:-update}
+      JWT_SECRET: ${JWT_SECRET:-404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+      JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION:-604800000}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost}
+      SUPERADMIN_USERNAME: ${SUPERADMIN_USERNAME:-admin}
+      SUPERADMIN_EMAIL: ${SUPERADMIN_EMAIL:-superadmin@g7auto.com}
+      SUPERADMIN_PASSWORD: ${SUPERADMIN_PASSWORD:-change_me_in_production}
+      SUPERADMIN_FULLNAME: ${SUPERADMIN_FULLNAME:-Super Admin}
+    ports:
+      - "127.0.0.1:9000:9000"
+    networks:
+      - g7auto-net
+
+  frontend:
+    build:
+      context: ./g7auto-fe
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ""
+    container_name: g7auto-fe
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - g7auto-net
+
+networks:
+  g7auto-net:
+    driver: bridge

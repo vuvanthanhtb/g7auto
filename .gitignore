@@ -1,0 +1,50 @@
+# ============================================================
+# Sensitive files
+# ============================================================
+.env
+g7auto-be/**/application-local.yml
+
+# ============================================================
+# Backend (Java / Maven)
+# ============================================================
+g7auto-be/target/
+g7auto-be/**/target/
+g7auto-be/*.xlsx
+g7auto-be/templates/
+g7auto-be/.mvn/wrapper/maven-wrapper.jar
+g7auto-be/logs/
+
+# IDE
+g7auto-be/.idea/
+g7auto-be/**/*.iws
+g7auto-be/**/*.iml
+g7auto-be/**/*.ipr
+g7auto-be/.vscode/
+g7auto-be/.classpath
+g7auto-be/.project
+g7auto-be/.settings/
+g7auto-be/.factorypath
+
+# ============================================================
+# Frontend (Node / Vite)
+# ============================================================
+g7auto-fe/node_modules/
+g7auto-fe/dist/
+g7auto-fe/dist-ssr/
+g7auto-fe/*.local
+g7auto-fe/logs/
+g7auto-fe/*.log
+
+# IDE
+g7auto-fe/.idea/
+g7auto-fe/.vscode/
+g7auto-fe/.DS_Store
+
+# ============================================================
+# OS
+# ============================================================
+.DS_Store
+Thumbs.db
+.claude
+
+g7auto-be/
