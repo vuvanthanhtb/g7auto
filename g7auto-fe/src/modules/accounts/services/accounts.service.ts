@@ -1,10 +1,14 @@
 import http from "@/libs/interceptor";
 import { ACCOUNTS_ENDPOINT } from "./accounts.endpoint";
-import type { AccountRequest, AccountResponse } from "../shell/accounts.type";
+import type {
+  AccountRequest,
+  AccountResponse,
+  AccountSearchQuery,
+} from "../shell/accounts.type";
 import type { AxiosResponse } from "axios";
 import type { ResponseBase } from "@/libs/interceptor/types";
 import type {
-  AccountQuery,
+  AccountSearchForm,
   AccountPage,
 } from "../pages/tabs/account-list-tab/account-list-tab.type";
 
@@ -13,13 +17,13 @@ type AR<T> = Promise<AxiosResponse<ResponseBase<T>>>;
 const BASE = ACCOUNTS_ENDPOINT.BASE;
 
 interface IAccountsRepository {
-  searchAccounts(params?: AccountQuery): AR<AccountPage>;
+  searchAccounts(params?: AccountSearchQuery): AR<AccountPage>;
   getById(id: number): AR<AccountResponse>;
   create(data: AccountRequest): AR<AccountResponse>;
   update(id: number, data: Partial<AccountRequest>): AR<AccountResponse>;
   lock(id: number): AR<AccountResponse>;
   unlock(id: number): AR<AccountResponse>;
-  exportExcel(params?: AccountQuery): Promise<Blob>;
+  exportExcel(params?: AccountSearchForm): Promise<Blob>;
   requestChangeStatus(status: string): AR<string>;
 }
 
@@ -33,7 +37,7 @@ class AccountsRepository implements IAccountsRepository {
     return AccountsRepository.instance;
   }
 
-  searchAccounts(params?: AccountQuery) {
+  searchAccounts(params?: AccountSearchQuery) {
     return http.call<AccountPage>({
       url: ACCOUNTS_ENDPOINT.LIST,
       method: "GET",
@@ -66,7 +70,7 @@ class AccountsRepository implements IAccountsRepository {
     });
   }
 
-  exportExcel(params?: AccountQuery) {
+  exportExcel(params?: AccountSearchForm) {
     return http.download({
       url: `${BASE}/export`,
       method: "GET",

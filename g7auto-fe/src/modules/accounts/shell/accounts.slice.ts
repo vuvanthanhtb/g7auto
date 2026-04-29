@@ -3,7 +3,6 @@ import type {
   AccountRequest,
   AccountResponse,
   UserApproveQuery,
-  UserApproveResponse,
 } from "./accounts.type";
 
 import { accountsService } from "../services/accounts.service";
@@ -13,57 +12,52 @@ import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
 import type {
   AccountPage,
-  AccountQuery,
+  AccountSearchForm,
 } from "../pages/tabs/account-list-tab/account-list-tab.type";
-import { parseDataTable } from "../pages/tabs/account-list-tab/account-list-tab.utils";
-import type { AccountApprovalQuery } from "../pages/tabs/approved-users-tab/approved-users-tab.type";
 import {
-  parseApprovedUsersFormSearch,
+  parseAccountsFormSearch,
+  parseDataTable,
+} from "../pages/tabs/account-list-tab/account-list-tab.utils";
+import type {
+  AccountApprovedPage,
+  AccountApprovedSearchForm,
+} from "../pages/tabs/approved-users-tab/approved-users-tab.type";
+import {
+  parseApprovedAccountsFormSearch,
   parseApprovalTable,
 } from "../pages/tabs/approved-users-tab/approved-users-tab.utils";
 import { parsePendingApprovalTable } from "../pages/tabs/pending-approvals-tab/pending-approvals-tab.utils";
-
-type PagedTable<T> = {
-  content: T[];
-  totalElements: number;
-  totalPages: number;
-  page: number;
-  size: number;
-};
+import type { AccountPendingPage } from "../pages/tabs/pending-approvals-tab/pending-approvals-tab.type";
 
 interface AccountsState {
   accountTable: AccountPage;
-  pendingTable: PagedTable<UserApproveResponse>;
-  approvedTable: PagedTable<UserApproveResponse>;
+  pendingTable: AccountPendingPage;
+  approvedTable: AccountApprovedPage;
   selected: AccountResponse | null;
 }
 
-const emptyPage = <T>(): PagedTable<T> => ({
+const emptyPage = {
   content: [],
   totalElements: 0,
   totalPages: 0,
   page: 1,
   size: 10,
-});
+};
 
 const initialState: AccountsState = {
-  accountTable: {
-    content: [],
-    totalElements: 0,
-    totalPages: 0,
-    page: 1,
-    size: 10,
-  },
-  pendingTable: emptyPage<UserApproveResponse>(),
-  approvedTable: emptyPage<UserApproveResponse>(),
+  accountTable: emptyPage,
+  pendingTable: emptyPage,
+  approvedTable: emptyPage,
   selected: null,
 };
 
 export const searchAccounts = createAsyncThunk(
   "accounts/searchAccounts",
-  async (params: AccountQuery, { rejectWithValue }) => {
+  async (params: AccountSearchForm, { rejectWithValue }) => {
     try {
-      return await accountsService.searchAccounts(params);
+      return await accountsService.searchAccounts(
+        parseAccountsFormSearch(params),
+      );
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);
@@ -129,10 +123,10 @@ export const getPendingApprovals = createAsyncThunk(
 
 export const getApprovedUsers = createAsyncThunk(
   "accounts/getApproved",
-  async (params: AccountApprovalQuery, { rejectWithValue }) => {
+  async (params: AccountApprovedSearchForm, { rejectWithValue }) => {
     try {
       return await userApprovesService.getApprovedUsers(
-        parseApprovedUsersFormSearch(params),
+        parseApprovedAccountsFormSearch(params),
       );
     } catch (error) {
       toastError(getApiErrorMessage(error));
@@ -186,8 +180,8 @@ const accountsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(searchAccounts.fulfilled, (state, action) => {
-        const { content, totalElements, totalPages, page, size } =
-          action.payload.data;
+        const { content, totalElements, totalPages, page, size } = action
+          .payload.data as AccountPage;
         state.accountTable = {
           content: parseDataTable(content ?? []),
           totalElements,

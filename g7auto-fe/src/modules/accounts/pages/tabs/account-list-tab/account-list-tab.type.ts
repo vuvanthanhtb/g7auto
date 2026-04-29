@@ -1,4 +1,6 @@
-export interface AccountTableResponse {
+import type { TablePagination } from "@/libs/types";
+
+export interface AccountTable {
   id: number;
   username: string;
   email: string;
@@ -11,19 +13,26 @@ export interface AccountTableResponse {
   updatedBy: string;
 }
 
-export interface AccountQuery {
+export interface AccountSearchForm {
   page?: number;
   size?: number;
   username?: string;
   fullName?: string;
   status?: Record<string, string>;
   role?: Record<string, string>;
+  fromDate?: string;
+  toDate?: string;
 }
 
-export interface AccountPage {
-  content: AccountTableResponse[];
-  totalElements: number;
-  totalPages: number;
-  page: number;
-  size: number;
+export interface AccountSearchQuery {
+  fromDate?: string;
+  toDate?: string;
+  username?: string;
+  fullName?: string;
+  status?: string;
+  role?: string;
+  page?: number;
+  size?: number;
 }
+
+export type AccountPage = TablePagination<AccountTable>;

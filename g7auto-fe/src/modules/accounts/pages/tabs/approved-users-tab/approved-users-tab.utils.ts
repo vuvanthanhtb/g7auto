@@ -1,16 +1,16 @@
 import { parseRoleDisplay } from "@/libs/utils/role.utils";
-import type {
-  AccountSearchQuery,
-  UserApproveResponse,
-} from "@/modules/accounts/shell/accounts.type";
 import {
   getActionDisplay,
   getAccountApprovalStatusDisplay,
 } from "@/modules/accounts/utils";
-import type { AccountApprovalQuery } from "./approved-users-tab.type";
+import type {
+  AccountApprovedSearchForm,
+  AccountApprovedSearchQuery,
+  AccountApprovedTable,
+} from "./approved-users-tab.type";
 
-export const parseApprovalTable = (data: UserApproveResponse[]) => {
-  return data.map((item: UserApproveResponse) => ({
+export const parseApprovalTable = (data: AccountApprovedTable[]) => {
+  return data.map((item: AccountApprovedTable) => ({
     ...item,
     role: item.roles.map((role) => parseRoleDisplay(role)).join(", "),
     actionDisplay: getActionDisplay(item.action),
@@ -18,8 +18,10 @@ export const parseApprovalTable = (data: UserApproveResponse[]) => {
   }));
 };
 
-export const parseApprovedUsersFormSearch = (data: AccountApprovalQuery) => {
-  const params: AccountSearchQuery = {
+export const parseApprovedAccountsFormSearch = (
+  data: AccountApprovedSearchForm,
+) => {
+  const params: AccountApprovedSearchQuery = {
     page: data.page,
     size: data.size,
   };
@@ -34,6 +36,14 @@ export const parseApprovedUsersFormSearch = (data: AccountApprovalQuery) => {
 
   if (data.statusApproving?.value) {
     params["statusApproving"] = data.statusApproving.value;
+  }
+
+  if (data.fromDate) {
+    params["fromDate"] = data.fromDate;
+  }
+
+  if (data.toDate) {
+    params["toDate"] = data.toDate;
   }
 
   return params;

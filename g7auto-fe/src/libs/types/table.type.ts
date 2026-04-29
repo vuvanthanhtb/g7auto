@@ -32,3 +32,13 @@ export const BASE_TABLE_DEFAULT: BaseTableConfig = {
   totalPages: TOTAL_PAGES,
   totalElements: TOTAL_RECORDS,
 };
+
+export interface TablePagination<T> {
+  content: T[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  fromDate?: string;
+  toDate?: string;
+}

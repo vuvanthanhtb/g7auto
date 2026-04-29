@@ -20,13 +20,13 @@ import {
   pendingColumns,
   pendingInitialValues,
 } from "./pending-approvals-tab.config";
-import type { AccountPendingApprovalQuery } from "./pending-approvals-tab.type";
+import type { AccountPendingSearchForm } from "./pending-approvals-tab.type";
 
 const PendingApprovalsTab = () => {
   const dispatch = useAppDispatch();
   const confirm = useConfirm();
   const [searchParams, setSearchParams] =
-    useState<AccountPendingApprovalQuery>(pendingInitialValues);
+    useState<AccountPendingSearchForm>(pendingInitialValues);
 
   useEffect(() => {
     dispatch(getPendingApprovals(pendingInitialValues));
@@ -52,7 +52,7 @@ const PendingApprovalsTab = () => {
   };
 
   const searchHandlers = {
-    [BTN_SEARCH]: (values: AccountPendingApprovalQuery) => {
+    [BTN_SEARCH]: (values: AccountPendingSearchForm) => {
       setSearchParams(values);
       dispatch(getPendingApprovals({ ...values, page: 1 }));
     },
@@ -66,13 +66,13 @@ const PendingApprovalsTab = () => {
     dispatch(getPendingApprovals({ ...searchParams, page }));
   };
 
-  const onchange = (values: AccountPendingApprovalQuery) => {
+  const onchange = (values: AccountPendingSearchForm) => {
     setSearchParams(values);
   };
 
   return (
     <>
-      <BaseFormComponent<AccountPendingApprovalQuery>
+      <BaseFormComponent<AccountPendingSearchForm>
         formConfig={pendingSearchConfig}
         options={{ userApproveActionOptions }}
         handlers={searchHandlers}

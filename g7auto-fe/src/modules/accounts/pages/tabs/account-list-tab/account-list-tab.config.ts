@@ -24,7 +24,7 @@ import {
   accountStatusOptions as baseAccountStatusOptions,
   roleOptions as baseRoleOptions,
 } from "@/libs/constants/options.constant";
-import type { AccountQuery } from "./account-list-tab.type";
+import type { AccountSearchForm } from "./account-list-tab.type";
 
 export const accountColumns: BaseTableColumn[] = [
   { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
@@ -88,11 +88,13 @@ export const showButtons = (
   return false;
 };
 
-export const accountsInitialValues: AccountQuery = {
+export const accountsInitialValues: AccountSearchForm = {
   username: "",
   fullName: "",
   status: defaultSelectOption,
   role: defaultSelectOption,
+  page: 1,
+  size: 10,
 };
 
 export const accountSearchConfig: IBaseFormConfig = {

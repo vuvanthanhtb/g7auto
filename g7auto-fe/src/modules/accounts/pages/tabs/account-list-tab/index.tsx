@@ -9,7 +9,7 @@ import {
 } from "./account-list-tab.config";
 import { useAccountList } from "./use-account-list";
 import TableTitleComponent from "@/libs/components/ui/table-title";
-import type { AccountQuery } from "./account-list-tab.type";
+import type { AccountSearchForm } from "./account-list-tab.type";
 
 const AccountListTab = () => {
   const {
@@ -22,7 +22,7 @@ const AccountListTab = () => {
 
   return (
     <>
-      <BaseFormComponent<AccountQuery>
+      <BaseFormComponent<AccountSearchForm>
         formConfig={accountSearchConfig}
         options={{ accountStatusOptions, roleOptions }}
         handlers={searchHandlers}

@@ -12,7 +12,7 @@ import {
   TBL_BUTTON,
   NUMERICAL_ORDER,
 } from "@/libs/constants/table.constant";
-import type { AccountPendingApprovalQuery } from "@/modules/accounts/shell/accounts.type";
+import type { AccountPendingSearchForm } from "./pending-approvals-tab.type";
 
 export const pendingColumns: BaseTableColumn[] = [
   { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
@@ -77,7 +77,7 @@ export const pendingSearchConfig: IBaseFormConfig = {
   ],
 };
 
-export const pendingInitialValues: AccountPendingApprovalQuery = {
+export const pendingInitialValues: AccountPendingSearchForm = {
   username: "",
   fullName: "",
   page: 1,

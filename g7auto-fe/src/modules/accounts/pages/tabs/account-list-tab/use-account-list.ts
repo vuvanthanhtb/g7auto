@@ -16,14 +16,14 @@ import {
 } from "@/libs/constants";
 import { accountsInitialValues } from "./account-list-tab.config";
 import { useConfirm } from "@/libs/components/ui/confirm-dialog";
-import type { AccountQuery } from "./account-list-tab.type";
+import type { AccountSearchForm } from "./account-list-tab.type";
 
 type TableRow = Record<string, unknown>;
 
 export const useAccountList = () => {
   const dispatch = useAppDispatch();
   const confirm = useConfirm();
-  const [searchParams, setSearchParams] = useState<AccountQuery>(
+  const [searchParams, setSearchParams] = useState<AccountSearchForm>(
     accountsInitialValues,
   );
 
@@ -70,7 +70,7 @@ export const useAccountList = () => {
   };
 
   const searchHandlers = {
-    [BTN_SEARCH]: (values: AccountQuery) => {
+    [BTN_SEARCH]: (values: AccountSearchForm) => {
       setSearchParams(values);
       dispatch(searchAccounts({ ...values, page: 1 }));
     },
@@ -84,7 +84,7 @@ export const useAccountList = () => {
     dispatch(searchAccounts({ ...searchParams, page }));
   };
 
-  const onchange = (values: AccountQuery) => {
+  const onchange = (values: AccountSearchForm) => {
     setSearchParams(values);
   };
 
