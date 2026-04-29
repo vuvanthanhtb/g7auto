@@ -9,7 +9,16 @@ type ContractPage = { content: ContractResponse[]; totalElements: number; totalP
 
 const BASE = CONTRACTS_ENDPOINT.BASE;
 
-class ContractsRepository {
+interface IContractsRepository {
+  getList(params?: ContractQuery): AR<ContractPage>;
+  getById(id: number): AR<ContractResponse>;
+  create(data: ContractRequest): AR<ContractResponse>;
+  complete(id: number): AR<ContractResponse>;
+  cancel(id: number): AR<ContractResponse>;
+  exportExcel(): Promise<void>;
+}
+
+class ContractsRepository implements IContractsRepository {
   private static instance: ContractsRepository;
   private constructor() {}
   static getInstance() {
@@ -23,4 +32,4 @@ class ContractsRepository {
   cancel(id: number): AR<ContractResponse> { return http.call<ContractResponse>({ url: `${BASE}/${id}/cancel`, method: "POST" }); }
   exportExcel(): Promise<void> { return http.download({ url: `${BASE}/export`, filename: "danh-sach-hop-dong.xlsx" }); }
 }
-export const contractsService = ContractsRepository.getInstance();
+export const contractsService: IContractsRepository = ContractsRepository.getInstance();

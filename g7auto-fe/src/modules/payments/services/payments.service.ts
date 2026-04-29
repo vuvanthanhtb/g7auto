@@ -9,7 +9,15 @@ type PaymentPage = { content: PaymentResponse[]; totalElements: number; totalPag
 
 const BASE = PAYMENTS_ENDPOINT.BASE;
 
-class PaymentsRepository {
+interface IPaymentsRepository {
+  getList(params?: PaymentQuery): AR<PaymentPage>;
+  getById(id: number): AR<PaymentResponse>;
+  create(data: PaymentRequest): AR<PaymentResponse>;
+  confirm(id: number): AR<PaymentResponse>;
+  exportExcel(): Promise<void>;
+}
+
+class PaymentsRepository implements IPaymentsRepository {
   private static instance: PaymentsRepository;
   private constructor() {}
   static getInstance() {
@@ -22,4 +30,4 @@ class PaymentsRepository {
   confirm(id: number): AR<PaymentResponse> { return http.call<PaymentResponse>({ url: `${BASE}/${id}/confirm`, method: "POST" }); }
   exportExcel(): Promise<void> { return http.download({ url: `${BASE}/export`, filename: "danh-sach-thanh-toan.xlsx" }); }
 }
-export const paymentsService = PaymentsRepository.getInstance();
+export const paymentsService: IPaymentsRepository = PaymentsRepository.getInstance();

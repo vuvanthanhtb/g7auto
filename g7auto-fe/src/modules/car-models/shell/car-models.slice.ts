@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { carModelsService } from "../services/car-model.service";
 import type { CarModelQuery, CarModelRequest, CarModelResponse } from "./car-model.type";
+import { getApiErrorMessage } from "@/libs/interceptor/helpers";
+import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
+import { toastError, toastSuccess } from "@/libs/custom-toast";
 
 interface CarModelsState {
   carModelTable: { content: CarModelResponse[]; totalElements: number; totalPages: number; page: number; size: number };
@@ -14,35 +17,86 @@ const initialState: CarModelsState = {
   selected: null,
 };
 
-export const getCarModels = createAsyncThunk("carModels/getList", async (params: CarModelQuery) => {
-  const res = await carModelsService.getList(params);
-  return res.data;
-});
+export const getCarModels = createAsyncThunk(
+  "carModels/getList",
+  async (params: CarModelQuery, { rejectWithValue }) => {
+    try {
+      const res = await carModelsService.getList(params);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
-export const getAllCarModels = createAsyncThunk("carModels/getAll", async () => {
-  const res = await carModelsService.getAll();
-  return res.data;
-});
+export const getAllCarModels = createAsyncThunk(
+  "carModels/getAll",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await carModelsService.getAll();
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
-export const getCarModelById = createAsyncThunk("carModels/getById", async (id: number) => {
-  const res = await carModelsService.getById(id);
-  return res.data;
-});
+export const getCarModelById = createAsyncThunk(
+  "carModels/getById",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await carModelsService.getById(id);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
-export const createCarModel = createAsyncThunk("carModels/create", async (data: CarModelRequest) => {
-  const res = await carModelsService.create(data);
-  return res.data;
-});
+export const createCarModel = createAsyncThunk(
+  "carModels/create",
+  async (data: CarModelRequest, { rejectWithValue }) => {
+    try {
+      const res = await carModelsService.create(data);
+      toastSuccess(SUCCESS_CODE.CREATE);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
-export const updateCarModel = createAsyncThunk("carModels/update", async ({ id, data }: { id: number; data: CarModelRequest }) => {
-  const res = await carModelsService.update(id, data);
-  return res.data;
-});
+export const updateCarModel = createAsyncThunk(
+  "carModels/update",
+  async ({ id, data }: { id: number; data: CarModelRequest }, { rejectWithValue }) => {
+    try {
+      const res = await carModelsService.update(id, data);
+      toastSuccess(SUCCESS_CODE.UPDATE);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
-export const deleteCarModel = createAsyncThunk("carModels/delete", async (id: number) => {
-  await carModelsService.delete(id);
-  return id;
-});
+export const deleteCarModel = createAsyncThunk(
+  "carModels/delete",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      await carModelsService.delete(id);
+      toastSuccess(SUCCESS_CODE.DELETE);
+      return id;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
 const carModelsSlice = createSlice({
   name: "carModels",

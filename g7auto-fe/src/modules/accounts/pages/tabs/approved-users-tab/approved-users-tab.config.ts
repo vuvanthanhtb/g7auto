@@ -6,31 +6,58 @@ import {
   BTN_SEARCH,
 } from "@/libs/constants";
 import type { BaseTableColumn, IBaseFormConfig } from "@/libs/types";
-import { TBL_STRING } from "@/libs/constants/table.constant";
+import { NUMERICAL_ORDER, TBL_STRING } from "@/libs/constants/table.constant";
+import {
+  defaultSelectOption,
+  userApprovalStatusOptions,
+} from "@/libs/constants/options.constant";
+import type { AccountApprovalQuery } from "./approved-users-tab.type";
 
 export const approvedColumns: BaseTableColumn[] = [
+  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
   { name: "username", label: "Tài khoản", type: TBL_STRING },
   { name: "fullName", label: "Họ tên", type: TBL_STRING },
   { name: "email", label: "Email", type: TBL_STRING },
-  { name: "action", label: "Hành động", type: TBL_STRING },
-  { name: "status", label: "Trạng thái", type: TBL_STRING },
-  { name: "createdAt", label: "Ngày tạo", type: TBL_STRING },
+  { name: "actionDisplay", label: "Yêu cầu thay đổi", type: TBL_STRING },
+  {
+    name: "statusDisplay",
+    label: "Trạng thái",
+    type: TBL_STRING,
+    refColor: ["statusApproving"],
+  },
+  {
+    name: "createdAt",
+    label: "Ngày tạo",
+    type: TBL_STRING,
+    styleCell: {
+      textAlign: "center",
+    },
+  },
+  {
+    name: "updatedAt",
+    label: "Ngày duyệt",
+    type: TBL_STRING,
+    styleCell: {
+      textAlign: "center",
+    },
+  },
   { name: "updatedBy", label: "Người duyệt", type: TBL_STRING },
 ];
 
 export const approvedSearchConfig: IBaseFormConfig = {
   fields: [
-    { type: TEXT, name: "createdBy", label: "Người tạo", size: 3 },
+    { type: TEXT, name: "fullName", label: "Họ tên", size: 3 },
+    { type: TEXT, name: "username", label: "Tài khoản", size: 3 },
     {
       type: SELECT,
-      name: "action",
-      label: "Hành động",
-      option: "userApproveActionOptions",
+      name: "statusApproving",
+      label: "Trạng thái",
+      option: "statusOptions",
       size: 3,
     },
     {
       type: BUTTON,
-      size: 6,
+      size: 12,
       childs: [
         {
           title: "Làm mới",
@@ -48,3 +75,16 @@ export const approvedSearchConfig: IBaseFormConfig = {
     },
   ],
 };
+
+export const approvedInitialValues: AccountApprovalQuery = {
+  username: "",
+  fullName: "",
+  statusApproving: defaultSelectOption,
+  page: 1,
+  size: 10,
+};
+
+export const statusOptions = [
+  defaultSelectOption,
+  ...userApprovalStatusOptions,
+];

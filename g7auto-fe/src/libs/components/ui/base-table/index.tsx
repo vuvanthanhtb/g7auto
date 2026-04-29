@@ -10,7 +10,7 @@ import type { RootState } from "@/shell/redux/store";
 import type { ButtonProps } from "@/libs/types/button.type";
 import ButtonComponent from "../button";
 import type { BaseTableColumn } from "@/libs/types/table.type";
-import { BUTTON, CHECKBOX } from "@/libs/constants/form.constant";
+import { BUTTON, CHECKBOX, DATETIME } from "@/libs/constants/form.constant";
 import { NUMERICAL_ORDER, TBL_STRING } from "@/libs/constants/table.constant";
 
 type TableRow = Record<string, unknown>;
@@ -21,7 +21,7 @@ interface BaseTableProps {
   reducer: keyof RootState;
   state: string;
   handleCellAction?: (row: TableRow, key?: string) => void;
-  handlePageChange?: (_: React.ChangeEvent<unknown>, page: number) => void;
+  handlePageChange?: (page: number) => void;
   handlers?: Record<string, (e?: React.MouseEvent) => void>;
   showButton?: (refShow: string[], action: string, row: TableRow) => boolean;
   colorCell?: (refColor: string[], row: TableRow) => string;
@@ -249,7 +249,7 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
                             return (
                               <span
                                 key={`cell-btn-${btnIndex}`}
-                                style={{ visibility: "hidden" }}
+                                style={{ display: "none" }}
                               >
                                 &nbsp;
                               </span>
@@ -283,7 +283,10 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
           <Pagination
             count={totalPages}
             page={page}
-            onChange={handlePageChange}
+            onChange={(e: React.ChangeEvent<unknown>, p: number) => {
+              e.preventDefault();
+              return handlePageChange?.(p);
+            }}
             color="primary"
             size="small"
           />

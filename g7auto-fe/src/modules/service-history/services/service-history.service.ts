@@ -9,7 +9,16 @@ type ServiceHistoryPage = { content: ServiceHistoryResponse[]; totalElements: nu
 
 const BASE = SERVICE_HISTORY_ENDPOINT.BASE;
 
-class ServiceHistoryRepository {
+interface IServiceHistoryRepository {
+  getList(params?: ServiceHistoryQuery): AR<ServiceHistoryPage>;
+  getById(id: number): AR<ServiceHistoryResponse>;
+  create(data: ServiceHistoryRequest): AR<ServiceHistoryResponse>;
+  update(id: number, data: ServiceHistoryRequest): AR<ServiceHistoryResponse>;
+  delete(id: number): AR<void>;
+  exportExcel(): Promise<void>;
+}
+
+class ServiceHistoryRepository implements IServiceHistoryRepository {
   private static instance: ServiceHistoryRepository;
   private constructor() {}
   static getInstance() {
@@ -23,4 +32,4 @@ class ServiceHistoryRepository {
   delete(id: number): AR<void> { return http.call<void>({ url: `${BASE}/${id}`, method: "DELETE" }); }
   exportExcel(): Promise<void> { return http.download({ url: `${BASE}/export`, filename: "danh-sach-lich-su-cham-soc.xlsx" }); }
 }
-export const serviceHistoryService = ServiceHistoryRepository.getInstance();
+export const serviceHistoryService: IServiceHistoryRepository = ServiceHistoryRepository.getInstance();

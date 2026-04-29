@@ -1,4 +1,9 @@
-import { PAGE_CURRENT, PAGE_SIZE, TOTAL_PAGES, TOTAL_RECORDS } from "../constants/table.constant";
+import {
+  PAGE_CURRENT,
+  PAGE_SIZE,
+  TOTAL_PAGES,
+  TOTAL_RECORDS,
+} from "../constants/table.constant";
 import type { ButtonProps } from "./button.type";
 
 export interface BaseTableColumn {

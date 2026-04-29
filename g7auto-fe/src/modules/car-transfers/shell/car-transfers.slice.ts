@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { carTransfersService } from "../services/car-transfers.service";
 import type { CarTransferQuery, CarTransferRequest, CarTransferResponse } from "./car-transfers.type";
+import { getApiErrorMessage } from "@/libs/interceptor/helpers";
+import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
+import { toastError, toastSuccess } from "@/libs/custom-toast";
 
 interface CarTransfersState {
   carTransferTable: { content: CarTransferResponse[]; totalElements: number; totalPages: number; page: number; size: number };
@@ -12,20 +15,45 @@ const initialState: CarTransfersState = {
   selected: null,
 };
 
-export const getCarTransfers = createAsyncThunk("carTransfers/getList", async (params: CarTransferQuery) => {
-  const res = await carTransfersService.getList(params);
-  return res.data;
-});
+export const getCarTransfers = createAsyncThunk(
+  "carTransfers/getList",
+  async (params: CarTransferQuery, { rejectWithValue }) => {
+    try {
+      const res = await carTransfersService.getList(params);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
-export const getCarTransfersById = createAsyncThunk("carTransfers/getById", async (id: number) => {
-  const res = await carTransfersService.getById(id);
-  return res.data;
-});
+export const getCarTransfersById = createAsyncThunk(
+  "carTransfers/getById",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await carTransfersService.getById(id);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
-export const createCarTransfers = createAsyncThunk("carTransfers/create", async (data: CarTransferRequest) => {
-  const res = await carTransfersService.create(data);
-  return res.data;
-});
+export const createCarTransfers = createAsyncThunk(
+  "carTransfers/create",
+  async (data: CarTransferRequest, { rejectWithValue }) => {
+    try {
+      const res = await carTransfersService.create(data);
+      toastSuccess(SUCCESS_CODE.CREATE);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
 const carTransfersSlice = createSlice({
   name: "carTransfers",

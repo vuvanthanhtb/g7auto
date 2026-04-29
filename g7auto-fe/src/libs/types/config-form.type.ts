@@ -24,17 +24,20 @@ export type IBaseFormConfig = { fields: IField[] };
 
 export type FormHandler = (
   values: Record<string, unknown>,
-  ctx: { submit: () => Promise<void>; setFieldValue: (field: string, value: unknown) => void },
+  ctx: {
+    submit: () => Promise<void>;
+    setFieldValue: (field: string, value: unknown) => void;
+  },
 ) => void | boolean | Promise<void | boolean>;
 
-export type HandlersMap = Record<string, FormHandler>;
+export type HandlersMap = Record<string, FormHandler | any>;
 
-export interface BaseFormComponentProps {
+export interface BaseFormComponentProps<T = Record<string, unknown>> {
   formConfig: IBaseFormConfig;
   validationSchema?: yup.AnyObjectSchema;
-  onChange?: (data: Record<string, unknown>) => void;
-  handleBlur?: (data: Record<string, unknown>) => void;
-  values?: Record<string, unknown>;
+  onChange?: (data: T) => void;
+  handleBlur?: (data: T) => void;
+  values?: T;
   options?: Record<string, unknown>;
   handlers?: HandlersMap;
 }

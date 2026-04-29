@@ -20,20 +20,6 @@ export interface AccountRequest {
   showroomId?: number;
 }
 
-export interface ChangePasswordRequest {
-  oldPassword: string;
-  newPassword: string;
-}
-
-export interface AccountQuery {
-  page?: number;
-  size?: number;
-  username?: string;
-  email?: string;
-  status?: string;
-  role?: string;
-}
-
 export interface UserApproveResponse {
   id: string;
   userId: string;
@@ -43,6 +29,7 @@ export interface UserApproveResponse {
   roles: string[];
   action: string;
   status: string;
+  statusApproving: string;
   createdAt: string;
   createdBy: string;
   updatedAt: string;
@@ -59,14 +46,6 @@ export interface UserApproveQuery {
   toDate?: string;
 }
 
-export interface AccountPage {
-  content: AccountTableResponse[];
-  totalElements: number;
-  totalPages: number;
-  page: number;
-  size: number;
-}
-
 export interface UserApprovePage {
   content: UserApproveResponse[];
   totalElements: number;
@@ -75,22 +54,14 @@ export interface UserApprovePage {
   size: number;
 }
 
-export interface ImportResult {
-  total: number;
-  success: number;
-  failed: number;
-  errors: string[];
-}
-
-export interface AccountTableResponse {
-  id: number;
-  username: string;
-  email: string;
-  fullName: string;
-  roles: string[];
-  status: string;
-  showroomId: number;
-  showroomName: string;
-  createdAt: string;
-  updatedAt: string;
+export interface AccountSearchQuery {
+  fromDate?: string;
+  toDate?: string;
+  username?: string;
+  fullName?: string;
+  statusApproving?: string;
+  status?: string;
+  role?: string;
+  page?: number;
+  size?: number;
 }

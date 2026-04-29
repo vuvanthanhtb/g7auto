@@ -1,0 +1,814 @@
+openapi: 3.0.0
+info:
+  title: G7 Auto API
+  description: Hệ thống quản lý showroom ô tô G7 Auto
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local server
+paths:
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: Đăng nhập
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: OK
+  /api/auth/refresh:
+    post:
+      tags: [Auth]
+      summary: Refresh token
+      responses:
+        '200':
+          description: OK
+  /api/auth/me:
+    get:
+      tags: [Auth]
+      summary: Lấy thông tin người dùng hiện tại
+      responses:
+        '200':
+          description: OK
+  /api/auth/init-superadmin:
+    post:
+      tags: [Auth]
+      summary: Khởi tạo tài khoản SUPERADMIN
+      responses:
+        '200':
+          description: OK
+
+  /api/accounts:
+    get:
+      tags: [Account]
+      summary: Tìm kiếm tài khoản
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Account]
+      summary: Tạo tài khoản mới
+      responses:
+        '200':
+          description: OK
+  /api/accounts/{id}:
+    get:
+      tags: [Account]
+      summary: Lấy chi tiết tài khoản
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    put:
+      tags: [Account]
+      summary: Cập nhật tài khoản
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags: [Account]
+      summary: Xóa tài khoản
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/accounts/{id}/change-status:
+    post:
+      tags: [Account]
+      summary: Thay đổi trạng thái tài khoản
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/accounts/{id}/reset-password:
+    post:
+      tags: [Account]
+      summary: Reset mật khẩu
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/accounts/export:
+    get:
+      tags: [Account]
+      summary: Xuất danh sách tài khoản ra Excel
+      responses:
+        '200':
+          description: OK
+
+  /api/cars:
+    get:
+      tags: [Car]
+      summary: Tìm kiếm xe
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Car]
+      summary: Tạo xe mới
+      responses:
+        '200':
+          description: OK
+  /api/cars/{id}:
+    get:
+      tags: [Car]
+      summary: Lấy chi tiết xe
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    put:
+      tags: [Car]
+      summary: Cập nhật xe
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags: [Car]
+      summary: Xóa xe
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/car-models:
+    get:
+      tags: [CarModel]
+      summary: Danh sách mẫu xe
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [CarModel]
+      summary: Tạo mẫu xe mới
+      responses:
+        '200':
+          description: OK
+  /api/car-models/{id}:
+    get:
+      tags: [CarModel]
+      summary: Chi tiết mẫu xe
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    put:
+      tags: [CarModel]
+      summary: Cập nhật mẫu xe
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags: [CarModel]
+      summary: Xóa mẫu xe
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/showrooms:
+    get:
+      tags: [Showroom]
+      summary: Danh sách showroom
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Showroom]
+      summary: Tạo showroom mới
+      responses:
+        '200':
+          description: OK
+  /api/showrooms/list:
+    get:
+      tags: [Showroom]
+      summary: Lấy danh sách showroom (không phân trang)
+      responses:
+        '200':
+          description: OK
+  /api/showrooms/{id}:
+    get:
+      tags: [Showroom]
+      summary: Chi tiết showroom
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    put:
+      tags: [Showroom]
+      summary: Cập nhật showroom
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags: [Showroom]
+      summary: Xóa showroom
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/employees:
+    get:
+      tags: [Employee]
+      summary: Danh sách nhân viên
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Employee]
+      summary: Tạo nhân viên mới
+      responses:
+        '200':
+          description: OK
+  /api/employees/{id}:
+    get:
+      tags: [Employee]
+      summary: Chi tiết nhân viên
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    put:
+      tags: [Employee]
+      summary: Cập nhật nhân viên
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/employees/{id}/resign:
+    post:
+      tags: [Employee]
+      summary: Nhân viên nghỉ việc
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/employees/{id}/transfer-showroom:
+    post:
+      tags: [Employee]
+      summary: Điều chuyển showroom cho nhân viên
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/customers:
+    get:
+      tags: [Customer]
+      summary: Danh sách khách hàng
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Customer]
+      summary: Tạo khách hàng mới
+      responses:
+        '200':
+          description: OK
+  /api/customers/{id}:
+    get:
+      tags: [Customer]
+      summary: Chi tiết khách hàng
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    put:
+      tags: [Customer]
+      summary: Cập nhật khách hàng
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags: [Customer]
+      summary: Xóa khách hàng
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/quotations:
+    get:
+      tags: [Quotation]
+      summary: Danh sách báo giá
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Quotation]
+      summary: Tạo báo giá mới
+      responses:
+        '200':
+          description: OK
+  /api/quotations/{id}:
+    get:
+      tags: [Quotation]
+      summary: Chi tiết báo giá
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/quotations/{id}/send:
+    post:
+      tags: [Quotation]
+      summary: Gửi báo giá cho khách hàng
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/quotations/{id}/accept:
+    post:
+      tags: [Quotation]
+      summary: Khách hàng chấp nhận báo giá
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/quotations/{id}/cancel:
+    post:
+      tags: [Quotation]
+      summary: Hủy báo giá
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/deposits:
+    get:
+      tags: [Deposit]
+      summary: Danh sách phiếu đặt cọc
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Deposit]
+      summary: Tạo phiếu đặt cọc mới
+      responses:
+        '200':
+          description: OK
+  /api/deposits/{id}:
+    get:
+      tags: [Deposit]
+      summary: Chi tiết phiếu đặt cọc
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/deposits/{id}/refund:
+    post:
+      tags: [Deposit]
+      summary: Hoàn tiền đặt cọc
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/deposits/{id}/cancel:
+    post:
+      tags: [Deposit]
+      summary: Hủy phiếu đặt cọc
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/deposits/{id}/convert-to-contract:
+    post:
+      tags: [Deposit]
+      summary: Chuyển đặt cọc thành hợp đồng
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/contracts:
+    get:
+      tags: [Contract]
+      summary: Danh sách hợp đồng
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Contract]
+      summary: Tạo hợp đồng mới
+      responses:
+        '200':
+          description: OK
+  /api/contracts/{id}:
+    get:
+      tags: [Contract]
+      summary: Chi tiết hợp đồng
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    put:
+      tags: [Contract]
+      summary: Cập nhật hợp đồng
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags: [Contract]
+      summary: Xóa hợp đồng (chỉ hợp đồng mới)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/payments:
+    post:
+      tags: [Payment]
+      summary: Tạo mới thanh toán
+      responses:
+        '200':
+          description: OK
+  /api/payments/{id}:
+    get:
+      tags: [Payment]
+      summary: Chi tiết thanh toán
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/payments/contract/{contractId}:
+    get:
+      tags: [Payment]
+      summary: Danh sách thanh toán theo hợp đồng
+      parameters:
+        - name: contractId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/payments/{id}/confirm:
+    post:
+      tags: [Payment]
+      summary: Xác nhận thanh toán
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/payments/{id}/cancel:
+    post:
+      tags: [Payment]
+      summary: Hủy thanh toán
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/car-transfers:
+    get:
+      tags: [CarTransfer]
+      summary: Danh sách yêu cầu điều chuyển xe
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [CarTransfer]
+      summary: Tạo yêu cầu điều chuyển mới
+      responses:
+        '200':
+          description: OK
+  /api/car-transfers/{id}:
+    get:
+      tags: [CarTransfer]
+      summary: Chi tiết yêu cầu điều chuyển
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/car-transfers/{id}/confirm-export:
+    post:
+      tags: [CarTransfer]
+      summary: Xác nhận xe đã xuất khỏi showroom nguồn
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/car-transfers/{id}/confirm-receive:
+    post:
+      tags: [CarTransfer]
+      summary: Xác nhận xe đã nhập vào showroom đích
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/car-transfers/{id}/cancel:
+    post:
+      tags: [CarTransfer]
+      summary: Hủy yêu cầu điều chuyển
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/test-drives:
+    get:
+      tags: [TestDrive]
+      summary: Danh sách lịch lái thử
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [TestDrive]
+      summary: Đăng ký lịch lái thử mới
+      responses:
+        '200':
+          description: OK
+  /api/test-drives/{id}:
+    get:
+      tags: [TestDrive]
+      summary: Chi tiết lịch lái thử
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/test-drives/{id}/confirm:
+    post:
+      tags: [TestDrive]
+      summary: Xác nhận lịch lái thử
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/test-drives/{id}/complete:
+    post:
+      tags: [TestDrive]
+      summary: Hoàn thành buổi lái thử
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/test-drives/{id}/cancel:
+    post:
+      tags: [TestDrive]
+      summary: Hủy lịch lái thử
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/service-histories/customer/{customerId}:
+    get:
+      tags: [ServiceHistory]
+      summary: Lịch sử tương tác của khách hàng
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/service-histories:
+    post:
+      tags: [ServiceHistory]
+      summary: Tạo mới lịch sử tương tác
+      responses:
+        '200':
+          description: OK
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Tài khoản đăng nhập
+        password:
+          type: string
+          description: Mật khẩu đăng nhập
+      required:
+        - username
+        - password

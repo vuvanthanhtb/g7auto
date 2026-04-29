@@ -10,7 +10,17 @@ type ImportResult = { total: number; success: number; failed: number; errors: st
 
 const BASE = CUSTOMERS_ENDPOINT.BASE;
 
-class CustomersRepository {
+interface ICustomersRepository {
+  getList(params?: CustomerQuery): AR<CustomerPage>;
+  getById(id: number): AR<CustomerResponse>;
+  create(data: CustomerRequest): AR<CustomerResponse>;
+  update(id: number, data: CustomerRequest): AR<CustomerResponse>;
+  importFile(file: File): AR<ImportResult>;
+  downloadTemplate(): Promise<void>;
+  export(): Promise<void>;
+}
+
+class CustomersRepository implements ICustomersRepository {
   private static instance: CustomersRepository;
   private constructor() {}
   static getInstance() {
@@ -25,4 +35,4 @@ class CustomersRepository {
   downloadTemplate(): Promise<void> { return http.download({ url: `${BASE}/template`, filename: "mau-import-khach-hang.xlsx" }); }
   export(): Promise<void> { return http.download({ url: `${BASE}/export`, filename: "danh-sach-khach-hang.xlsx" }); }
 }
-export const customersService = CustomersRepository.getInstance();
+export const customersService: ICustomersRepository = CustomersRepository.getInstance();

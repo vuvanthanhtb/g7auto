@@ -46,5 +46,6 @@ g7auto-fe/.DS_Store
 .DS_Store
 Thumbs.db
 .claude
-
-g7auto-be/
+CLAUDE.md
+g7auto-be/**/*.md
+g7auto-fe/**/*.md

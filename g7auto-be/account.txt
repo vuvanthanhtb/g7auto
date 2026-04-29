@@ -1,0 +1,50 @@
+[
+  {
+    "username": "director01",
+    "password": "Password123@",
+    "email": "director@g7auto.com.vn",
+    "fullName": "Lê Minh Triết",
+    "roles": ["DIRECTOR"],
+    "status": "ACTIVE"
+  },
+  {
+    "username": "manager.sr01",
+    "password": "Password123@",
+    "email": "manager.sr01@g7auto.com.vn",
+    "fullName": "Phạm Hoàng Nam",
+    "roles": ["SHOWROOM_MANAGER"],
+    "status": "ACTIVE"
+  },
+  {
+    "username": "sales.an01",
+    "password": "Password123@",
+    "email": "sale.an@g7auto.com.vn",
+    "fullName": "Nguyễn Văn An",
+    "roles": ["SALES"],
+    "status": "ACTIVE"
+  },
+  {
+    "username": "accountant.binh",
+    "password": "Password123@",
+    "email": "accountant.binh@g7auto.com.vn",
+    "fullName": "Trần Thị Bình",
+    "roles": ["ACCOUNTANT"],
+    "status": "ACTIVE"
+  },
+  {
+    "username": "warehouse.cuong",
+    "password": "Password123@",
+    "email": "warehouse.cuong@g7auto.com.vn",
+    "fullName": "Lê Văn Cường",
+    "roles": ["WAREHOUSE"],
+    "status": "ACTIVE"
+  },
+  {
+    "username": "sale.lead.thao",
+    "password": "Password123@",
+    "email": "sale.lead@g7auto.com.vn",
+    "fullName": "Hoàng Thu Thảo",
+    "roles": ["SALES", "SHOWROOM_MANAGER"],
+    "status": "ACTIVE"
+  }
+]

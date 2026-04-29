@@ -9,7 +9,15 @@ type CarPage = { content: CarResponse[]; totalElements: number; totalPages: numb
 
 const BASE = CARS_ENDPOINT.BASE;
 
-class CarsRepository {
+interface ICarsRepository {
+  getList(params?: CarQuery): AR<CarPage>;
+  getById(id: number): AR<CarResponse>;
+  create(data: CarRequest): AR<CarResponse>;
+  update(id: number, data: CarUpdateRequest): AR<CarResponse>;
+  export(): Promise<void>;
+}
+
+class CarsRepository implements ICarsRepository {
   private static instance: CarsRepository;
   private constructor() {}
   static getInstance() {
@@ -22,4 +30,4 @@ class CarsRepository {
   update(id: number, data: CarUpdateRequest): AR<CarResponse> { return http.call<CarResponse>({ url: `${BASE}/${id}`, method: "PUT", data }); }
   export(): Promise<void> { return http.download({ url: `${BASE}/export`, filename: "danh-sach-xe.xlsx" }); }
 }
-export const carsService = CarsRepository.getInstance();
+export const carsService: ICarsRepository = CarsRepository.getInstance();

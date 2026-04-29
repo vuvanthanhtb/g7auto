@@ -9,7 +9,17 @@ type DepositPage = { content: DepositResponse[]; totalElements: number; totalPag
 
 const BASE = DEPOSITS_ENDPOINT.BASE;
 
-class DepositsRepository {
+interface IDepositsRepository {
+  getList(params?: DepositQuery): AR<DepositPage>;
+  getById(id: number): AR<DepositResponse>;
+  create(data: DepositRequest): AR<DepositResponse>;
+  convert(id: number): AR<DepositResponse>;
+  refund(id: number): AR<DepositResponse>;
+  cancel(id: number): AR<DepositResponse>;
+  exportExcel(): Promise<void>;
+}
+
+class DepositsRepository implements IDepositsRepository {
   private static instance: DepositsRepository;
   private constructor() {}
   static getInstance() {
@@ -24,4 +34,4 @@ class DepositsRepository {
   cancel(id: number): AR<DepositResponse> { return http.call<DepositResponse>({ url: `${BASE}/${id}/cancel`, method: "POST" }); }
   exportExcel(): Promise<void> { return http.download({ url: `${BASE}/export`, filename: "danh-sach-dat-coc.xlsx" }); }
 }
-export const depositsService = DepositsRepository.getInstance();
+export const depositsService: IDepositsRepository = DepositsRepository.getInstance();

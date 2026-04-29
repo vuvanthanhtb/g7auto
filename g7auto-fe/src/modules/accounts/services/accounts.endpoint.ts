@@ -3,4 +3,5 @@ export const ACCOUNTS_ENDPOINT = {
   LIST: "/api/accounts/search",
   ME: "/api/auth/me",
   CHANGE_PASSWORD: "/api/accounts/change-password",
+  STATUS: "/api/accounts/request-change-status",
 };

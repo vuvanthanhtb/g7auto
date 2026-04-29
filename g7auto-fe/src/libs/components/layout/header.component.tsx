@@ -29,10 +29,10 @@ const ROLE_LABEL: Record<
   string,
   { label: string; color: "error" | "warning" | "info" | "success" | "default" }
 > = {
-  [SUPERADMIN]: { label: "Super Admin", color: "error" },
-  [ADMIN]: { label: "Admin", color: "warning" },
+  [SUPERADMIN]: { label: "Quản trị viên hệ thống", color: "error" },
+  [ADMIN]: { label: "Quản trị viên", color: "warning" },
   [DIRECTOR]: { label: "Giám đốc", color: "info" },
-  [SHOWROOM_MANAGER]: { label: "Quản lý", color: "success" },
+  [SHOWROOM_MANAGER]: { label: "Quản lý showroom", color: "success" },
 };
 
 const HeaderComponent = () => {
@@ -128,7 +128,12 @@ const HeaderComponent = () => {
           )}
         </Box>
         <Divider />
-        <MenuItem onClick={() => { setAnchor(null); setProfileOpen(true); }}>
+        <MenuItem
+          onClick={() => {
+            setAnchor(null);
+            setProfileOpen(true);
+          }}
+        >
           <ListItemIcon>
             <PersonIcon fontSize="small" />
           </ListItemIcon>

@@ -9,7 +9,17 @@ type CarTransferPage = { content: CarTransferResponse[]; totalElements: number; 
 
 const BASE = CAR_TRANSFERS_ENDPOINT.BASE;
 
-class CarTransfersRepository {
+interface ICarTransfersRepository {
+  getList(params?: CarTransferQuery): AR<CarTransferPage>;
+  getById(id: number): AR<CarTransferResponse>;
+  create(data: CarTransferRequest): AR<CarTransferResponse>;
+  export(id: number): AR<CarTransferResponse>;
+  receive(id: number): AR<CarTransferResponse>;
+  cancel(id: number): AR<CarTransferResponse>;
+  exportExcel(): Promise<void>;
+}
+
+class CarTransfersRepository implements ICarTransfersRepository {
   private static instance: CarTransfersRepository;
   private constructor() {}
   static getInstance() {
@@ -24,4 +34,4 @@ class CarTransfersRepository {
   cancel(id: number): AR<CarTransferResponse> { return http.call<CarTransferResponse>({ url: `${BASE}/${id}/cancel`, method: "POST" }); }
   exportExcel(): Promise<void> { return http.download({ url: `${BASE}/export`, filename: "danh-sach-dieu-chuyen-xe.xlsx" }); }
 }
-export const carTransfersService = CarTransfersRepository.getInstance();
+export const carTransfersService: ICarTransfersRepository = CarTransfersRepository.getInstance();

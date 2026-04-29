@@ -1,6 +1,8 @@
 export const ACTIVE = "ACTIVE";
 export const INACTIVE = "INACTIVE";
 export const LOCKED = "LOCKED";
+export const LOCK = "LOCK";
+export const UNLOCK = "UNLOCK";
 export const NEW_ARRIVAL = "NEW_ARRIVAL";
 export const AVAILABLE = "AVAILABLE";
 export const DEPOSITED = "DEPOSITED";

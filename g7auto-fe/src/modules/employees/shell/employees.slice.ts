@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { employeesService } from "../services/employees.service";
-import type {
-  EmployeeQuery,
-  EmployeeRequest,
-  EmployeeResponse,
-} from "./employees.type";
+import type { EmployeeQuery, EmployeeRequest, EmployeeResponse } from "./employees.type";
+import { getApiErrorMessage } from "@/libs/interceptor/helpers";
+import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
+import { toastError, toastSuccess } from "@/libs/custom-toast";
 
 interface EmployeesState {
   employeeTable: {
@@ -30,49 +29,83 @@ const initialState: EmployeesState = {
 
 export const getEmployees = createAsyncThunk(
   "employees/getList",
-  async (params: EmployeeQuery) => {
-    const res = await employeesService.getList(params);
-    return res.data;
+  async (params: EmployeeQuery, { rejectWithValue }) => {
+    try {
+      const res = await employeesService.getList(params);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const getEmployeeById = createAsyncThunk(
   "employees/getById",
-  async (id: number) => {
-    const res = await employeesService.getById(id);
-    return res.data;
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await employeesService.getById(id);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const createEmployee = createAsyncThunk(
   "employees/create",
-  async (data: EmployeeRequest) => {
-    const res = await employeesService.create(data);
-    return res.data;
+  async (data: EmployeeRequest, { rejectWithValue }) => {
+    try {
+      const res = await employeesService.create(data);
+      toastSuccess(SUCCESS_CODE.CREATE);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const updateEmployee = createAsyncThunk(
   "employees/update",
-  async ({ id, data }: { id: number; data: EmployeeRequest }) => {
-    const res = await employeesService.update(id, data);
-    return res.data;
+  async ({ id, data }: { id: number; data: EmployeeRequest }, { rejectWithValue }) => {
+    try {
+      const res = await employeesService.update(id, data);
+      toastSuccess(SUCCESS_CODE.UPDATE);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const resignEmployee = createAsyncThunk(
   "employees/resign",
-  async (id: number) => {
-    const res = await employeesService.resign(id);
-    return res.data;
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await employeesService.resign(id);
+      toastSuccess(SUCCESS_CODE.ACTION);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const transferEmployeeShowroom = createAsyncThunk(
   "employees/transfer",
-  async ({ id, newShowroomId }: { id: number; newShowroomId: number }) => {
-    const res = await employeesService.transferShowroom(id, newShowroomId);
-    return res.data;
+  async ({ id, newShowroomId }: { id: number; newShowroomId: number }, { rejectWithValue }) => {
+    try {
+      const res = await employeesService.transferShowroom(id, newShowroomId);
+      toastSuccess(SUCCESS_CODE.ACTION);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 

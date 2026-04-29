@@ -1,25 +1,30 @@
 import {
   TEXT,
-  EMAIL,
-  PASSWORD,
   SELECT,
-  NUMBER_INPUT,
   BUTTON,
   BTN_SEARCH,
   BTN_REFRESH,
   BTN_EXPORT,
-  BTN_SUBMIT,
-  BTN_EDIT,
   BTN_LOCK,
   BTN_UNLOCK,
+  BTN_ACTIVE,
+  ACTIVE,
+  LOCKED,
+  INACTIVE,
+  BTN_INACTIVE,
 } from "@/libs/constants";
 import type { BaseTableColumn, IBaseFormConfig } from "@/libs/types";
-import { NUMERICAL_ORDER, TBL_STRING, TBL_BUTTON } from "@/libs/constants/table.constant";
+import {
+  NUMERICAL_ORDER,
+  TBL_STRING,
+  TBL_BUTTON,
+} from "@/libs/constants/table.constant";
 import {
   defaultSelectOption,
   accountStatusOptions as baseAccountStatusOptions,
   roleOptions as baseRoleOptions,
 } from "@/libs/constants/options.constant";
+import type { AccountQuery } from "./account-list-tab.type";
 
 export const accountColumns: BaseTableColumn[] = [
   { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
@@ -27,55 +32,73 @@ export const accountColumns: BaseTableColumn[] = [
   { name: "fullName", label: "Họ tên", type: TBL_STRING },
   { name: "email", label: "Email", type: TBL_STRING },
   { name: "role", label: "Vai trò", type: TBL_STRING },
-  { name: "status", label: "Trạng thái", type: TBL_STRING },
+  { name: "statusDisplay", label: "Trạng thái", type: TBL_STRING },
   {
     name: "action",
     label: "Thao tác",
     type: TBL_BUTTON,
     btnGroup: [
-      { title: "Sửa", type: "button", action: BTN_EDIT },
-      { title: "Khóa", type: "button", action: BTN_LOCK },
-      { title: "Mở khóa", type: "button", action: BTN_UNLOCK },
+      {
+        title: "Hoạt động",
+        type: "button",
+        action: BTN_ACTIVE,
+        refShow: ["status"],
+      },
+      {
+        title: "Ngừng hoạt động",
+        type: "button",
+        action: BTN_INACTIVE,
+        refShow: ["status"],
+      },
+      {
+        title: "Khóa",
+        type: "button",
+        action: BTN_LOCK,
+        refShow: ["status"],
+      },
+      {
+        title: "Mở khóa",
+        type: "button",
+        action: BTN_UNLOCK,
+        refShow: ["status"],
+      },
     ],
   },
 ];
 
-export const accountsInitialValues = {
-  username: "",
-  fullName: "",
-  email: "",
-  password: "",
-  role: "",
-  showroomId: "",
+export const showButtons = (
+  refShow: string[],
+  action: string,
+  row: Record<string, unknown>,
+) => {
+  const status = row[refShow[0]] as string;
+
+  if (status === ACTIVE && [BTN_INACTIVE, BTN_LOCK].includes(action)) {
+    return true;
+  }
+
+  if (status === LOCKED && [BTN_UNLOCK, BTN_INACTIVE].includes(action)) {
+    return true;
+  }
+
+  if (status === INACTIVE && [BTN_ACTIVE].includes(action)) {
+    return true;
+  }
+
+  return false;
 };
 
-export const accountFormConfig: IBaseFormConfig = {
-  fields: [
-    { type: TEXT, name: "username", label: "Tên đăng nhập", required: true, size: 6 },
-    { type: TEXT, name: "fullName", label: "Họ tên", size: 6 },
-    { type: EMAIL, name: "email", label: "Email", size: 6 },
-    { type: PASSWORD, name: "password", label: "Mật khẩu", size: 6 },
-    {
-      type: SELECT,
-      name: "role",
-      label: "Vai trò",
-      option: "roleFormOptions",
-      required: true,
-      size: 6,
-    },
-    { type: NUMBER_INPUT, name: "showroomId", label: "Showroom ID", size: 6 },
-    {
-      type: BUTTON,
-      size: 12,
-      childs: [{ title: "Lưu", type: "submit", action: BTN_SUBMIT }],
-    },
-  ],
+export const accountsInitialValues: AccountQuery = {
+  username: "",
+  fullName: "",
+  status: defaultSelectOption,
+  role: defaultSelectOption,
 };
 
 export const accountSearchConfig: IBaseFormConfig = {
   fields: [
+    { type: TEXT, name: "fullName", label: "Họ tên", size: 3 },
     { type: TEXT, name: "username", label: "Tài khoản", size: 3 },
-    { type: TEXT, name: "email", label: "Email", size: 3 },
     {
       type: SELECT,
       name: "status",
@@ -95,16 +118,16 @@ export const accountSearchConfig: IBaseFormConfig = {
       size: 12,
       childs: [
         {
-          title: "Tìm kiếm",
-          type: "button",
-          action: BTN_SEARCH,
-          style: { background: "#1976d2", color: "#fff" },
-        },
-        {
           title: "Làm mới",
           type: "button",
           action: BTN_REFRESH,
           style: { background: "#757575", color: "#fff" },
+        },
+        {
+          title: "Tìm kiếm",
+          type: "button",
+          action: BTN_SEARCH,
+          style: { background: "#1976d2", color: "#fff" },
         },
         {
           title: "Xuất Excel",
@@ -117,6 +140,9 @@ export const accountSearchConfig: IBaseFormConfig = {
   ],
 };
 
-export const accountStatusOptions = [defaultSelectOption, ...baseAccountStatusOptions];
+export const accountStatusOptions = [
+  defaultSelectOption,
+  ...baseAccountStatusOptions,
+];
 export const roleOptions = [defaultSelectOption, ...baseRoleOptions];
 export const roleFormOptions = baseRoleOptions;

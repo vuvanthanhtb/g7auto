@@ -9,7 +9,17 @@ type QuotationPage = { content: QuotationResponse[]; totalElements: number; tota
 
 const BASE = QUOTATIONS_ENDPOINT.BASE;
 
-class QuotationsRepository {
+interface IQuotationsRepository {
+  getList(params?: QuotationQuery): AR<QuotationPage>;
+  getById(id: number): AR<QuotationResponse>;
+  create(data: QuotationRequest): AR<QuotationResponse>;
+  send(id: number): AR<QuotationResponse>;
+  accept(id: number): AR<QuotationResponse>;
+  cancel(id: number): AR<QuotationResponse>;
+  exportExcel(): Promise<void>;
+}
+
+class QuotationsRepository implements IQuotationsRepository {
   private static instance: QuotationsRepository;
   private constructor() {}
   static getInstance() {
@@ -24,4 +34,4 @@ class QuotationsRepository {
   cancel(id: number): AR<QuotationResponse> { return http.call<QuotationResponse>({ url: `${BASE}/${id}/cancel`, method: "POST" }); }
   exportExcel(): Promise<void> { return http.download({ url: `${BASE}/export`, filename: "danh-sach-bao-gia.xlsx" }); }
 }
-export const quotationsService = QuotationsRepository.getInstance();
+export const quotationsService: IQuotationsRepository = QuotationsRepository.getInstance();

@@ -25,7 +25,9 @@ import type {
 } from "@/libs/types/config-form.type";
 import type { ButtonProps } from "@/libs/types/button.type";
 
-const BaseFormComponent: React.FC<BaseFormComponentProps> = (props) => {
+const BaseFormComponent = <T extends Record<string, any>>(
+  props: BaseFormComponentProps<T>,
+) => {
   const {
     formConfig,
     validationSchema,
@@ -61,7 +63,7 @@ const BaseFormComponent: React.FC<BaseFormComponentProps> = (props) => {
   };
 
   const formik = useFormik({
-    initialValues: (values as Record<string, unknown>) ?? {},
+    initialValues: values || ({} as T),
     validationSchema,
     enableReinitialize: true,
     validateOnChange: false,

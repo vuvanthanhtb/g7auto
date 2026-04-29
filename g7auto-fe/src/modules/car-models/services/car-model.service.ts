@@ -10,7 +10,19 @@ type ImportResult = { total: number; success: number; failed: number; errors: st
 
 const BASE = CAR_MODEL_ENDPOINT.BASE;
 
-class CarModelRepository {
+interface ICarModelRepository {
+  getList(params?: CarModelQuery): AR<CarModelPage>;
+  getAll(): AR<CarModelResponse[]>;
+  getById(id: number): AR<CarModelResponse>;
+  create(data: CarModelRequest): AR<CarModelResponse>;
+  update(id: number, data: CarModelRequest): AR<CarModelResponse>;
+  delete(id: number): AR<void>;
+  importFile(file: File): AR<ImportResult>;
+  downloadTemplate(): Promise<void>;
+  export(): Promise<void>;
+}
+
+class CarModelRepository implements ICarModelRepository {
   private static instance: CarModelRepository;
   private constructor() {}
   static getInstance() {
@@ -27,5 +39,5 @@ class CarModelRepository {
   downloadTemplate(): Promise<void> { return http.download({ url: `${BASE}/template`, filename: "mau-import-dong-xe.xlsx" }); }
   export(): Promise<void> { return http.download({ url: `${BASE}/export`, filename: "danh-sach-dong-xe.xlsx" }); }
 }
-export const carModelService = CarModelRepository.getInstance();
+export const carModelService: ICarModelRepository = CarModelRepository.getInstance();
 export const carModelsService = carModelService;

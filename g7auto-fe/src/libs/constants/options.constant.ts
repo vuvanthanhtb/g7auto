@@ -153,3 +153,8 @@ export const carTransferStatusOptions = [
   { label: "Đã nhận", value: RECEIVED },
   { label: "Đã hủy", value: CANCELLED },
 ];
+
+export const userApprovalStatusOptions = [
+  { label: "Đã duyệt", value: APPROVED },
+  { label: "Từ chối", value: REJECTED },
+];

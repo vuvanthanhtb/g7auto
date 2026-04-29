@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { quotationsService } from "../services/quotations.service";
 import type { QuotationQuery, QuotationRequest, QuotationResponse } from "./quotations.type";
+import { getApiErrorMessage } from "@/libs/interceptor/helpers";
+import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
+import { toastError, toastSuccess } from "@/libs/custom-toast";
 
 interface QuotationsState {
   quotationTable: { content: QuotationResponse[]; totalElements: number; totalPages: number; page: number; size: number };
@@ -12,20 +15,45 @@ const initialState: QuotationsState = {
   selected: null,
 };
 
-export const getQuotations = createAsyncThunk("quotations/getList", async (params: QuotationQuery) => {
-  const res = await quotationsService.getList(params);
-  return res.data;
-});
+export const getQuotations = createAsyncThunk(
+  "quotations/getList",
+  async (params: QuotationQuery, { rejectWithValue }) => {
+    try {
+      const res = await quotationsService.getList(params);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
-export const getQuotationsById = createAsyncThunk("quotations/getById", async (id: number) => {
-  const res = await quotationsService.getById(id);
-  return res.data;
-});
+export const getQuotationsById = createAsyncThunk(
+  "quotations/getById",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await quotationsService.getById(id);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
-export const createQuotations = createAsyncThunk("quotations/create", async (data: QuotationRequest) => {
-  const res = await quotationsService.create(data);
-  return res.data;
-});
+export const createQuotations = createAsyncThunk(
+  "quotations/create",
+  async (data: QuotationRequest, { rejectWithValue }) => {
+    try {
+      const res = await quotationsService.create(data);
+      toastSuccess(SUCCESS_CODE.CREATE);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
 const quotationsSlice = createSlice({
   name: "quotations",

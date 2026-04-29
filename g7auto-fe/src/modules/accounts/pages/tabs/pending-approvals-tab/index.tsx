@@ -10,71 +10,80 @@ import {
 import { userApproveActionOptions } from "@/libs/constants/options.constant";
 import {
   getPendingApprovals,
-  approveUser,
-  rejectUser,
+  requestApproval,
 } from "@/modules/accounts/shell/accounts.slice";
 import { useAppDispatch } from "@/shell/redux/hooks";
 import { useState, useEffect } from "react";
-import { type TableRow, normalize } from "../../account.utils";
+import { type TableRow } from "../../account.utils";
 import {
   pendingSearchConfig,
   pendingColumns,
+  pendingInitialValues,
 } from "./pending-approvals-tab.config";
+import type { AccountPendingApprovalQuery } from "./pending-approvals-tab.type";
 
 const PendingApprovalsTab = () => {
   const dispatch = useAppDispatch();
   const confirm = useConfirm();
-  const [page, setPage] = useState(1);
-  const [searchParams, setSearchParams] = useState<Record<string, unknown>>({});
+  const [searchParams, setSearchParams] =
+    useState<AccountPendingApprovalQuery>(pendingInitialValues);
 
   useEffect(() => {
-    dispatch(getPendingApprovals({ page, size: 10, ...searchParams }));
-  }, [dispatch, page, searchParams]);
+    dispatch(getPendingApprovals(pendingInitialValues));
+  }, [dispatch]);
 
   const handleCellAction = async (row: TableRow, key?: string) => {
+    const username = row.username as string;
+    if (!username) return;
     if (key === BTN_APPROVE) {
-      const ok = await confirm(
-        `Duyệt yêu cầu của tài khoản "${row.username}"?`,
-      );
+      const ok = await confirm(`Duyệt yêu cầu của tài khoản "${username}"?`);
       if (ok) {
-        await dispatch(approveUser(row.id as string));
-        dispatch(getPendingApprovals({ page, size: 10, ...searchParams }));
+        await dispatch(requestApproval({ username, action: "APPROVE" }));
+        dispatch(getPendingApprovals(searchParams));
       }
     }
     if (key === BTN_REJECT) {
-      const ok = await confirm(
-        `Từ chối yêu cầu của tài khoản "${row.username}"?`,
-      );
+      const ok = await confirm(`Từ chối yêu cầu của tài khoản "${username}"?`);
       if (ok) {
-        await dispatch(rejectUser(row.id as string));
-        dispatch(getPendingApprovals({ page, size: 10, ...searchParams }));
+        await dispatch(requestApproval({ username, action: "REJECT" }));
+        dispatch(getPendingApprovals(searchParams));
       }
     }
   };
 
   const searchHandlers = {
-    [BTN_SEARCH]: (values: Record<string, unknown>) => {
-      setSearchParams(normalize(values));
-      setPage(1);
+    [BTN_SEARCH]: (values: AccountPendingApprovalQuery) => {
+      setSearchParams(values);
+      dispatch(getPendingApprovals({ ...values, page: 1 }));
     },
     [BTN_REFRESH]: () => {
-      dispatch(getPendingApprovals({ page, size: 10, ...searchParams }));
+      dispatch(getPendingApprovals(pendingInitialValues));
     },
+  };
+
+  const handlePageChange = (page: number) => {
+    setSearchParams({ ...searchParams, page });
+    dispatch(getPendingApprovals({ ...searchParams, page }));
+  };
+
+  const onchange = (values: AccountPendingApprovalQuery) => {
+    setSearchParams(values);
   };
 
   return (
     <>
-      <BaseFormComponent
+      <BaseFormComponent<AccountPendingApprovalQuery>
         formConfig={pendingSearchConfig}
         options={{ userApproveActionOptions }}
         handlers={searchHandlers}
+        onChange={onchange}
       />
       <BaseTableComponent
         tableConfig={pendingColumns}
         reducer="accounts"
         state="pendingTable"
         handleCellAction={handleCellAction}
-        handlePageChange={(_, p) => setPage(p)}
+        handlePageChange={handlePageChange}
       />
     </>
   );

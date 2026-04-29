@@ -9,7 +9,17 @@ type TestDrivePage = { content: TestDriveResponse[]; totalElements: number; tota
 
 const BASE = TEST_DRIVES_ENDPOINT.BASE;
 
-class TestDrivesRepository {
+interface ITestDrivesRepository {
+  getList(params?: TestDriveQuery): AR<TestDrivePage>;
+  getById(id: number): AR<TestDriveResponse>;
+  create(data: TestDriveRequest): AR<TestDriveResponse>;
+  confirm(id: number): AR<TestDriveResponse>;
+  complete(id: number): AR<TestDriveResponse>;
+  cancel(id: number): AR<TestDriveResponse>;
+  exportExcel(): Promise<void>;
+}
+
+class TestDrivesRepository implements ITestDrivesRepository {
   private static instance: TestDrivesRepository;
   private constructor() {}
   static getInstance() {
@@ -24,4 +34,4 @@ class TestDrivesRepository {
   cancel(id: number): AR<TestDriveResponse> { return http.call<TestDriveResponse>({ url: `${BASE}/${id}/cancel`, method: "POST" }); }
   exportExcel(): Promise<void> { return http.download({ url: `${BASE}/export`, filename: "danh-sach-lai-thu.xlsx" }); }
 }
-export const testDrivesService = TestDrivesRepository.getInstance();
+export const testDrivesService: ITestDrivesRepository = TestDrivesRepository.getInstance();

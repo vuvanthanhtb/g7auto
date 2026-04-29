@@ -1,15 +1,12 @@
 import http from "@/libs/interceptor";
 import { ACCOUNTS_ENDPOINT } from "./accounts.endpoint";
-import type {
-  AccountRequest,
-  AccountQuery,
-  AccountResponse,
-  ChangePasswordRequest,
-  AccountPage,
-  ImportResult,
-} from "../shell/accounts.type";
+import type { AccountRequest, AccountResponse } from "../shell/accounts.type";
 import type { AxiosResponse } from "axios";
 import type { ResponseBase } from "@/libs/interceptor/types";
+import type {
+  AccountQuery,
+  AccountPage,
+} from "../pages/tabs/account-list-tab/account-list-tab.type";
 
 type AR<T> = Promise<AxiosResponse<ResponseBase<T>>>;
 
@@ -22,10 +19,8 @@ interface IAccountsRepository {
   update(id: number, data: Partial<AccountRequest>): AR<AccountResponse>;
   lock(id: number): AR<AccountResponse>;
   unlock(id: number): AR<AccountResponse>;
-  changePassword(data: ChangePasswordRequest): AR<void>;
-  importFile(file: File): AR<ImportResult>;
-  downloadTemplate(): Promise<void>;
-  exportExcel(): Promise<void>;
+  exportExcel(params?: AccountQuery): Promise<Blob>;
+  requestChangeStatus(status: string): AR<string>;
 }
 
 class AccountsRepository implements IAccountsRepository {
@@ -39,7 +34,11 @@ class AccountsRepository implements IAccountsRepository {
   }
 
   searchAccounts(params?: AccountQuery) {
-    return http.call<AccountPage>({ url: ACCOUNTS_ENDPOINT.LIST, method: "GET", params });
+    return http.call<AccountPage>({
+      url: ACCOUNTS_ENDPOINT.LIST,
+      method: "GET",
+      params,
+    });
   }
   getById(id: number) {
     return http.call<AccountResponse>({ url: `${BASE}/${id}`, method: "GET" });
@@ -48,26 +47,41 @@ class AccountsRepository implements IAccountsRepository {
     return http.call<AccountResponse>({ url: BASE, method: "POST", data });
   }
   update(id: number, data: Partial<AccountRequest>) {
-    return http.call<AccountResponse>({ url: `${BASE}/${id}`, method: "PUT", data });
+    return http.call<AccountResponse>({
+      url: `${BASE}/${id}`,
+      method: "PUT",
+      data,
+    });
   }
   lock(id: number) {
-    return http.call<AccountResponse>({ url: `${BASE}/${id}/lock`, method: "POST" });
+    return http.call<AccountResponse>({
+      url: `${BASE}/${id}/lock`,
+      method: "POST",
+    });
   }
   unlock(id: number) {
-    return http.call<AccountResponse>({ url: `${BASE}/${id}/unlock`, method: "POST" });
+    return http.call<AccountResponse>({
+      url: `${BASE}/${id}/unlock`,
+      method: "POST",
+    });
   }
-  changePassword(data: ChangePasswordRequest) {
-    return http.call<void>({ url: ACCOUNTS_ENDPOINT.CHANGE_PASSWORD, method: "POST", data });
+
+  exportExcel(params?: AccountQuery) {
+    return http.download({
+      url: `${BASE}/export`,
+      method: "GET",
+      params,
+    });
   }
-  importFile(file: File) {
-    return http.upload<ImportResult>({ url: `${BASE}/import`, file });
-  }
-  downloadTemplate() {
-    return http.download({ url: `${BASE}/template`, filename: "mau-import-tai-khoan.xlsx" });
-  }
-  exportExcel() {
-    return http.download({ url: `${BASE}/export`, filename: "danh-sach-tai-khoan.xlsx" });
+
+  requestChangeStatus(status: string) {
+    return http.call<string>({
+      url: ACCOUNTS_ENDPOINT.STATUS,
+      method: "POST",
+      data: { status },
+    });
   }
 }
 
-export const accountsService: IAccountsRepository = AccountsRepository.getInstance();
+export const accountsService: IAccountsRepository =
+  AccountsRepository.getInstance();

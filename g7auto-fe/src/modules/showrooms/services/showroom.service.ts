@@ -10,7 +10,19 @@ type ImportResult = { total: number; success: number; failed: number; errors: st
 
 const BASE = SHOWROOM_ENDPOINT.BASE;
 
-class ShowroomRepository {
+interface IShowroomRepository {
+  getAll(params?: ShowroomQuery): AR<ShowroomPage>;
+  getList(): AR<ShowroomResponse[]>;
+  getById(id: number): AR<ShowroomResponse>;
+  create(data: ShowroomRequest): AR<ShowroomResponse>;
+  update(id: number, data: ShowroomRequest): AR<ShowroomResponse>;
+  delete(id: number): AR<void>;
+  importFile(file: File): AR<ImportResult>;
+  downloadTemplate(): Promise<void>;
+  exportExcel(): Promise<void>;
+}
+
+class ShowroomRepository implements IShowroomRepository {
   private static instance: ShowroomRepository;
   private constructor() {}
   static getInstance() {
@@ -27,5 +39,5 @@ class ShowroomRepository {
   downloadTemplate(): Promise<void> { return http.download({ url: `${BASE}/template`, filename: "mau-import-showroom.xlsx" }); }
   exportExcel(): Promise<void> { return http.download({ url: `${BASE}/export`, filename: "danh-sach-showroom.xlsx" }); }
 }
-export const showroomService = ShowroomRepository.getInstance();
+export const showroomService: IShowroomRepository = ShowroomRepository.getInstance();
 export const showroomsService = showroomService;

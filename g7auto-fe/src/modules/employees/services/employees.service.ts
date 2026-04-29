@@ -9,7 +9,17 @@ type EmployeePage = { content: EmployeeResponse[]; totalElements: number; totalP
 
 const BASE = EMPLOYEES_ENDPOINT.BASE;
 
-class EmployeesRepository {
+interface IEmployeesRepository {
+  getList(params?: EmployeeQuery): AR<EmployeePage>;
+  getById(id: number): AR<EmployeeResponse>;
+  create(data: EmployeeRequest): AR<EmployeeResponse>;
+  update(id: number, data: EmployeeRequest): AR<EmployeeResponse>;
+  resign(id: number): AR<EmployeeResponse>;
+  transferShowroom(id: number, newShowroomId: number): AR<EmployeeResponse>;
+  export(): Promise<void>;
+}
+
+class EmployeesRepository implements IEmployeesRepository {
   private static instance: EmployeesRepository;
   private constructor() {}
   static getInstance() {
@@ -24,4 +34,4 @@ class EmployeesRepository {
   transferShowroom(id: number, newShowroomId: number): AR<EmployeeResponse> { return http.call<EmployeeResponse>({ url: `${BASE}/${id}/transfer-showroom`, method: "POST", data: { newShowroomId } }); }
   export(): Promise<void> { return http.download({ url: `${BASE}/export`, filename: "danh-sach-nhan-vien.xlsx" }); }
 }
-export const employeesService = EmployeesRepository.getInstance();
+export const employeesService: IEmployeesRepository = EmployeesRepository.getInstance();

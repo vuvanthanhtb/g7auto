@@ -1,15 +1,27 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type {
-  AccountQuery,
   AccountRequest,
   AccountResponse,
-  AccountTableResponse,
   UserApproveQuery,
   UserApproveResponse,
 } from "./accounts.type";
 
 import { accountsService } from "../services/accounts.service";
 import { userApprovesService } from "../services/user-approves.service";
+import { getApiErrorMessage } from "@/libs/interceptor/helpers";
+import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
+import { toastError, toastSuccess } from "@/libs/custom-toast";
+import type {
+  AccountPage,
+  AccountQuery,
+} from "../pages/tabs/account-list-tab/account-list-tab.type";
+import { parseDataTable } from "../pages/tabs/account-list-tab/account-list-tab.utils";
+import type { AccountApprovalQuery } from "../pages/tabs/approved-users-tab/approved-users-tab.type";
+import {
+  parseApprovedUsersFormSearch,
+  parseApprovalTable,
+} from "../pages/tabs/approved-users-tab/approved-users-tab.utils";
+import { parsePendingApprovalTable } from "../pages/tabs/pending-approvals-tab/pending-approvals-tab.utils";
 
 type PagedTable<T> = {
   content: T[];
@@ -20,7 +32,7 @@ type PagedTable<T> = {
 };
 
 interface AccountsState {
-  accountTable: PagedTable<AccountTableResponse>;
+  accountTable: AccountPage;
   pendingTable: PagedTable<UserApproveResponse>;
   approvedTable: PagedTable<UserApproveResponse>;
   selected: AccountResponse | null;
@@ -35,7 +47,13 @@ const emptyPage = <T>(): PagedTable<T> => ({
 });
 
 const initialState: AccountsState = {
-  accountTable: emptyPage<AccountTableResponse>(),
+  accountTable: {
+    content: [],
+    totalElements: 0,
+    totalPages: 0,
+    page: 1,
+    size: 10,
+  },
   pendingTable: emptyPage<UserApproveResponse>(),
   approvedTable: emptyPage<UserApproveResponse>(),
   selected: null,
@@ -43,87 +61,117 @@ const initialState: AccountsState = {
 
 export const searchAccounts = createAsyncThunk(
   "accounts/searchAccounts",
-  async (params: AccountQuery) => {
-    const response = await accountsService.searchAccounts(params);
-    return {
-      ...response.data,
-      content: response.data.content.map((item: AccountTableResponse) => ({
-        ...item,
-        role: item.roles.join(", "),
-      })),
-    };
+  async (params: AccountQuery, { rejectWithValue }) => {
+    try {
+      return await accountsService.searchAccounts(params);
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const getAccountsById = createAsyncThunk(
   "accounts/getById",
-  async (id: number) => {
-    const res = await accountsService.getById(id);
-    return res.data;
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await accountsService.getById(id);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const createAccounts = createAsyncThunk(
   "accounts/create",
-  async (data: AccountRequest) => {
-    const res = await accountsService.create(data);
-    return res.data;
+  async (data: AccountRequest, { rejectWithValue }) => {
+    try {
+      const res = await accountsService.create(data);
+      toastSuccess(SUCCESS_CODE.CREATE);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const updateAccounts = createAsyncThunk(
   "accounts/update",
-  async ({ id, data }: { id: number; data: Partial<AccountRequest> }) => {
-    const res = await accountsService.update(id, data);
-    return res.data;
+  async (
+    { id, data }: { id: number; data: Partial<AccountRequest> },
+    { rejectWithValue },
+  ) => {
+    try {
+      const res = await accountsService.update(id, data);
+      toastSuccess(SUCCESS_CODE.UPDATE);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const getPendingApprovals = createAsyncThunk(
   "accounts/getPending",
-  async (params: UserApproveQuery) => {
-    const res = await userApprovesService.getUserApprovals({ ...params, status: "PENDING" });
-    return res.data;
+  async (params: UserApproveQuery, { rejectWithValue }) => {
+    try {
+      return await userApprovesService.getPendingApprovals(params);
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const getApprovedUsers = createAsyncThunk(
   "accounts/getApproved",
-  async (params: UserApproveQuery) => {
-    const res = await userApprovesService.getUserApprovals({ ...params, status: "APPROVED" });
-    return res.data;
+  async (params: AccountApprovalQuery, { rejectWithValue }) => {
+    try {
+      return await userApprovesService.getApprovedUsers(
+        parseApprovedUsersFormSearch(params),
+      );
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 
-export const approveUser = createAsyncThunk(
-  "accounts/approve",
-  async (id: string) => {
-    const res = await userApprovesService.approveUser(id);
-    return res.data;
+export const changeUserStatus = createAsyncThunk(
+  "accounts/changeUserStatus",
+  async (
+    { username, action }: { username: string; action: string },
+    { rejectWithValue },
+  ) => {
+    try {
+      const res = await userApprovesService.changeStatus(username, action);
+      toastSuccess(SUCCESS_CODE.ACTION);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 
-export const rejectUser = createAsyncThunk(
-  "accounts/reject",
-  async (id: string) => {
-    const res = await userApprovesService.rejectUser(id);
-    return res.data;
-  },
-);
-
-export const lockAccount = createAsyncThunk(
-  "accounts/lock",
-  async (id: number) => {
-    const res = await accountsService.lock(id);
-    return res.data;
-  },
-);
-
-export const unlockAccount = createAsyncThunk(
-  "accounts/unlock",
-  async (id: number) => {
-    const res = await accountsService.unlock(id);
-    return res.data;
+export const requestApproval = createAsyncThunk(
+  "accounts/requestApproval",
+  async (
+    { username, action }: { username: string; action: string },
+    { rejectWithValue },
+  ) => {
+    try {
+      const res = await userApprovesService.requestApproval(username, action);
+      toastSuccess(SUCCESS_CODE.ACTION);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
   },
 );
 
@@ -138,16 +186,40 @@ const accountsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(searchAccounts.fulfilled, (state, action) => {
-        state.accountTable = action.payload;
+        const { content, totalElements, totalPages, page, size } =
+          action.payload.data;
+        state.accountTable = {
+          content: parseDataTable(content ?? []),
+          totalElements,
+          totalPages,
+          page,
+          size,
+        };
       })
       .addCase(getAccountsById.fulfilled, (state, action) => {
         state.selected = action.payload;
       })
       .addCase(getPendingApprovals.fulfilled, (state, action) => {
-        state.pendingTable = action.payload;
+        const { content, totalElements, totalPages, page, size } =
+          action.payload.data;
+        state.pendingTable = {
+          content: parsePendingApprovalTable(content ?? []),
+          totalElements,
+          totalPages,
+          page,
+          size,
+        };
       })
       .addCase(getApprovedUsers.fulfilled, (state, action) => {
-        state.approvedTable = action.payload;
+        const { content, totalElements, totalPages, page, size } =
+          action.payload.data;
+        state.approvedTable = {
+          content: parseApprovalTable(content ?? []),
+          totalElements,
+          totalPages,
+          page,
+          size,
+        };
       });
   },
 });

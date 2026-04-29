@@ -2,20 +2,41 @@ import {
   BTN_APPROVE,
   BTN_REJECT,
   TEXT,
-  SELECT,
   BUTTON,
   BTN_SEARCH,
   BTN_REFRESH,
 } from "@/libs/constants";
 import type { BaseTableColumn, IBaseFormConfig } from "@/libs/types";
-import { TBL_STRING, TBL_BUTTON } from "@/libs/constants/table.constant";
+import {
+  TBL_STRING,
+  TBL_BUTTON,
+  NUMERICAL_ORDER,
+} from "@/libs/constants/table.constant";
+import type { AccountPendingApprovalQuery } from "@/modules/accounts/shell/accounts.type";
 
 export const pendingColumns: BaseTableColumn[] = [
+  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
   { name: "username", label: "Tài khoản", type: TBL_STRING },
   { name: "fullName", label: "Họ tên", type: TBL_STRING },
   { name: "email", label: "Email", type: TBL_STRING },
-  { name: "action", label: "Hành động", type: TBL_STRING },
-  { name: "createdAt", label: "Ngày tạo", type: TBL_STRING },
+  { name: "role", label: "Vai trò", type: TBL_STRING },
+  { name: "statusDisplay", label: "Trạng thái", type: TBL_STRING },
+  {
+    name: "actionDisplay",
+    label: "Yêu cầu thay đổi",
+    type: TBL_STRING,
+    styleCell: {
+      color: "#cb1010",
+    },
+  },
+  {
+    name: "createdAt",
+    label: "Ngày tạo",
+    type: TBL_STRING,
+    styleCell: {
+      textAlign: "center",
+    },
+  },
   { name: "createdBy", label: "Người tạo", type: TBL_STRING },
   {
     name: "action_btn",
@@ -30,31 +51,35 @@ export const pendingColumns: BaseTableColumn[] = [
 
 export const pendingSearchConfig: IBaseFormConfig = {
   fields: [
-    { type: TEXT, name: "createdBy", label: "Người tạo", size: 3 },
-    {
-      type: SELECT,
-      name: "action",
-      label: "Hành động",
-      option: "userApproveActionOptions",
-      size: 3,
-    },
+    { type: TEXT, name: "fullName", label: "Họ tên", size: 3 },
+    { type: TEXT, name: "username", label: "Tài khoản", size: 3 },
     {
       type: BUTTON,
-      size: 6,
+      size: 3,
+      style: {
+        justifyContent: "flex-start",
+      },
       childs: [
-        {
-          title: "Tìm kiếm",
-          type: "button",
-          action: BTN_SEARCH,
-          style: { background: "#1976d2", color: "#fff" },
-        },
         {
           title: "Làm mới",
           type: "button",
           action: BTN_REFRESH,
           style: { background: "#757575", color: "#fff" },
         },
+        {
+          title: "Tìm kiếm",
+          type: "button",
+          action: BTN_SEARCH,
+          style: { background: "#1976d2", color: "#fff" },
+        },
       ],
     },
   ],
+};
+
+export const pendingInitialValues: AccountPendingApprovalQuery = {
+  username: "",
+  fullName: "",
+  page: 1,
+  size: 10,
 };

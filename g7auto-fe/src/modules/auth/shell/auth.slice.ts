@@ -4,8 +4,12 @@ import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { authService } from "../services/auth.service";
-import { profileService } from "../services/profile.service";
-import type { LoginRequest, ProfileUser, UpdateProfileRequest, ChangePasswordRequest } from "./auth.type";
+import type {
+  LoginRequest,
+  ProfileUser,
+  UpdateProfileRequest,
+  ChangePasswordRequest,
+} from "./auth.type";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -46,6 +50,7 @@ export const loginUser = createAsyncThunk(
   async (payload: LoginRequest, thunkAPI) => {
     try {
       const { data: response } = await authService.login(payload);
+      debugger;
       if (response)
         TokenService.setTokens(response.accessToken, response.refreshToken);
       const r = await thunkAPI.dispatch(profileUser());
