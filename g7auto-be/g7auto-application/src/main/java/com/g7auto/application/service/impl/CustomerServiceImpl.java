@@ -47,7 +47,8 @@ public class CustomerServiceImpl implements CustomerService {
   public PageResponse<CustomerResponse> search(CustomerSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
     return PageResponse.of(
-        customerQueryRepository.search(request.getFullName(), request.getPhone(), request.getFromDate(), request.getToDate(), pageable),
+        customerQueryRepository.search(request.getFullName(), request.getPhone(),
+            request.getFromDate(), request.getToDate(), pageable),
         customerMapper::toResponse,
         request.getFromDate(), request.getToDate());
   }
@@ -91,7 +92,9 @@ public class CustomerServiceImpl implements CustomerService {
       Sheet sheet = wb.getSheetAt(0);
       for (int i = 1; i <= sheet.getLastRowNum(); i++) {
         Row row = sheet.getRow(i);
-        if (row == null) continue;
+        if (row == null) {
+          continue;
+        }
         total++;
         try {
           CustomerRequest req = new CustomerRequest();
@@ -137,7 +140,8 @@ public class CustomerServiceImpl implements CustomerService {
   public void exportCustomers(HttpServletResponse response) {
     List<CustomerResponse> data = customerRepository.findAll().stream()
         .map(customerMapper::toResponse).toList();
-    ExcelExportHelper.export(response, data, CustomerResponse.class, "DANH SÁCH KHÁCH HÀNG", "danh-sach-khach-hang");
+    ExcelExportHelper.export(response, data, CustomerResponse.class, "DANH SÁCH KHÁCH HÀNG",
+        "danh-sach-khach-hang");
   }
 
   private Customer get(Long id) {
@@ -147,7 +151,9 @@ public class CustomerServiceImpl implements CustomerService {
 
   private String getCellString(Row row, int col) {
     Cell cell = row.getCell(col);
-    if (cell == null) return "";
+    if (cell == null) {
+      return "";
+    }
     return switch (cell.getCellType()) {
       case STRING -> cell.getStringCellValue().trim();
       case NUMERIC -> String.valueOf((long) cell.getNumericCellValue());

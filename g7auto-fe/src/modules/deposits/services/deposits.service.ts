@@ -2,9 +2,8 @@ import http from "@/libs/interceptor";
 import { DEPOSITS_ENDPOINT } from "./deposits.endpoint";
 import type { DepositRequest, DepositQuery, DepositResponse } from "../shell/deposits.type";
 import type { AxiosResponse } from "axios";
-import type { ResponseBase } from "@/libs/interceptor/types";
 
-type AR<T> = Promise<AxiosResponse<ResponseBase<T>>>;
+type AR<T> = Promise<AxiosResponse<T>>;
 type DepositPage = { content: DepositResponse[]; totalElements: number; totalPages: number; page: number; size: number };
 
 const BASE = DEPOSITS_ENDPOINT.BASE;

@@ -16,7 +16,6 @@ import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
 import com.g7auto.core.response.PageResponse;
-import jakarta.servlet.http.HttpServletResponse;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Car;
 import com.g7auto.domain.entity.Contract;
@@ -31,6 +30,7 @@ import com.g7auto.infrastructure.persistence.DepositRepository;
 import com.g7auto.infrastructure.persistence.EmployeeRepository;
 import com.g7auto.infrastructure.persistence.QuotationRepository;
 import com.g7auto.infrastructure.persistence.query.DepositQueryRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -59,7 +59,8 @@ public class DepositServiceImpl implements DepositService {
   public PageResponse<DepositResponse> search(DepositSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
     return PageResponse.of(
-        depositQueryRepository.search(request.getStatus(), request.getCustomerId(), request.getFromDate(), request.getToDate(), pageable),
+        depositQueryRepository.search(request.getStatus(), request.getCustomerId(),
+            request.getFromDate(), request.getToDate(), pageable),
         depositMapper::toResponse,
         request.getFromDate(), request.getToDate());
   }
@@ -198,8 +199,10 @@ public class DepositServiceImpl implements DepositService {
 
   @Override
   public void exportDeposits(HttpServletResponse response) {
-    List<DepositResponse> data = depositRepository.findAll().stream().map(depositMapper::toResponse).toList();
-    ExcelExportHelper.export(response, data, DepositResponse.class, "DANH SÁCH ĐẶT CỌC", "danh-sach-dat-coc");
+    List<DepositResponse> data = depositRepository.findAll().stream().map(depositMapper::toResponse)
+        .toList();
+    ExcelExportHelper.export(response, data, DepositResponse.class, "DANH SÁCH ĐẶT CỌC",
+        "danh-sach-dat-coc");
   }
 
   private Deposit getDeposit(Long id) {

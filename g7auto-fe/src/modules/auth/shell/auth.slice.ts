@@ -50,7 +50,6 @@ export const loginUser = createAsyncThunk(
   async (payload: LoginRequest, thunkAPI) => {
     try {
       const { data: response } = await authService.login(payload);
-      debugger;
       if (response)
         TokenService.setTokens(response.accessToken, response.refreshToken);
       const r = await thunkAPI.dispatch(profileUser());

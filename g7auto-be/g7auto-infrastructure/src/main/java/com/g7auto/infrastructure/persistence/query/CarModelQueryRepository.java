@@ -16,10 +16,22 @@ import org.springframework.stereotype.Repository;
 public class CarModelQueryRepository {
 
   private static final String BASE_SQL = """
-      SELECT m.id, m.name, m.manufacturer, m.series, m.year, m.color,
-             m.car_type, m.engine, m.transmission, m.listed_price,
-             m.description, m.status,
-             m.created_at, m.updated_at, m.created_by, m.updated_by
+      SELECT m.id,
+             m.name,
+             m.manufacturer,
+             m.series,
+             m.year,
+             m.color,
+             m.car_type,
+             m.engine,
+             m.transmission,
+             m.listed_price,
+             m.description,
+             m.status,
+             m.created_at,
+             m.updated_at,
+             m.created_by,
+             m.updated_by
       FROM car_models m
       WHERE 1=1
       """;

@@ -33,7 +33,7 @@ export const getShowrooms = createAsyncThunk(
   "showrooms/getList",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await showroomsService.getList();
+      const res = await showroomsService.search();
       return res.data;
     } catch (error) {
       toastError(getApiErrorMessage(error));
@@ -84,7 +84,10 @@ export const createShowroom = createAsyncThunk(
 
 export const updateShowroom = createAsyncThunk(
   "showrooms/update",
-  async ({ id, data }: { id: number; data: ShowroomRequest }, { rejectWithValue }) => {
+  async (
+    { id, data }: { id: number; data: ShowroomRequest },
+    { rejectWithValue },
+  ) => {
     try {
       const { data: response } = await showroomsService.update(id, data);
       toastSuccess(SUCCESS_CODE.UPDATE);
@@ -121,7 +124,7 @@ const showroomsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAllShowrooms.fulfilled, (state, action) => {
-        state.showroomTable = action.payload as any;
+        state.showroomAll = action.payload as any;
       })
       .addCase(getShowroomById.fulfilled, (state, action) => {
         state.selected = action.payload as any;

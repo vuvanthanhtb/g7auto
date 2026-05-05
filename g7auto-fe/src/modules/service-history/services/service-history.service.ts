@@ -2,9 +2,8 @@ import http from "@/libs/interceptor";
 import { SERVICE_HISTORY_ENDPOINT } from "./service-history.endpoint";
 import type { ServiceHistoryRequest, ServiceHistoryQuery, ServiceHistoryResponse } from "../shell/service-history.type";
 import type { AxiosResponse } from "axios";
-import type { ResponseBase } from "@/libs/interceptor/types";
 
-type AR<T> = Promise<AxiosResponse<ResponseBase<T>>>;
+type AR<T> = Promise<AxiosResponse<T>>;
 type ServiceHistoryPage = { content: ServiceHistoryResponse[]; totalElements: number; totalPages: number; page: number; size: number };
 
 const BASE = SERVICE_HISTORY_ENDPOINT.BASE;

@@ -7,6 +7,136 @@ export const SUCCESS_CODE = {
   ACTION: "Thao tác thành công.",
 };
 
-export const ERROR_MESSAGE_MAP: Record<string, string> = {};
+export const ERROR_MESSAGE_MAP: Record<string, string> = {
+  // 1. Thành công (00001 - 00099)
+  G7_AUTO_00001: "Thực hiện thao tác thành công.",
+  G7_AUTO_00002: "Tạo mới dữ liệu thành công.",
+  G7_AUTO_00003: "Cập nhật dữ liệu thành công.",
+  G7_AUTO_00004: "Xóa dữ liệu thành công.",
+  G7_AUTO_00005: "Đăng nhập thành công.",
+  G7_AUTO_00006: "Đăng xuất thành công.",
+  G7_AUTO_00007: "Đổi mật khẩu thành công.",
+  G7_AUTO_00008: "Nhập dữ liệu thành công.",
 
-export const formatMessage = (msg: string): string => ERROR_MESSAGE_MAP[msg] ?? msg;
+  // 2. Lỗi hệ thống & chung (00100 - 00199)
+  G7_AUTO_00100: "Lỗi hệ thống nội bộ.",
+  G7_AUTO_00101: "Không tìm thấy dữ liệu.",
+  G7_AUTO_00102: "Định dạng dữ liệu không hợp lệ.",
+  G7_AUTO_00103: "Lỗi kết nối cơ sở dữ liệu.",
+  G7_AUTO_00104: "Dịch vụ tạm thời không khả dụng.",
+
+  // 3. Xác thực & phân quyền (00200 - 00299)
+  G7_AUTO_00200: "Tên đăng nhập hoặc mật khẩu không đúng.",
+  G7_AUTO_00201: "Tài khoản đã bị khóa.",
+  G7_AUTO_00202: "Truy cập bị từ chối.",
+  G7_AUTO_00203: "Phiên làm việc đã hết hạn.",
+  G7_AUTO_00204: "Yêu cầu thay đổi mật khẩu.",
+  G7_AUTO_00205: "Tài khoản chưa kích hoạt hoặc đã ngưng hoạt động.",
+  G7_AUTO_00206: "Refresh token không hợp lệ.",
+  G7_AUTO_00207: "Tên đăng nhập không được để trống.",
+  G7_AUTO_00208: "Mật khẩu không được để trống.",
+  G7_AUTO_00209: "Yêu cầu xác thực đầy đủ để truy cập.",
+  G7_AUTO_00210: "Tên đăng nhập đã tồn tại.",
+  G7_AUTO_00211: "Email đã tồn tại trên hệ thống.",
+  G7_AUTO_00212: "ADMIN không được gán quyền ADMIN/SUPERADMIN.",
+  G7_AUTO_00213: "Đã tồn tại tài khoản SUPERADMIN.",
+  G7_AUTO_00214: "Không có quyền tác động lên tài khoản cấp cao.",
+  G7_AUTO_00215: "Tài khoản đang chờ phê duyệt.",
+  G7_AUTO_00216: "Tài khoản đang không hoạt động.",
+  G7_AUTO_00217: "Yêu cầu khoá/mở khoá tài khoản không tồn tại.",
+  G7_AUTO_00218: "Tài khoản đang khoá hoặc không hoạt động.",
+
+  // 4. Quản lý xe (00300 - 00399)
+  G7_AUTO_00300: "Số khung đã tồn tại trong hệ thống.",
+  G7_AUTO_00301: "Số máy đã tồn tại trong hệ thống.",
+  G7_AUTO_00302: "Biển số xe đã tồn tại.",
+  G7_AUTO_00303: "Không tìm thấy mẫu xe.",
+  G7_AUTO_00304: "Mẫu xe đang được sử dụng, không thể xóa.",
+  G7_AUTO_00305: "Không tìm thấy xe.",
+  G7_AUTO_00306: "Xe đã bán, không thể sửa đổi thông tin.",
+  G7_AUTO_00307: "Không tìm thấy Showroom.",
+  G7_AUTO_00308: "Số máy đã được đăng ký cho xe khác.",
+  G7_AUTO_00309: "Xe đang có cọc, không thể đổi trạng thái.",
+  G7_AUTO_00310: "Không thể xóa xe đã bán hoặc đang điều chuyển.",
+  G7_AUTO_00311: "Trạng thái 'Đã bán' không thể chuyển đổi.",
+
+  // 5. Kho & điều chuyển (00400 - 00499)
+  G7_AUTO_00400: "Số lượng tồn kho thấp.",
+  G7_AUTO_00401: "Phải cung cấp showroom xuất.",
+  G7_AUTO_00402: "Phải cung cấp showroom nhập.",
+  G7_AUTO_00403: "Showroom xuất và nhập phải khác nhau.",
+  G7_AUTO_00404: "Xe không ở trạng thái sẵn sàng để điều chuyển.",
+  G7_AUTO_00405: "Không tìm thấy yêu cầu điều chuyển.",
+  G7_AUTO_00422: "Không thể hủy lệnh điều chuyển đã hoàn thành.",
+  G7_AUTO_00423: "Lệnh điều chuyển phải ở trạng thái CHỜ để xác nhận xuất kho.",
+  G7_AUTO_00424: "Lệnh điều chuyển phải ở trạng thái ĐÃ XUẤT để xác nhận nhập kho.",
+
+  // 6. Khách hàng (00500 - 00599)
+  G7_AUTO_00500: "Số điện thoại khách hàng đã tồn tại.",
+  G7_AUTO_00501: "Email khách hàng đã tồn tại.",
+  G7_AUTO_00502: "Không tìm thấy khách hàng.",
+  G7_AUTO_00503: "Số CCCD/CMND đã tồn tại.",
+
+  // 7. Kinh doanh, báo giá & hợp đồng (00600 - 00699)
+  G7_AUTO_00600: "Không tìm thấy báo giá.",
+  G7_AUTO_00601: "Không tìm thấy hợp đồng.",
+  G7_AUTO_00602: "Hợp đồng đã ký, không thể sửa đổi.",
+  G7_AUTO_00603: "Số hợp đồng đã tồn tại.",
+  G7_AUTO_00604: "Không tìm thấy thông tin đặt cọc.",
+  G7_AUTO_00605: "Số tiền thanh toán không hợp lệ.",
+  G7_AUTO_00606: "Giá trị hợp đồng phải lớn hơn số tiền đã trả.",
+  G7_AUTO_00607: "Không tìm thấy khoản đặt cọc.",
+  G7_AUTO_00608: "Không tìm thấy báo giá cho khoản cọc này.",
+  G7_AUTO_00609: "Số tiền đặt cọc phải lớn hơn 0.",
+  G7_AUTO_00613: "Xe đã có phiếu đặt cọc đang hiệu lực.",
+  G7_AUTO_00614: "Chỉ có thể hoàn tiền cho phiếu cọc đang giữ xe.",
+  G7_AUTO_00615: "Chỉ có thể hủy phiếu cọc đang giữ xe.",
+  G7_AUTO_00620: "Không thể cập nhật hợp đồng đã hoàn thành/hủy.",
+  G7_AUTO_00621: "Không thể hoàn thành hợp đồng khi còn nợ.",
+  G7_AUTO_00622: "Chỉ hợp đồng mới mới có thể xóa.",
+  G7_AUTO_00623: "Chỉ báo giá nháp mới có thể gửi.",
+  G7_AUTO_00624: "Chỉ báo giá đã gửi mới có thể chấp nhận.",
+  G7_AUTO_00625: "Không thể hủy báo giá đã được chấp nhận.",
+  G7_AUTO_00630: "Số tiền thanh toán phải lớn hơn 0.",
+  G7_AUTO_00631: "Số tiền trả vượt quá số nợ còn lại.",
+  G7_AUTO_00632: "Chỉ thanh toán chờ mới có thể xác nhận.",
+  G7_AUTO_00633: "Không thể hủy thanh toán đã xác nhận.",
+
+  // 8. Nhân sự (00700 - 00799)
+  G7_AUTO_00700: "Mã nhân viên đã tồn tại.",
+  G7_AUTO_00701: "Không tìm thấy nhân viên.",
+  G7_AUTO_00702: "Nhân viên đã là quản lý.",
+  G7_AUTO_00703: "Email nhân viên đã tồn tại.",
+  G7_AUTO_00704: "Số điện thoại nhân viên đã tồn tại.",
+  G7_AUTO_00705: "Tài khoản đã được gán cho nhân viên khác.",
+  G7_AUTO_00709: "Nhân viên này đã nghỉ việc.",
+  G7_AUTO_00710: "Không thể điều chuyển nhân viên đã nghỉ việc.",
+
+  // 9. Validation & khác (00800 - 00899)
+  G7_AUTO_00800: "Trường thông tin này là bắt buộc.",
+  G7_AUTO_00801: "Định dạng email không hợp lệ.",
+  G7_AUTO_00810: "Tên mẫu xe không được để trống.",
+  G7_AUTO_00811: "Hãng sản xuất không được để trống.",
+  G7_AUTO_00814: "Số khung không được để trống.",
+  G7_AUTO_00816: "Số máy không được để trống.",
+  G7_AUTO_00830: "Họ tên khách hàng không được để trống.",
+  G7_AUTO_00831: "Số điện thoại không được để trống.",
+  G7_AUTO_00832: "Số CCCD/CMND không được để trống.",
+  G7_AUTO_00833: "Email không được để trống.",
+  G7_AUTO_00834: "Địa chỉ không được để trống.",
+  G7_AUTO_00850: "Giá phải lớn hơn 0.",
+  G7_AUTO_00852: "Thời điểm thanh toán là bắt buộc.",
+  G7_AUTO_00890: "Bằng lái xe là bắt buộc.",
+  G7_AUTO_00891: "Ngày lái thử là bắt buộc.",
+  G7_AUTO_00892: "Khung giờ lái thử là bắt buộc.",
+  G7_AUTO_00893: "Thời gian kết thúc phải sau thời gian bắt đầu.",
+  G7_AUTO_00894: "Phải đăng ký trước ít nhất 2 giờ.",
+  G7_AUTO_00895: "Xe đã có lịch lái thử trong khung giờ này.",
+  G7_AUTO_00896: "Không thể hủy lịch lái thử đã hoàn thành.",
+  G7_AUTO_00897: "Chỉ có thể xác nhận lịch lái thử đang chờ.",
+  G7_AUTO_00898: "Chỉ có thể hoàn thành lịch lái thử đã xác nhận.",
+  G7_AUTO_00899: "Không tìm thấy lịch lái thử.",
+};
+
+export const formatMessage = (msg: string): string =>
+  ERROR_MESSAGE_MAP[msg] ?? msg;

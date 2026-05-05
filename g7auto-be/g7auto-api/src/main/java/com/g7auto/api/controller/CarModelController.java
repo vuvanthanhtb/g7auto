@@ -43,7 +43,8 @@ public class CarModelController {
 
   @PostMapping
   public ResponseEntity<ApiResponse<CarModelResponse>> create(@RequestBody CarModelRequest req) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok(carModelService.create(req)));
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(ApiResponse.ok(carModelService.create(req)));
   }
 
   @PutMapping("/{id}")

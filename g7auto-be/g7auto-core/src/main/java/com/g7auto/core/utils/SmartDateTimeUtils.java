@@ -12,6 +12,7 @@ public final class SmartDateTimeUtils {
       "yyyy-MM-dd HH:mm:ss");
   private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm:ss");
   private static final DateTimeFormatter TIME_SHORT = DateTimeFormatter.ofPattern("HH:mm");
+
   private SmartDateTimeUtils() {
   }
 

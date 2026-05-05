@@ -21,4 +21,9 @@ public class ConflictUtils {
     log.error("Email đã tồn tại trên hệ thống: {}", email);
     return new ConflictException(AuthErrorCode.G7_AUTO_00211);
   }
+
+  public static ConflictException nationalIdConflict(String nationalId) {
+    log.error("Số CCCD/CMND đã tồn tại trên hệ thống: {}", nationalId);
+    return new ConflictException(AuthErrorCode.G7_AUTO_00211);
+  }
 }

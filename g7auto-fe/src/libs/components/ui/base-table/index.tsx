@@ -10,7 +10,7 @@ import type { RootState } from "@/shell/redux/store";
 import type { ButtonProps } from "@/libs/types/button.type";
 import ButtonComponent from "../button";
 import type { BaseTableColumn } from "@/libs/types/table.type";
-import { BUTTON, CHECKBOX, DATETIME } from "@/libs/constants/form.constant";
+import { BUTTON, CHECKBOX } from "@/libs/constants/form.constant";
 import { NUMERICAL_ORDER, TBL_STRING } from "@/libs/constants/table.constant";
 
 type TableRow = Record<string, unknown>;

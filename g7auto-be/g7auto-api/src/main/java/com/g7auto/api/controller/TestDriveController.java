@@ -39,7 +39,8 @@ public class TestDriveController {
 
   @PostMapping
   public ResponseEntity<ApiResponse<TestDriveResponse>> create(@RequestBody TestDriveRequest req) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok(testDriveService.create(req)));
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(ApiResponse.ok(testDriveService.create(req)));
   }
 
   @PostMapping("/{id}/confirm")

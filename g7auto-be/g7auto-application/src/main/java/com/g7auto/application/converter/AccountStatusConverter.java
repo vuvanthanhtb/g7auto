@@ -8,7 +8,9 @@ public class AccountStatusConverter implements
 
   @Override
   public String convert(AccountStatus value) {
-    if (value == null) return "";
+    if (value == null) {
+      return "";
+    }
 
     return switch (value) {
       case ACTIVE -> "Hoạt động";

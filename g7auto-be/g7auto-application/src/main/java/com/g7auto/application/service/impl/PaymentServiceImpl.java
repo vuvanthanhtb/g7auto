@@ -11,7 +11,6 @@ import com.g7auto.core.entity.PaymentStatus;
 import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
-import jakarta.servlet.http.HttpServletResponse;
 import com.g7auto.domain.entity.Car;
 import com.g7auto.domain.entity.Contract;
 import com.g7auto.domain.entity.Payment;
@@ -19,6 +18,7 @@ import com.g7auto.infrastructure.persistence.CarRepository;
 import com.g7auto.infrastructure.persistence.ContractRepository;
 import com.g7auto.infrastructure.persistence.EmployeeRepository;
 import com.g7auto.infrastructure.persistence.PaymentRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -140,8 +140,10 @@ public class PaymentServiceImpl implements PaymentService {
 
   @Override
   public void exportPayments(HttpServletResponse response) {
-    List<PaymentResponse> data = paymentRepository.findAll().stream().map(paymentMapper::toResponse).toList();
-    ExcelExportHelper.export(response, data, PaymentResponse.class, "DANH SÁCH THANH TOÁN", "danh-sach-thanh-toan");
+    List<PaymentResponse> data = paymentRepository.findAll().stream().map(paymentMapper::toResponse)
+        .toList();
+    ExcelExportHelper.export(response, data, PaymentResponse.class, "DANH SÁCH THANH TOÁN",
+        "danh-sach-thanh-toan");
   }
 
   private Payment getPayment(Long id) {

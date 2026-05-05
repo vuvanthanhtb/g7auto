@@ -1,6 +1,6 @@
 package com.g7auto.infrastructure.persistence;
 
-import com.g7auto.core.entity.AccountApprovingStatus;
+import com.g7auto.core.entity.ApprovingStatus;
 import com.g7auto.domain.entity.AccountApproving;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +12,7 @@ public interface AccountApprovingRepository extends JpaRepository<AccountApprovi
   Optional<AccountApproving> findByUsername(String username);
 
   Optional<AccountApproving> findByUsernameAndStatusApproving(String username,
-      AccountApprovingStatus action);
+      ApprovingStatus action);
 
   boolean existsByUsername(String username);
 }

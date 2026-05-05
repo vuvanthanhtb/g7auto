@@ -2,9 +2,8 @@ import http from "@/libs/interceptor";
 import { CUSTOMERS_ENDPOINT } from "./customers.endpoint";
 import type { CustomerRequest, CustomerResponse, CustomerQuery } from "../shell/customers.type";
 import type { AxiosResponse } from "axios";
-import type { ResponseBase } from "@/libs/interceptor/types";
 
-type AR<T> = Promise<AxiosResponse<ResponseBase<T>>>;
+type AR<T> = Promise<AxiosResponse<T>>;
 type CustomerPage = { content: CustomerResponse[]; totalElements: number; totalPages: number; page: number; size: number };
 type ImportResult = { total: number; success: number; failed: number; errors: string[] };
 

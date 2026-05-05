@@ -1,5 +1,6 @@
 package com.g7auto.core.utils;
 
+import com.g7auto.core.constant.codes.AuthErrorCode;
 import com.g7auto.core.constant.codes.SystemErrorCode;
 import com.g7auto.core.entity.Role;
 import com.g7auto.core.exception.BadRequestException;
@@ -27,5 +28,25 @@ public final class RoleUtils {
 
   public static boolean containsRole(List<Role> roles, Role role) {
     return roles != null && roles.contains(role);
+  }
+
+  public static void validateActionOnTarget(List<Role> targetRoles) {
+    boolean currentIsSuperAdmin = hasRole(Role.SUPERADMIN.name());
+    boolean currentIsApproval = hasRole(Role.APPROVAL.name());
+
+    boolean targetIsSuperAdmin = containsRole(targetRoles, Role.SUPERADMIN);
+
+    // SUPERADMIN không được tác động lên SUPERADMIN khác
+    if (currentIsSuperAdmin) {
+      if (targetIsSuperAdmin) {
+        log.error("SUPERADMIN không có quyền tác động lên tài khoản SUPERADMIN khác");
+        throw new BadRequestException(AuthErrorCode.G7_AUTO_00214);
+      }
+    } else {
+      if (!currentIsApproval) {
+        log.error("Không có quyền phê duyệt");
+        throw new BadRequestException(AuthErrorCode.G7_AUTO_00214);
+      }
+    }
   }
 }

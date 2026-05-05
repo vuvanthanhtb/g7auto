@@ -11,20 +11,25 @@ import {
   NUMBER_INPUT,
   SELECT,
 } from "@/libs/constants/form.constant";
-import { BUTTON as TBTN, STRING } from "@/libs/constants/table.constant";
+import {
+  NUMERICAL_ORDER,
+  TBL_BUTTON,
+  TBL_STRING,
+} from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
 
 export const carColumns: BaseTableColumn[] = [
-  { name: "licensePlate", label: "Biển số", type: STRING },
-  { name: "carModelName", label: "Dòng xe", type: STRING },
-  { name: "color", label: "Màu sắc", type: STRING },
-  { name: "showroomName", label: "Showroom", type: STRING },
-  { name: "status", label: "Trạng thái", type: STRING },
+  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
+  { name: "licensePlate", label: "Biển số", type: TBL_STRING },
+  { name: "carModelName", label: "Dòng xe", type: TBL_STRING },
+  { name: "color", label: "Màu sắc", type: TBL_STRING },
+  { name: "showroomName", label: "Showroom", type: TBL_STRING },
+  { name: "status", label: "Trạng thái", type: TBL_STRING },
   {
     name: "action",
     label: "Thao tác",
-    type: TBTN,
+    type: TBL_BUTTON,
     btnGroup: [{ title: "Sửa", type: "button", action: BTN_EDIT }],
   },
 ];

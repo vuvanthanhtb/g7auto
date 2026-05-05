@@ -38,8 +38,10 @@ public class CarTransferController {
   }
 
   @PostMapping
-  public ResponseEntity<ApiResponse<CarTransferResponse>> create(@RequestBody CarTransferRequest req) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok(carTransferService.create(req)));
+  public ResponseEntity<ApiResponse<CarTransferResponse>> create(
+      @RequestBody CarTransferRequest req) {
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(ApiResponse.ok(carTransferService.create(req)));
   }
 
   @PostMapping("/{id}/confirm-export")

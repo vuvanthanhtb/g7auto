@@ -10,20 +10,25 @@ import {
   TEXT,
   DATETIME,
 } from "@/libs/constants/form.constant";
-import { BUTTON as TBTN, STRING } from "@/libs/constants/table.constant";
+import {
+  NUMERICAL_ORDER,
+  TBL_BUTTON,
+  TBL_STRING,
+} from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
 
 export const paymentColumns: BaseTableColumn[] = [
-  { name: "code", label: "Mã thanh toán", type: STRING },
-  { name: "contractCode", label: "Hợp đồng", type: STRING },
-  { name: "customerName", label: "Khách hàng", type: STRING },
-  { name: "amount", label: "Số tiền", type: STRING },
-  { name: "status", label: "Trạng thái", type: STRING },
+  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
+  { name: "code", label: "Mã thanh toán", type: TBL_STRING },
+  { name: "contractCode", label: "Hợp đồng", type: TBL_STRING },
+  { name: "customerName", label: "Khách hàng", type: TBL_STRING },
+  { name: "amount", label: "Số tiền", type: TBL_STRING },
+  { name: "status", label: "Trạng thái", type: TBL_STRING },
   {
     name: "action",
     label: "Thao tác",
-    type: TBTN,
+    type: TBL_BUTTON,
     btnGroup: [{ title: "Chi tiết", type: "button", action: BTN_DETAIL }],
   },
 ];

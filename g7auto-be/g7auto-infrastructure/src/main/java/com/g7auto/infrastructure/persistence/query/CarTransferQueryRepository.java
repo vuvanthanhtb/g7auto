@@ -3,7 +3,6 @@ package com.g7auto.infrastructure.persistence.query;
 import com.g7auto.core.entity.TransferStatus;
 import com.g7auto.core.sql.DynamicSqlBuilder;
 import com.g7auto.core.sql.PagingJdbcExecutor;
-import com.g7auto.core.utils.DateParserUtils;
 import com.g7auto.domain.entity.Car;
 import com.g7auto.domain.entity.CarTransfer;
 import com.g7auto.domain.entity.Showroom;

@@ -13,8 +13,6 @@ import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
 import com.g7auto.core.response.PageResponse;
 import com.g7auto.core.utils.PageableUtils;
-import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 import com.g7auto.domain.entity.Car;
 import com.g7auto.domain.entity.CarTransfer;
 import com.g7auto.domain.entity.Showroom;
@@ -22,7 +20,9 @@ import com.g7auto.infrastructure.persistence.CarRepository;
 import com.g7auto.infrastructure.persistence.CarTransferRepository;
 import com.g7auto.infrastructure.persistence.ShowroomRepository;
 import com.g7auto.infrastructure.persistence.query.CarTransferQueryRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +45,8 @@ public class CarTransferServiceImpl implements CarTransferService {
       CarTransferSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
     return PageResponse.of(
-        carTransferQueryRepository.search(request.getStatus(), request.getShowroomId(), request.getFromDate(), request.getToDate(), pageable),
+        carTransferQueryRepository.search(request.getStatus(), request.getShowroomId(),
+            request.getFromDate(), request.getToDate(), pageable),
         carTransferMapper::toResponse,
         request.getFromDate(), request.getToDate());
   }
@@ -151,7 +152,8 @@ public class CarTransferServiceImpl implements CarTransferService {
   public void exportCarTransfers(HttpServletResponse response) {
     List<CarTransferResponse> data = carTransferRepository.findAll().stream()
         .map(carTransferMapper::toResponse).toList();
-    ExcelExportHelper.export(response, data, CarTransferResponse.class, "DANH SÁCH ĐIỀU CHUYỂN XE", "danh-sach-dieu-chuyen-xe");
+    ExcelExportHelper.export(response, data, CarTransferResponse.class, "DANH SÁCH ĐIỀU CHUYỂN XE",
+        "danh-sach-dieu-chuyen-xe");
   }
 
   private CarTransfer getTransfer(Long id) {

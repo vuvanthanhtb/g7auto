@@ -4,6 +4,7 @@ import com.g7auto.core.entity.EmployeeStatus;
 import com.g7auto.core.sql.DynamicSqlBuilder;
 import com.g7auto.core.sql.PagingJdbcExecutor;
 import com.g7auto.core.utils.DateParserUtils;
+import com.g7auto.domain.entity.Account;
 import com.g7auto.domain.entity.Employee;
 import com.g7auto.domain.entity.Showroom;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class EmployeeQueryRepository {
       SELECT e.id, e.full_name, e.phone, e.email, e.address, e.birth_date,
              e.gender, e.national_id, e.join_date, e.employee_status,
              e.showroom_id, s.name AS showroom_name,
-             e.account_id,
+             e.username,
              e.created_at, e.updated_at, e.created_by, e.updated_by
       FROM employees e
       LEFT JOIN showrooms s ON e.showroom_id = s.id
@@ -52,6 +53,12 @@ public class EmployeeQueryRepository {
       showroom.setId(showroomId);
       showroom.setName(rs.getString("showroom_name"));
       e.setShowroom(showroom);
+    }
+
+    String username = rs.getString("username");
+    if (username != null) {
+      Account account = new Account();
+      account.setUsername(username);
     }
 
     e.setCreatedAt(

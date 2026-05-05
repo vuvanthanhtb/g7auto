@@ -14,8 +14,6 @@ import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
 import com.g7auto.core.response.PageResponse;
 import com.g7auto.core.utils.PageableUtils;
-import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 import com.g7auto.domain.entity.Car;
 import com.g7auto.domain.entity.CarModel;
 import com.g7auto.domain.entity.Showroom;
@@ -23,7 +21,9 @@ import com.g7auto.infrastructure.persistence.CarModelRepository;
 import com.g7auto.infrastructure.persistence.CarRepository;
 import com.g7auto.infrastructure.persistence.ShowroomRepository;
 import com.g7auto.infrastructure.persistence.query.CarQueryRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -144,7 +144,8 @@ public class CarServiceImpl implements CarService {
   @Override
   public void exportCars(HttpServletResponse response) {
     List<CarResponse> data = carRepository.findAll().stream().map(carMapper::toResponse).toList();
-    ExcelExportHelper.export(response, data, CarResponse.class, "DANH SÁCH KHO XE", "danh-sach-kho-xe");
+    ExcelExportHelper.export(response, data, CarResponse.class, "DANH SÁCH KHO XE",
+        "danh-sach-kho-xe");
   }
 
   private Car getCar(Long id) {

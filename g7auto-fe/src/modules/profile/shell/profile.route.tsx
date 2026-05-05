@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { RouteMeta } from "@/libs/types/route.types";
 
-export const PROFILE_PATH = { BASE: "/profile" };
+export const PROFILE_PATH = { BASE: "/ho-so" };
 
 export const PROFILE_CONFIG: RouteMeta[] = [
   {

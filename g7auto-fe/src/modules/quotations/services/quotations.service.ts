@@ -2,9 +2,8 @@ import http from "@/libs/interceptor";
 import { QUOTATIONS_ENDPOINT } from "./quotations.endpoint";
 import type { QuotationRequest, QuotationQuery, QuotationResponse } from "../shell/quotations.type";
 import type { AxiosResponse } from "axios";
-import type { ResponseBase } from "@/libs/interceptor/types";
 
-type AR<T> = Promise<AxiosResponse<ResponseBase<T>>>;
+type AR<T> = Promise<AxiosResponse<T>>;
 type QuotationPage = { content: QuotationResponse[]; totalElements: number; totalPages: number; page: number; size: number };
 
 const BASE = QUOTATIONS_ENDPOINT.BASE;

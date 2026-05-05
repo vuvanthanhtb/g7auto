@@ -14,10 +14,16 @@
   max-width: 480px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
 
-  h1 { font-size: 22px; font-weight: 700; margin: 12px 0 8px; }
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 12px 0 8px;
+  }
 }
 
-.icon { font-size: 64px; }
+.icon {
+  font-size: 64px;
+}
 
 .description {
   font-size: 14px;
@@ -26,7 +32,11 @@
   margin-bottom: 24px;
 }
 
-.actions { display: flex; justify-content: center; gap: 12px; }
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
 
 .primary {
   padding: 10px 24px;
@@ -36,5 +46,8 @@
   color: #fff;
   font-weight: 600;
   cursor: pointer;
-  &:hover { background: #1557b0; }
+
+  &:hover {
+    background: #1557b0;
+  }
 }

@@ -106,10 +106,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     Account superAdmin = new Account();
-    superAdmin.setUsername("superadmin");
-    superAdmin.setPassword(passwordEncoder.encode("G7Auto@2024"));
+    superAdmin.setUsername("thanhvv");
+    superAdmin.setPassword(passwordEncoder.encode("1234567890"));
     superAdmin.setEmail("admin@g7auto.com.vn");
-    superAdmin.setFullName("System Super Admin");
+    superAdmin.setFullName("Vũ Văn Thanh");
     superAdmin.setRoles(List.of(Role.SUPERADMIN));
     superAdmin.setStatus(AccountStatus.ACTIVE);
     superAdmin.setFailedLoginAttempts(0);

@@ -1,48 +1,83 @@
-import { Box, Button, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import BaseTableComponent from "@/libs/components/ui/base-table";
+import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
+import EmployeesListTab from "./tabs/employees-list-tab";
+import EmployeesApprovedTab from "./tabs/employees-approved-tab";
+import EmployeesPendingTab from "./tabs/employees-pending-tab";
 import BaseDrawer from "@/libs/components/ui/base-drawer";
 import BaseFormComponent from "@/libs/components/ui/base-form";
-import { employeeColumns, employeeFormConfig, employeeSearchConfig } from "./employees.config";
-import { employeeValidation } from "./employees.validation";
-import { BTN_SUBMIT } from "@/libs/constants/button.constant";
-import { employeeStatusOptions } from "@/libs/constants/options.constant";
 import { useEmployees } from "./use-employees";
+import { employeeFormConfig } from "./employees.config";
+import { employeeValidation } from "./employees.validation";
+import { useAppSelector } from "@/shell/redux/hooks";
+import { genderOptions } from "@/libs/constants/options.constant";
 
-const EmployeesPage = () => {
+const EmployeePage = () => {
+  const [tab, setTab] = useState(0);
+  const [showroomOptions, setShowroomOptions] = useState<any[]>([]);
+  const showroomAll =
+    useAppSelector((state) => state.showrooms.showroomAll) || [];
+
+  useEffect(() => {
+    const temp = showroomAll.map((s) => ({
+      label: s.name,
+      value: s.id,
+    }));
+    setShowroomOptions(temp);
+  }, [showroomAll]);
+
   const {
-    drawerOpen, editId, formValues, page,
-    openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers,
-    setFormValues, setPage,
+    drawerOpen,
+    formValues,
+    setFormValues,
+    openCreate,
+    closeDrawer,
+    formHandlers,
   } = useEmployees();
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
         <Typography variant="h6" fontWeight={700} className="page-title">
           Quản lý Nhân viên
         </Typography>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={openCreate}
+        >
           Thêm nhân viên
         </Button>
       </Box>
-      <BaseFormComponent formConfig={employeeSearchConfig} options={{ employeeStatusOptions }} handlers={searchHandlers} />
-      <BaseTableComponent
-        tableConfig={employeeColumns}
-        reducer="employees"
-        state="employeeTable"
-        handleCellAction={handleCellAction}
-        handlePageChange={(_, p) => setPage(p)}
-      />
+      <Tabs
+        value={tab}
+        onChange={(_, v) => setTab(v)}
+        sx={{ mb: 2, borderBottom: 1, borderColor: "divider" }}
+      >
+        <Tab label="Danh sách nhân viên" />
+        <Tab label="Chờ phê duyệt" />
+        <Tab label="Đã phê duyệt" />
+      </Tabs>
+      {tab === 0 && <EmployeesListTab />}
+      {tab === 1 && <EmployeesPendingTab />}
+      {tab === 2 && <EmployeesApprovedTab />}
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? "Chỉnh sửa nhân viên" : "Thêm nhân viên"}
+        title="Thêm nhân viên"
         onClose={closeDrawer}
       >
         <BaseFormComponent
           formConfig={employeeFormConfig}
           validationSchema={employeeValidation}
           values={formValues}
+          options={{ genderOptions, showroomOptions }}
           onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
           handlers={formHandlers}
         />
@@ -51,4 +86,4 @@ const EmployeesPage = () => {
   );
 };
 
-export default EmployeesPage;
+export default EmployeePage;

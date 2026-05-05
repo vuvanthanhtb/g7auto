@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StatusRequest {
+
   @Schema(description = "Tài khoản yêu cầu")
   @NotBlank(message = AuthErrorCode.G7_AUTO_00207)
   String username;

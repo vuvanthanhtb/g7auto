@@ -15,13 +15,22 @@ interface Props {
   actions?: React.ReactNode;
 }
 
-const BaseModalComponent: React.FC<Props> = ({ open, onClose, title, children, maxWidth = "sm", actions }) => {
+const BaseModalComponent: React.FC<Props> = ({
+  open,
+  onClose,
+  title,
+  children,
+  maxWidth = "sm",
+  actions,
+}) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth={maxWidth} fullWidth>
       {title && (
         <>
           <DialogTitle>
-            <Typography fontWeight={600} fontSize={16}>{title}</Typography>
+            <Typography fontWeight={600} fontSize={16}>
+              {title}
+            </Typography>
           </DialogTitle>
           <Divider />
         </>
@@ -32,7 +41,12 @@ const BaseModalComponent: React.FC<Props> = ({ open, onClose, title, children, m
           <Divider />
           <DialogActions sx={{ px: 3, py: 1.5, gap: 1 }}>
             {actions}
-            <Button variant="outlined" size="small" onClick={onClose} sx={{ textTransform: "none" }}>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={onClose}
+              sx={{ textTransform: "none" }}
+            >
               Đóng
             </Button>
           </DialogActions>

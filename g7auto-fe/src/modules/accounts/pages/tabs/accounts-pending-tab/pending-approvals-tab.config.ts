@@ -44,7 +44,12 @@ export const pendingColumns: BaseTableColumn[] = [
     type: TBL_BUTTON,
     btnGroup: [
       { title: "Duyệt", type: "button", action: BTN_APPROVE },
-      { title: "Từ chối", type: "button", action: BTN_REJECT },
+      {
+        title: "Từ chối",
+        type: "button",
+        action: BTN_REJECT,
+        style: { background: "#dc004e", color: "#fff" },
+      },
     ],
   },
 ];

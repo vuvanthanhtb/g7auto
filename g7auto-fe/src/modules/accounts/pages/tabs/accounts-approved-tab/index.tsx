@@ -10,12 +10,12 @@ import {
   statusOptions,
   approvedInitialValues,
 } from "./approved-users-tab.config";
-import type { AccountApprovalQuery } from "./approved-users-tab.type";
+import type { AccountApprovedSearchForm } from "./approved-users-tab.type";
 import type { TableRow } from "../../account.utils";
 
-const ApprovedUsersTab = () => {
+const AccountApprovedTab = () => {
   const dispatch = useAppDispatch();
-  const [searchParams, setSearchParams] = useState<AccountApprovalQuery>(
+  const [searchParams, setSearchParams] = useState<AccountApprovedSearchForm>(
     approvedInitialValues,
   );
 
@@ -23,7 +23,7 @@ const ApprovedUsersTab = () => {
     dispatch(getApprovedUsers(approvedInitialValues));
   }, [dispatch]);
 
-  const onChange = (values: AccountApprovalQuery) => {
+  const onChange = (values: AccountApprovedSearchForm) => {
     setSearchParams(values);
   };
 
@@ -33,7 +33,7 @@ const ApprovedUsersTab = () => {
   };
 
   const searchHandlers = {
-    [BTN_SEARCH]: (values: AccountApprovalQuery) => {
+    [BTN_SEARCH]: (values: AccountApprovedSearchForm) => {
       setSearchParams(values);
       dispatch(getApprovedUsers(values));
     },
@@ -56,7 +56,7 @@ const ApprovedUsersTab = () => {
 
   return (
     <>
-      <BaseFormComponent<AccountApprovalQuery>
+      <BaseFormComponent<AccountApprovedSearchForm>
         formConfig={approvedSearchConfig}
         values={searchParams}
         options={{ statusOptions }}
@@ -74,4 +74,4 @@ const ApprovedUsersTab = () => {
   );
 };
 
-export default ApprovedUsersTab;
+export default AccountApprovedTab;

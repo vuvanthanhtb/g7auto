@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useRef, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -18,14 +24,25 @@ interface DialogState extends ConfirmOptions {
   message: string;
 }
 
-type ConfirmFn = (message: string, options?: ConfirmOptions) => Promise<boolean>;
+type ConfirmFn = (
+  message: string,
+  options?: ConfirmOptions,
+) => Promise<boolean>;
 
 const ConfirmContext = createContext<ConfirmFn | null>(null);
 
-export const ConfirmDialogProvider = ({ children }: { children: React.ReactNode }) => {
+export const ConfirmDialogProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [state, setState] = useState<DialogState>({
-    open: false, message: "", title: "Xác nhận",
-    confirmText: "Xác nhận", cancelText: "Hủy", danger: false,
+    open: false,
+    message: "",
+    title: "Xác nhận",
+    confirmText: "Xác nhận",
+    cancelText: "Hủy",
+    danger: false,
   });
   const resolveRef = useRef<((value: boolean) => void) | null>(null);
 
@@ -33,7 +50,8 @@ export const ConfirmDialogProvider = ({ children }: { children: React.ReactNode 
     return new Promise((resolve) => {
       resolveRef.current = resolve;
       setState({
-        open: true, message,
+        open: true,
+        message,
         title: options.title ?? "Xác nhận",
         confirmText: options.confirmText ?? "Xác nhận",
         cancelText: options.cancelText ?? "Hủy",
@@ -51,18 +69,38 @@ export const ConfirmDialogProvider = ({ children }: { children: React.ReactNode 
   return (
     <ConfirmContext.Provider value={confirm}>
       {children}
-      <Dialog open={state.open} onClose={() => handleClose(false)} maxWidth="xs" fullWidth
-        slotProps={{ backdrop: { sx: { backdropFilter: "blur(2px)" } } }}>
-        <DialogTitle sx={{ fontWeight: 600, fontSize: 16 }}>{state.title}</DialogTitle>
+      <Dialog
+        open={state.open}
+        onClose={() => handleClose(false)}
+        maxWidth="xs"
+        fullWidth
+        slotProps={{ backdrop: { sx: { backdropFilter: "blur(2px)" } } }}
+      >
+        <DialogTitle sx={{ fontWeight: 600, fontSize: 16 }}>
+          {state.title}
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText sx={{ color: "#3c4043", fontSize: 14 }}>{state.message}</DialogContentText>
+          <DialogContentText sx={{ color: "#3c4043", fontSize: 14 }}>
+            {state.message}
+          </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2, gap: 1 }}>
-          <Button variant="outlined" size="small" onClick={() => handleClose(false)} sx={{ textTransform: "none", minWidth: 72 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => handleClose(false)}
+            sx={{ textTransform: "none", minWidth: 72 }}
+          >
             {state.cancelText}
           </Button>
-          <Button variant="contained" size="small" onClick={() => handleClose(true)}
-            color={state.danger ? "error" : "primary"} sx={{ textTransform: "none", minWidth: 72 }} autoFocus>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => handleClose(true)}
+            color={state.danger ? "error" : "primary"}
+            sx={{ textTransform: "none", minWidth: 72 }}
+            autoFocus
+          >
             {state.confirmText}
           </Button>
         </DialogActions>
@@ -73,6 +111,7 @@ export const ConfirmDialogProvider = ({ children }: { children: React.ReactNode 
 
 export const useConfirm = (): ConfirmFn => {
   const ctx = useContext(ConfirmContext);
-  if (!ctx) throw new Error("useConfirm must be used inside ConfirmDialogProvider");
+  if (!ctx)
+    throw new Error("useConfirm must be used inside ConfirmDialogProvider");
   return ctx;
 };

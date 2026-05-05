@@ -52,6 +52,12 @@ paths:
     post:
       tags: [Account]
       summary: Tạo tài khoản mới
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountRequest'
       responses:
         '200':
           description: OK
@@ -77,6 +83,12 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountRequest'
       responses:
         '200':
           description: OK
@@ -92,36 +104,134 @@ paths:
       responses:
         '200':
           description: OK
-  /api/accounts/{id}/change-status:
-    post:
-      tags: [Account]
-      summary: Thay đổi trạng thái tài khoản
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/accounts/{id}/reset-password:
-    post:
-      tags: [Account]
-      summary: Reset mật khẩu
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/accounts/export:
+
+  /api/accounts_approving/search:
     get:
-      tags: [Account]
-      summary: Xuất danh sách tài khoản ra Excel
+      tags: [Account Approval]
+      summary: Tìm kiếm phê duyệt tài khoản
+      responses:
+        '200':
+          description: OK
+  /api/accounts_approving/search-pending:
+    get:
+      tags: [Account Approval]
+      summary: Danh sách tài khoản chờ phê duyệt
+      responses:
+        '200':
+          description: OK
+  /api/accounts_approving/search-approved:
+    get:
+      tags: [Account Approval]
+      summary: Danh sách tài khoản đã phê duyệt
+      responses:
+        '200':
+          description: OK
+  /api/accounts_approving/request-approval:
+    post:
+      tags: [Account Approval]
+      summary: Gửi yêu cầu phê duyệt
+      responses:
+        '200':
+          description: OK
+
+  /api/employees:
+    get:
+      tags: [Employee]
+      summary: Danh sách nhân viên
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Employee]
+      summary: Tạo nhân viên mới
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeRequest'
+      responses:
+        '200':
+          description: OK
+  /api/employees/{id}:
+    get:
+      tags: [Employee]
+      summary: Chi tiết nhân viên
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    put:
+      tags: [Employee]
+      summary: Cập nhật nhân viên
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeRequest'
+      responses:
+        '200':
+          description: OK
+
+  /api/employees-approving:
+    get:
+      tags: [Employee Approval]
+      summary: Danh sách yêu cầu phê duyệt nhân viên
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Employee Approval]
+      summary: Tạo yêu cầu phê duyệt mới
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeRequest'
+      responses:
+        '200':
+          description: OK
+  /api/employees-approving/{id}:
+    put:
+      tags: [Employee Approval]
+      summary: Cập nhật yêu cầu phê duyệt
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeRequest'
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags: [Employee Approval]
+      summary: Xóa yêu cầu phê duyệt
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: OK
@@ -286,71 +396,6 @@ paths:
         '200':
           description: OK
 
-  /api/employees:
-    get:
-      tags: [Employee]
-      summary: Danh sách nhân viên
-      responses:
-        '200':
-          description: OK
-    post:
-      tags: [Employee]
-      summary: Tạo nhân viên mới
-      responses:
-        '200':
-          description: OK
-  /api/employees/{id}:
-    get:
-      tags: [Employee]
-      summary: Chi tiết nhân viên
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-    put:
-      tags: [Employee]
-      summary: Cập nhật nhân viên
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/employees/{id}/resign:
-    post:
-      tags: [Employee]
-      summary: Nhân viên nghỉ việc
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/employees/{id}/transfer-showroom:
-    post:
-      tags: [Employee]
-      summary: Điều chuyển showroom cho nhân viên
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-
   /api/customers:
     get:
       tags: [Customer]
@@ -441,32 +486,6 @@ paths:
       responses:
         '200':
           description: OK
-  /api/quotations/{id}/accept:
-    post:
-      tags: [Quotation]
-      summary: Khách hàng chấp nhận báo giá
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/quotations/{id}/cancel:
-    post:
-      tags: [Quotation]
-      summary: Hủy báo giá
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
 
   /api/deposits:
     get:
@@ -478,58 +497,6 @@ paths:
     post:
       tags: [Deposit]
       summary: Tạo phiếu đặt cọc mới
-      responses:
-        '200':
-          description: OK
-  /api/deposits/{id}:
-    get:
-      tags: [Deposit]
-      summary: Chi tiết phiếu đặt cọc
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/deposits/{id}/refund:
-    post:
-      tags: [Deposit]
-      summary: Hoàn tiền đặt cọc
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/deposits/{id}/cancel:
-    post:
-      tags: [Deposit]
-      summary: Hủy phiếu đặt cọc
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/deposits/{id}/convert-to-contract:
-    post:
-      tags: [Deposit]
-      summary: Chuyển đặt cọc thành hợp đồng
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
       responses:
         '200':
           description: OK
@@ -547,100 +514,11 @@ paths:
       responses:
         '200':
           description: OK
-  /api/contracts/{id}:
-    get:
-      tags: [Contract]
-      summary: Chi tiết hợp đồng
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-    put:
-      tags: [Contract]
-      summary: Cập nhật hợp đồng
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-    delete:
-      tags: [Contract]
-      summary: Xóa hợp đồng (chỉ hợp đồng mới)
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
 
   /api/payments:
     post:
       tags: [Payment]
       summary: Tạo mới thanh toán
-      responses:
-        '200':
-          description: OK
-  /api/payments/{id}:
-    get:
-      tags: [Payment]
-      summary: Chi tiết thanh toán
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/payments/contract/{contractId}:
-    get:
-      tags: [Payment]
-      summary: Danh sách thanh toán theo hợp đồng
-      parameters:
-        - name: contractId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/payments/{id}/confirm:
-    post:
-      tags: [Payment]
-      summary: Xác nhận thanh toán
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/payments/{id}/cancel:
-    post:
-      tags: [Payment]
-      summary: Hủy thanh toán
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
       responses:
         '200':
           description: OK
@@ -658,58 +536,6 @@ paths:
       responses:
         '200':
           description: OK
-  /api/car-transfers/{id}:
-    get:
-      tags: [CarTransfer]
-      summary: Chi tiết yêu cầu điều chuyển
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/car-transfers/{id}/confirm-export:
-    post:
-      tags: [CarTransfer]
-      summary: Xác nhận xe đã xuất khỏi showroom nguồn
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/car-transfers/{id}/confirm-receive:
-    post:
-      tags: [CarTransfer]
-      summary: Xác nhận xe đã nhập vào showroom đích
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/car-transfers/{id}/cancel:
-    post:
-      tags: [CarTransfer]
-      summary: Hủy yêu cầu điều chuyển
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
 
   /api/test-drives:
     get:
@@ -724,72 +550,7 @@ paths:
       responses:
         '200':
           description: OK
-  /api/test-drives/{id}:
-    get:
-      tags: [TestDrive]
-      summary: Chi tiết lịch lái thử
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/test-drives/{id}/confirm:
-    post:
-      tags: [TestDrive]
-      summary: Xác nhận lịch lái thử
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/test-drives/{id}/complete:
-    post:
-      tags: [TestDrive]
-      summary: Hoàn thành buổi lái thử
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-  /api/test-drives/{id}/cancel:
-    post:
-      tags: [TestDrive]
-      summary: Hủy lịch lái thử
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
 
-  /api/service-histories/customer/{customerId}:
-    get:
-      tags: [ServiceHistory]
-      summary: Lịch sử tương tác của khách hàng
-      parameters:
-        - name: customerId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
   /api/service-histories:
     post:
       tags: [ServiceHistory]
@@ -805,6 +566,7 @@ components:
       properties:
         username:
           type: string
+          pattern: '^[a-zA-Z0-9]+$'
           description: Tài khoản đăng nhập
         password:
           type: string
@@ -812,3 +574,156 @@ components:
       required:
         - username
         - password
+    
+    AccountRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          pattern: '^[a-zA-Z0-9]+$'
+          description: Tên đăng nhập
+        password:
+          type: string
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+      required:
+        - username
+        - email
+        - fullName
+
+    EmployeeRequest:
+      type: object
+      properties:
+        fullName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+          format: email
+        address:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        gender:
+          type: string
+        nationalId:
+          type: string
+        joinDate:
+          type: string
+          format: date
+        showroomId:
+          type: integer
+          format: int64
+        username:
+          type: string
+          pattern: '^[a-zA-Z0-9]+$'
+          description: Tên đăng nhập hệ thống tương ứng
+      required:
+        - fullName
+        - phone
+        - showroomId
+
+    EmployeeResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        fullName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        gender:
+          type: string
+        nationalId:
+          type: string
+        joinDate:
+          type: string
+          format: date
+        employeeStatus:
+          type: string
+        showroomId:
+          type: integer
+          format: int64
+        showroomName:
+          type: string
+        username:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    AccountApprovingResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+        fullName:
+          type: string
+        roles:
+          type: string
+        status:
+          type: string
+        statusApproving:
+          type: string
+        action:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+
+    AccountResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+        fullName:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string

@@ -7,18 +7,23 @@ import {
   BTN_EXPORT,
 } from "@/libs/constants/button.constant";
 import { BUTTON, TEXT } from "@/libs/constants/form.constant";
-import { BUTTON as TBTN, STRING } from "@/libs/constants/table.constant";
+import {
+  NUMERICAL_ORDER,
+  TBL_BUTTON,
+  TBL_STRING,
+} from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
 
 export const showroomColumns: BaseTableColumn[] = [
-  { name: "name", label: "Tên showroom", type: STRING },
-  { name: "address", label: "Địa chỉ", type: STRING },
-  { name: "phone", label: "Điện thoại", type: STRING },
+  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
+  { name: "name", label: "Tên showroom", type: TBL_STRING },
+  { name: "address", label: "Địa chỉ", type: TBL_STRING },
+  { name: "phone", label: "Điện thoại", type: TBL_STRING },
   {
     name: "action",
     label: "Thao tác",
-    type: TBTN,
+    type: TBL_BUTTON,
     btnGroup: [
       { title: "Sửa", type: "button", action: BTN_EDIT },
       { title: "Xóa", type: "button", action: BTN_DELETE },

@@ -1,5 +1,5 @@
 import { axiosClient } from "./axios-client";
-import type { HttpRequestConfig, ResponseBase } from "./types";
+import type { HttpRequestConfig } from "./types";
 import "./interceptor";
 import { removeEmpty } from "./helpers";
 import {
@@ -13,7 +13,7 @@ const call = async <TResponse = unknown, TData = unknown, TParams = unknown>(
   config: HttpRequestConfig<TData, TParams>,
 ) => {
   const { url, method = "GET", params, data, ...rest } = config;
-  return axiosClient.request<ResponseBase<TResponse>>({
+  return axiosClient.request<TResponse>({
     url,
     method,
     params: removeEmpty(params),

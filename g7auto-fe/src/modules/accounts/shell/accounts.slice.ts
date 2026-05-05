@@ -1,9 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type {
-  AccountRequest,
-  AccountResponse,
-  UserApproveQuery,
-} from "./accounts.type";
+import type { AccountResponse } from "./accounts.type";
 
 import { accountsService } from "../services/accounts.service";
 import { userApprovesService } from "../services/user-approves.service";
@@ -13,21 +9,27 @@ import { toastError, toastSuccess } from "@/libs/custom-toast";
 import type {
   AccountPage,
   AccountSearchForm,
-} from "../pages/tabs/account-list-tab/account-list-tab.type";
+} from "../pages/tabs/accounts-list-tab/account-list-tab.type";
 import {
   parseAccountsFormSearch,
   parseDataTable,
-} from "../pages/tabs/account-list-tab/account-list-tab.utils";
+} from "../pages/tabs/accounts-list-tab/account-list-tab.utils";
 import type {
   AccountApprovedPage,
   AccountApprovedSearchForm,
-} from "../pages/tabs/approved-users-tab/approved-users-tab.type";
+} from "../pages/tabs/accounts-approved-tab/approved-users-tab.type";
 import {
   parseApprovedAccountsFormSearch,
   parseApprovalTable,
-} from "../pages/tabs/approved-users-tab/approved-users-tab.utils";
-import { parsePendingApprovalTable } from "../pages/tabs/pending-approvals-tab/pending-approvals-tab.utils";
-import type { AccountPendingPage } from "../pages/tabs/pending-approvals-tab/pending-approvals-tab.type";
+} from "../pages/tabs/accounts-approved-tab/approved-users-tab.utils";
+import {
+  parsePendingAccountsFormSearch,
+  parsePendingApprovalTable,
+} from "../pages/tabs/accounts-pending-tab/pending-approvals-tab.utils";
+import type {
+  AccountPendingPage,
+  AccountPendingSearchForm,
+} from "../pages/tabs/accounts-pending-tab/pending-approvals-tab.type";
 
 interface AccountsState {
   accountTable: AccountPage;
@@ -65,55 +67,13 @@ export const searchAccounts = createAsyncThunk(
   },
 );
 
-export const getAccountsById = createAsyncThunk(
-  "accounts/getById",
-  async (id: number, { rejectWithValue }) => {
-    try {
-      const res = await accountsService.getById(id);
-      return res.data;
-    } catch (error) {
-      toastError(getApiErrorMessage(error));
-      return rejectWithValue(error);
-    }
-  },
-);
-
-export const createAccounts = createAsyncThunk(
-  "accounts/create",
-  async (data: AccountRequest, { rejectWithValue }) => {
-    try {
-      const res = await accountsService.create(data);
-      toastSuccess(SUCCESS_CODE.CREATE);
-      return res.data;
-    } catch (error) {
-      toastError(getApiErrorMessage(error));
-      return rejectWithValue(error);
-    }
-  },
-);
-
-export const updateAccounts = createAsyncThunk(
-  "accounts/update",
-  async (
-    { id, data }: { id: number; data: Partial<AccountRequest> },
-    { rejectWithValue },
-  ) => {
-    try {
-      const res = await accountsService.update(id, data);
-      toastSuccess(SUCCESS_CODE.UPDATE);
-      return res.data;
-    } catch (error) {
-      toastError(getApiErrorMessage(error));
-      return rejectWithValue(error);
-    }
-  },
-);
-
 export const getPendingApprovals = createAsyncThunk(
   "accounts/getPending",
-  async (params: UserApproveQuery, { rejectWithValue }) => {
+  async (params: AccountPendingSearchForm, { rejectWithValue }) => {
     try {
-      return await userApprovesService.getPendingApprovals(params);
+      return await userApprovesService.getPendingApprovals(
+        parsePendingAccountsFormSearch(params),
+      );
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);
@@ -180,8 +140,8 @@ const accountsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(searchAccounts.fulfilled, (state, action) => {
-        const { content, totalElements, totalPages, page, size } = action
-          .payload.data as AccountPage;
+        const { content, totalElements, totalPages, page, size } =
+          action.payload.data;
         state.accountTable = {
           content: parseDataTable(content ?? []),
           totalElements,
@@ -189,9 +149,6 @@ const accountsSlice = createSlice({
           page,
           size,
         };
-      })
-      .addCase(getAccountsById.fulfilled, (state, action) => {
-        state.selected = action.payload;
       })
       .addCase(getPendingApprovals.fulfilled, (state, action) => {
         const { content, totalElements, totalPages, page, size } =

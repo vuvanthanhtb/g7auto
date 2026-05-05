@@ -37,7 +37,7 @@ public class ShowroomController {
     return ResponseEntity.ok(ApiResponse.ok(showroomService.search(request)));
   }
 
-  @GetMapping("/list")
+  @GetMapping("/all")
   public ResponseEntity<ApiResponse<List<ShowroomResponse>>> getList() {
     return ResponseEntity.ok(ApiResponse.ok(showroomService.findAllList()));
   }
@@ -49,7 +49,8 @@ public class ShowroomController {
 
   @PostMapping
   public ResponseEntity<ApiResponse<ShowroomResponse>> create(@RequestBody ShowroomRequest req) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok(showroomService.create(req)));
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(ApiResponse.ok(showroomService.create(req)));
   }
 
   @PutMapping("/{id}")

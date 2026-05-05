@@ -158,3 +158,8 @@ export const userApprovalStatusOptions = [
   { label: "Đã duyệt", value: APPROVED },
   { label: "Từ chối", value: REJECTED },
 ];
+
+export const genderOptions = [
+  { label: "Nam", value: "MALE" },
+  { label: "Nữ", value: "FEMALE" },
+];

@@ -15,18 +15,43 @@ interface Props {
 }
 
 const BaseDrawerComponent: React.FC<Props> = ({
-  open, onClose, title, anchor = "right", width = 520, children,
+  open,
+  onClose,
+  title,
+  anchor = "right",
+  width = 520,
+  children,
 }) => {
   return (
-    <Drawer anchor={anchor} open={open}
-      onClose={(_, reason) => { if (reason === "backdropClick") return; onClose(); }}
+    <Drawer
+      anchor={anchor}
+      open={open}
+      onClose={(_, reason) => {
+        if (reason === "backdropClick") return;
+        onClose();
+      }}
       sx={{ zIndex: (theme) => theme.zIndex.modal }}
-      slotProps={{ paper: { sx: { width, display: "flex", flexDirection: "column" } } }}>
+      slotProps={{
+        paper: { sx: { width, display: "flex", flexDirection: "column" } },
+      }}
+    >
       {title && (
         <>
-          <Box sx={{ px: 3, py: 1.5, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <Typography fontWeight={600} fontSize={16}>{title}</Typography>
-            <IconButton size="small" onClick={onClose}><CloseIcon fontSize="small" /></IconButton>
+          <Box
+            sx={{
+              px: 3,
+              py: 1.5,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography fontWeight={600} fontSize={16}>
+              {title}
+            </Typography>
+            <IconButton size="small" onClick={onClose}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
           </Box>
           <Divider />
         </>

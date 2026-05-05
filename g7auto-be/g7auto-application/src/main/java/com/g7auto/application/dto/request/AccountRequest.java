@@ -5,6 +5,7 @@ import com.g7auto.core.entity.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -16,6 +17,7 @@ public class AccountRequest {
 
   @Schema(description = "Tên đăng nhập")
   @NotBlank(message = ValidationErrorCode.G7_AUTO_00800)
+  @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Tên đăng nhập chỉ bao gồm các ký tự chữ và số")
   String username;
 
   @Schema(description = "Mật khẩu")

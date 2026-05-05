@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
-import ApprovedUsersTab from "./tabs/approved-users-tab";
-import PendingApprovalsTab from "./tabs/pending-approvals-tab";
-import AccountListTab from "./tabs/account-list-tab";
+import AccountApprovedTab from "./tabs/accounts-approved-tab";
+import AccountsPendingTab from "./tabs/accounts-pending-tab";
+import AccountsListTab from "./tabs/accounts-list-tab";
 
 const AccountsPage = () => {
   const [tab, setTab] = useState(0);
 
   useEffect(() => {
-    document.title = "Tài khoản — G7Auto";
+    document.title = "Quản lý tài khoản — G7Auto";
   }, []);
 
   return (
@@ -30,9 +30,9 @@ const AccountsPage = () => {
         <Tab label="Chờ phê duyệt" />
         <Tab label="Đã phê duyệt" />
       </Tabs>
-      {tab === 0 && <AccountListTab />}
-      {tab === 1 && <PendingApprovalsTab />}
-      {tab === 2 && <ApprovedUsersTab />}
+      {tab === 0 && <AccountsListTab />}
+      {tab === 1 && <AccountsPendingTab />}
+      {tab === 2 && <AccountApprovedTab />}
     </Box>
   );
 };

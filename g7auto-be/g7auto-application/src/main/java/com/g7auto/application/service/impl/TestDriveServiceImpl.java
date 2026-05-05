@@ -12,7 +12,6 @@ import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
 import com.g7auto.core.response.PageResponse;
 import com.g7auto.core.utils.PageableUtils;
-import jakarta.servlet.http.HttpServletResponse;
 import com.g7auto.domain.entity.Car;
 import com.g7auto.domain.entity.Customer;
 import com.g7auto.domain.entity.Employee;
@@ -24,6 +23,7 @@ import com.g7auto.infrastructure.persistence.EmployeeRepository;
 import com.g7auto.infrastructure.persistence.ShowroomRepository;
 import com.g7auto.infrastructure.persistence.TestDriveRepository;
 import com.g7auto.infrastructure.persistence.query.TestDriveQueryRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -162,8 +162,10 @@ public class TestDriveServiceImpl implements TestDriveService {
 
   @Override
   public void exportTestDrives(HttpServletResponse response) {
-    List<TestDriveResponse> data = testDriveRepository.findAll().stream().map(testDriveMapper::toResponse).toList();
-    ExcelExportHelper.export(response, data, TestDriveResponse.class, "DANH SÁCH LÁI THỬ", "danh-sach-lai-thu");
+    List<TestDriveResponse> data = testDriveRepository.findAll().stream()
+        .map(testDriveMapper::toResponse).toList();
+    ExcelExportHelper.export(response, data, TestDriveResponse.class, "DANH SÁCH LÁI THỬ",
+        "danh-sach-lai-thu");
   }
 
   private TestDrive getTestDrive(Long id) {

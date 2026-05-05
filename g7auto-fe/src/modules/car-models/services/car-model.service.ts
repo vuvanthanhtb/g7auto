@@ -2,9 +2,8 @@ import http from "@/libs/interceptor";
 import { CAR_MODEL_ENDPOINT } from "./car-model.endpoint";
 import type { CarModelRequest, CarModelResponse, CarModelQuery } from "../shell/car-model.type";
 import type { AxiosResponse } from "axios";
-import type { ResponseBase } from "@/libs/interceptor/types";
 
-type AR<T> = Promise<AxiosResponse<ResponseBase<T>>>;
+type AR<T> = Promise<AxiosResponse<T>>;
 type CarModelPage = { content: CarModelResponse[]; totalElements: number; totalPages: number; page: number; size: number };
 type ImportResult = { total: number; success: number; failed: number; errors: string[] };
 

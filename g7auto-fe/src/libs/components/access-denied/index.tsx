@@ -9,8 +9,8 @@ const AccessDeniedComponent = () => {
         <div className={styles.icon}>🚫</div>
         <h1>Truy cập bị hạn chế</h1>
         <p className={styles.description}>
-          Tài khoản của bạn chưa được cấp quyền để truy cập nội dung này.
-          Vui lòng liên hệ quản trị viên.
+          Tài khoản của bạn chưa được cấp quyền để truy cập nội dung này. Vui
+          lòng liên hệ quản trị viên.
         </p>
         <div className={styles.actions}>
           <button className={styles.primary} onClick={() => navigate("/")}>

@@ -12,16 +12,14 @@ import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
 import com.g7auto.core.response.PageResponse;
 import com.g7auto.core.utils.PageableUtils;
-import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import com.g7auto.domain.entity.Account;
 import com.g7auto.domain.entity.Employee;
 import com.g7auto.domain.entity.Showroom;
 import com.g7auto.infrastructure.persistence.AccountRepository;
 import com.g7auto.infrastructure.persistence.EmployeeRepository;
 import com.g7auto.infrastructure.persistence.ShowroomRepository;
 import com.g7auto.infrastructure.persistence.query.EmployeeQueryRepository;
-import java.time.LocalDate;
+import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -57,31 +55,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   @Transactional
-  public EmployeeResponse create(EmployeeRequest request) {
-    Employee employee = employeeMapper.toEntity(request);
-    setShowroomId(request, employee);
-
-    if (employee.getJoinDate() == null) {
-      employee.setJoinDate(LocalDate.now());
-    }
-
-    employee.setEmployeeStatus(EmployeeStatus.ACTIVE);
-
-    return employeeMapper.toResponse(employeeRepository.save(employee));
-  }
-
-
-  @Override
-  @Transactional
-  public EmployeeResponse update(Long id, EmployeeRequest request) {
-    Employee employee = get(id);
-    setShowroomId(request, employee);
-    employeeMapper.updateEntity(request, employee);
-    return employeeMapper.toResponse(employeeRepository.save(employee));
-  }
-
-  @Override
-  @Transactional
   public EmployeeResponse resign(Long id) {
     Employee employee = get(id);
     if (employee.getEmployeeStatus() == EmployeeStatus.LEAVED) {
@@ -113,20 +86,14 @@ public class EmployeeServiceImpl implements EmployeeService {
           .orElseThrow(() -> NotFoundUtils.showroomNotFound(showroomId));
       employee.setShowroom(showroom);
     }
-
-    Long accountId = request.getAccountId();
-    if (accountId != null) {
-      Account account = accountRepository.findById(accountId)
-          .orElseThrow(() -> NotFoundUtils.accountIdNotFound(accountId));
-      employee.setAccount(account);
-    }
   }
 
   @Override
   public void exportEmployees(HttpServletResponse response) {
     List<EmployeeResponse> data = employeeRepository.findAll().stream()
         .map(employeeMapper::toResponse).toList();
-    ExcelExportHelper.export(response, data, EmployeeResponse.class, "DANH SÁCH NHÂN VIÊN", "danh-sach-nhan-vien");
+    ExcelExportHelper.export(response, data, EmployeeResponse.class, "DANH SÁCH NHÂN VIÊN",
+        "danh-sach-nhan-vien");
   }
 
   private Employee get(Long id) {

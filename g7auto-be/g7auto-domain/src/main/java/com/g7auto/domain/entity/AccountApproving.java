@@ -2,7 +2,7 @@ package com.g7auto.domain.entity;
 
 import com.g7auto.core.converter.RoleListConverter;
 import com.g7auto.core.entity.AccountApprovingAction;
-import com.g7auto.core.entity.AccountApprovingStatus;
+import com.g7auto.core.entity.ApprovingStatus;
 import com.g7auto.core.entity.BaseEntity;
 import com.g7auto.core.entity.Role;
 import jakarta.persistence.Column;
@@ -56,7 +56,7 @@ public class AccountApproving extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, comment = "Trạng thái tài khoản (APPROVED, REJECTED, AWAITING_APPROVAL)")
-  AccountApprovingStatus statusApproving;
+  ApprovingStatus statusApproving;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, comment = "Hành động cần phê duyệt")

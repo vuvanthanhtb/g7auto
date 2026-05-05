@@ -1,4 +1,4 @@
-import type { AxiosRequestConfig, Method } from "axios";
+import type { AxiosRequestConfig, AxiosResponse, Method } from "axios";
 
 export interface HttpRequestConfig<
   TData = unknown,
@@ -18,3 +18,5 @@ export interface ResponseBase<T = unknown> {
   message: string;
   data: T;
 }
+
+export type IResponse<T> = Promise<AxiosResponse<T>>;

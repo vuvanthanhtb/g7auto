@@ -13,8 +13,6 @@ import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
 import com.g7auto.core.response.PageResponse;
 import com.g7auto.core.utils.PageableUtils;
-import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 import com.g7auto.domain.entity.Car;
 import com.g7auto.domain.entity.Contract;
 import com.g7auto.domain.entity.Customer;
@@ -24,8 +22,10 @@ import com.g7auto.infrastructure.persistence.ContractRepository;
 import com.g7auto.infrastructure.persistence.CustomerRepository;
 import com.g7auto.infrastructure.persistence.EmployeeRepository;
 import com.g7auto.infrastructure.persistence.query.ContractQueryRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -107,7 +107,7 @@ public class ContractServiceImpl implements ContractService {
       }
     }
 
-    if (status.equals(ContractStatus.COMPLETED ) || status.equals(ContractStatus.CANCELLED)) {
+    if (status.equals(ContractStatus.COMPLETED) || status.equals(ContractStatus.CANCELLED)) {
       log.error("Không thể cập nhật hợp đồng đã hoàn thành/hủy: {}", status);
       throw new BadRequestException(SalesErrorCode.G7_AUTO_00620);
     }
@@ -138,8 +138,10 @@ public class ContractServiceImpl implements ContractService {
 
   @Override
   public void exportContracts(HttpServletResponse response) {
-    List<ContractResponse> data = contractRepository.findAll().stream().map(contractMapper::toResponse).toList();
-    ExcelExportHelper.export(response, data, ContractResponse.class, "DANH SÁCH HỢP ĐỒNG", "danh-sach-hop-dong");
+    List<ContractResponse> data = contractRepository.findAll().stream()
+        .map(contractMapper::toResponse).toList();
+    ExcelExportHelper.export(response, data, ContractResponse.class, "DANH SÁCH HỢP ĐỒNG",
+        "danh-sach-hop-dong");
   }
 
   private Contract get(Long id) {

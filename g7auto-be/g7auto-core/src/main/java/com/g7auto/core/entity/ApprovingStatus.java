@@ -1,6 +1,6 @@
 package com.g7auto.core.entity;
 
-public enum AccountApprovingStatus {
+public enum ApprovingStatus {
   AWAITING_APPROVAL,
   APPROVED,
   REJECTED

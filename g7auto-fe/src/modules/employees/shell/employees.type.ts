@@ -10,9 +10,12 @@ export interface EmployeeResponse {
   joinDate: string;
   showroomId: number;
   showroomName: string;
-  accountId: number;
+  username: string;
   employeeStatus: string;
+  createdAt: string;
+  updatedAt: string;
 }
+
 export interface EmployeeRequest {
   fullName: string;
   phone: string;
@@ -20,15 +23,25 @@ export interface EmployeeRequest {
   address?: string;
   birthDate?: string;
   gender?: string;
-  nationalId: string;
+  nationalId?: string;
   joinDate?: string;
   showroomId: number;
-  accountId?: number;
+  username?: string;
 }
+
 export interface EmployeeQuery {
   fullName?: string;
   showroomId?: number;
   employeeStatus?: string;
+  page?: number;
+  size?: number;
+}
+
+export interface EmployeeApprovingQuery {
+  fullName?: string;
+  showroomId?: number;
+  action?: string;
+  statusApproving?: string;
   page?: number;
   size?: number;
 }

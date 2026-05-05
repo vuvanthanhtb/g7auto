@@ -38,7 +38,8 @@ public class QuotationController {
 
   @PostMapping
   public ResponseEntity<ApiResponse<QuotationResponse>> create(@RequestBody QuotationRequest req) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok(quotationService.create(req)));
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(ApiResponse.ok(quotationService.create(req)));
   }
 
   @PostMapping("/{id}/send")

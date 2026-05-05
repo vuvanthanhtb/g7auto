@@ -11,7 +11,7 @@ import {
   defaultSelectOption,
   userApprovalStatusOptions,
 } from "@/libs/constants/options.constant";
-import type { AccountApprovalQuery } from "./approved-users-tab.type";
+import type { AccountApprovedSearchForm } from "./approved-users-tab.type";
 
 export const approvedColumns: BaseTableColumn[] = [
   { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
@@ -76,7 +76,7 @@ export const approvedSearchConfig: IBaseFormConfig = {
   ],
 };
 
-export const approvedInitialValues: AccountApprovalQuery = {
+export const approvedInitialValues: AccountApprovedSearchForm = {
   username: "",
   fullName: "",
   statusApproving: defaultSelectOption,

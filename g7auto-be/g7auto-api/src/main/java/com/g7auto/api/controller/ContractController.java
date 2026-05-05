@@ -41,7 +41,8 @@ public class ContractController {
 
   @PostMapping
   public ResponseEntity<ApiResponse<ContractResponse>> create(@RequestBody ContractRequest req) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok(contractService.create(req)));
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(ApiResponse.ok(contractService.create(req)));
   }
 
   @PutMapping("/{id}")

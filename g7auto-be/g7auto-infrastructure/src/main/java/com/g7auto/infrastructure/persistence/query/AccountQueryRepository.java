@@ -57,7 +57,7 @@ public class AccountQueryRepository {
 
   private final PagingJdbcExecutor pagingJdbcExecutor;
 
-  public Page<Account> search(String username, String fullName,
+  public Page<Account> search(String username, String fullName, String status,
       String fromDate, String toDate, Pageable pageable) {
 
     DynamicSqlBuilder builder = new DynamicSqlBuilder(BASE_SQL);
@@ -67,6 +67,9 @@ public class AccountQueryRepository {
             DateParserUtils.parseFrom(fromDate))
         .andSmaller("u.updated_at", "toDate",
             DateParserUtils.parseTo(toDate));
+    if (status != null && !status.trim().isEmpty()) {
+      builder.andEqual("u.status", "status", status);
+    }
 
     return pagingJdbcExecutor.query(
         builder.getSql().toString(),

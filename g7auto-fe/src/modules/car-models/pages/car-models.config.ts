@@ -6,25 +6,25 @@ import {
   BTN_REFRESH,
   BTN_EXPORT,
 } from "@/libs/constants/button.constant";
+import { BUTTON, TEXT, NUMBER_INPUT } from "@/libs/constants/form.constant";
 import {
-  BUTTON,
-  TEXT,
-  NUMBER_INPUT,
-  SELECT,
-} from "@/libs/constants/form.constant";
-import { BUTTON as TBTN, STRING } from "@/libs/constants/table.constant";
+  NUMERICAL_ORDER,
+  TBL_BUTTON,
+  TBL_STRING,
+} from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
 
 export const carModelColumns: BaseTableColumn[] = [
-  { name: "name", label: "Tên dòng xe", type: STRING },
-  { name: "manufacturer", label: "Hãng", type: STRING },
-  { name: "year", label: "Năm SX", type: STRING },
-  { name: "listedPrice", label: "Giá niêm yết", type: STRING },
+  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
+  { name: "name", label: "Tên dòng xe", type: TBL_STRING },
+  { name: "manufacturer", label: "Hãng", type: TBL_STRING },
+  { name: "year", label: "Năm SX", type: TBL_STRING },
+  { name: "listedPrice", label: "Giá niêm yết", type: TBL_STRING },
   {
     name: "action",
     label: "Thao tác",
-    type: TBTN,
+    type: TBL_BUTTON,
     btnGroup: [
       { title: "Sửa", type: "button", action: BTN_EDIT },
       { title: "Xóa", type: "button", action: BTN_DELETE },

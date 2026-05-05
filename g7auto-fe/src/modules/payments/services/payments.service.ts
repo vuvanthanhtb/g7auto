@@ -2,9 +2,8 @@ import http from "@/libs/interceptor";
 import { PAYMENTS_ENDPOINT } from "./payments.endpoint";
 import type { PaymentRequest, PaymentQuery, PaymentResponse } from "../shell/payments.type";
 import type { AxiosResponse } from "axios";
-import type { ResponseBase } from "@/libs/interceptor/types";
 
-type AR<T> = Promise<AxiosResponse<ResponseBase<T>>>;
+type AR<T> = Promise<AxiosResponse<T>>;
 type PaymentPage = { content: PaymentResponse[]; totalElements: number; totalPages: number; page: number; size: number };
 
 const BASE = PAYMENTS_ENDPOINT.BASE;

@@ -11,7 +11,7 @@ import { useAccountList } from "./use-account-list";
 import TableTitleComponent from "@/libs/components/ui/table-title";
 import type { AccountSearchForm } from "./account-list-tab.type";
 
-const AccountListTab = () => {
+const AccountsListTab = () => {
   const {
     handleCellAction,
     searchHandlers,
@@ -42,4 +42,4 @@ const AccountListTab = () => {
   );
 };
 
-export default AccountListTab;
+export default AccountsListTab;

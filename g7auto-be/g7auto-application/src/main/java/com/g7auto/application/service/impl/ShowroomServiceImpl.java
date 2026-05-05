@@ -49,7 +49,8 @@ public class ShowroomServiceImpl implements ShowroomService {
   public PageResponse<ShowroomResponse> search(ShowroomSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
     return PageResponse.of(
-        showroomQueryRepository.search(request.getName(), request.getFromDate(), request.getToDate(), pageable),
+        showroomQueryRepository.search(request.getName(), request.getFromDate(),
+            request.getToDate(), pageable),
         showroomMapper::toResponse,
         request.getFromDate(), request.getToDate());
   }
@@ -106,7 +107,9 @@ public class ShowroomServiceImpl implements ShowroomService {
       Sheet sheet = wb.getSheetAt(0);
       for (int i = 1; i <= sheet.getLastRowNum(); i++) {
         Row row = sheet.getRow(i);
-        if (row == null) continue;
+        if (row == null) {
+          continue;
+        }
         total++;
         try {
           ShowroomRequest req = new ShowroomRequest();
@@ -151,7 +154,8 @@ public class ShowroomServiceImpl implements ShowroomService {
   public void exportShowrooms(HttpServletResponse response) {
     List<ShowroomResponse> data = showroomRepository.findAll().stream()
         .map(showroomMapper::toResponse).toList();
-    ExcelExportHelper.export(response, data, ShowroomResponse.class, "DANH SÁCH SHOWROOM", "danh-sach-showroom");
+    ExcelExportHelper.export(response, data, ShowroomResponse.class, "DANH SÁCH SHOWROOM",
+        "danh-sach-showroom");
   }
 
   private Showroom get(Long id) {
@@ -161,7 +165,9 @@ public class ShowroomServiceImpl implements ShowroomService {
 
   private String getCellString(Row row, int col) {
     Cell cell = row.getCell(col);
-    if (cell == null) return "";
+    if (cell == null) {
+      return "";
+    }
     return switch (cell.getCellType()) {
       case STRING -> cell.getStringCellValue().trim();
       case NUMERIC -> String.valueOf((long) cell.getNumericCellValue());

@@ -1,5 +1,6 @@
 package com.g7auto.core.exception;
 
+import com.g7auto.core.constant.codes.AuthErrorCode;
 import com.g7auto.core.constant.codes.CarErrorCode;
 import com.g7auto.core.constant.codes.CustomerErrorCode;
 import com.g7auto.core.constant.codes.HrErrorCode;
@@ -75,5 +76,10 @@ public class NotFoundUtils {
   public static NotFoundException paymentIdNotFound(Long id) {
     log.error("Không tìm thấy thông tin thanh toán với id {}", id);
     return new NotFoundException(SalesErrorCode.G7_AUTO_00631);
+  }
+
+  public static NotFoundException usernameNotFound(String username) {
+    log.error("Không tìm thấy tài khoản với username {}", username);
+    return new NotFoundException(AuthErrorCode.G7_AUTO_00210);
   }
 }

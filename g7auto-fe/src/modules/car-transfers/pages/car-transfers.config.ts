@@ -6,20 +6,25 @@ import {
   BTN_EXPORT,
 } from "@/libs/constants/button.constant";
 import { BUTTON, NUMBER_INPUT, SELECT } from "@/libs/constants/form.constant";
-import { BUTTON as TBTN, STRING } from "@/libs/constants/table.constant";
+import {
+  NUMERICAL_ORDER,
+  TBL_BUTTON,
+  TBL_STRING,
+} from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
 
 export const carTransferColumns: BaseTableColumn[] = [
-  { name: "carName", label: "Xe", type: STRING },
-  { name: "fromShowroomName", label: "Từ showroom", type: STRING },
-  { name: "toShowroomName", label: "Đến showroom", type: STRING },
-  { name: "status", label: "Trạng thái", type: STRING },
-  { name: "transferDate", label: "Ngày chuyển", type: STRING },
+  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
+  { name: "carName", label: "Xe", type: TBL_STRING },
+  { name: "fromShowroomName", label: "Từ showroom", type: TBL_STRING },
+  { name: "toShowroomName", label: "Đến showroom", type: TBL_STRING },
+  { name: "status", label: "Trạng thái", type: TBL_STRING },
+  { name: "transferDate", label: "Ngày chuyển", type: TBL_STRING },
   {
     name: "action",
     label: "Thao tác",
-    type: TBTN,
+    type: TBL_BUTTON,
     btnGroup: [{ title: "Chi tiết", type: "button", action: BTN_DETAIL }],
   },
 ];

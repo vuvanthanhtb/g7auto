@@ -10,13 +10,13 @@ import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
 import com.g7auto.core.response.PageResponse;
 import com.g7auto.core.utils.PageableUtils;
-import jakarta.servlet.http.HttpServletResponse;
 import com.g7auto.domain.entity.Customer;
 import com.g7auto.domain.entity.ServiceHistory;
 import com.g7auto.infrastructure.persistence.CustomerRepository;
 import com.g7auto.infrastructure.persistence.EmployeeRepository;
 import com.g7auto.infrastructure.persistence.ServiceHistoryRepository;
 import com.g7auto.infrastructure.persistence.query.ServiceHistoryQueryRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -78,6 +78,7 @@ public class ServiceHistoryServiceImpl implements ServiceHistoryService {
   public void exportServiceHistory(HttpServletResponse response) {
     List<ServiceHistoryResponse> data = serviceHistoryRepository.findAll().stream()
         .map(serviceHistoryMapper::toResponse).toList();
-    ExcelExportHelper.export(response, data, ServiceHistoryResponse.class, "DANH SÁCH LỊCH SỬ CHĂM SÓC", "danh-sach-lich-su-cham-soc");
+    ExcelExportHelper.export(response, data, ServiceHistoryResponse.class,
+        "DANH SÁCH LỊCH SỬ CHĂM SÓC", "danh-sach-lich-su-cham-soc");
   }
 }

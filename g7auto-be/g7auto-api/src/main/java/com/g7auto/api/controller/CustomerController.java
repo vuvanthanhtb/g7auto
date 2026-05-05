@@ -43,7 +43,8 @@ public class CustomerController {
 
   @PostMapping
   public ResponseEntity<ApiResponse<CustomerResponse>> create(@RequestBody CustomerRequest req) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok(customerService.create(req)));
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(ApiResponse.ok(customerService.create(req)));
   }
 
   @PutMapping("/{id}")

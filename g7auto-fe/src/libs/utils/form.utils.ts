@@ -1,4 +1,6 @@
-export const normalizeFormValues = (v: Record<string, unknown>): Record<string, unknown> =>
+export const normalizeFormValues = (
+  v: Record<string, unknown>,
+): Record<string, unknown> =>
   Object.fromEntries(
     Object.entries(v).map(([k, val]) => [
       k,

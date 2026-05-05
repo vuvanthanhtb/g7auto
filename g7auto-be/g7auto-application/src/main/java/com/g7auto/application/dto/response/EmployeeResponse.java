@@ -16,7 +16,7 @@ public record EmployeeResponse(
     @ExcelColumn(header = "Trạng thái", order = 8) String employeeStatus,
     Long showroomId,
     @ExcelColumn(header = "Chi nhánh", order = 9) String showroomName,
-    Long accountId,
+    String username,
     String createdAt,
     String updatedAt
 ) {

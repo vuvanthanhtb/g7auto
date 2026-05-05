@@ -29,7 +29,9 @@ const ImportButton = ({ onImport, onDownloadTemplate, onSuccess }: Props) => {
     try {
       const result = await onImport(file);
       if (result) {
-        toastSuccess(`Import thành công ${result.success}/${result.total} bản ghi`);
+        toastSuccess(
+          `Import thành công ${result.success}/${result.total} bản ghi`,
+        );
         if (result.failed > 0) {
           result.errors.slice(0, 5).forEach((err) => toastError(err));
         }
@@ -65,7 +67,9 @@ const ImportButton = ({ onImport, onDownloadTemplate, onSuccess }: Props) => {
         variant="outlined"
         size="small"
         color="success"
-        startIcon={loading ? <CircularProgress size={14} /> : <UploadFileIcon />}
+        startIcon={
+          loading ? <CircularProgress size={14} /> : <UploadFileIcon />
+        }
         onClick={() => inputRef.current?.click()}
         disabled={loading}
       >

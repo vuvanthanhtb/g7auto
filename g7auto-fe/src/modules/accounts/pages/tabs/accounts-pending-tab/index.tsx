@@ -22,7 +22,7 @@ import {
 } from "./pending-approvals-tab.config";
 import type { AccountPendingSearchForm } from "./pending-approvals-tab.type";
 
-const PendingApprovalsTab = () => {
+const AccountsPendingTab = () => {
   const dispatch = useAppDispatch();
   const confirm = useConfirm();
   const [searchParams, setSearchParams] =
@@ -89,4 +89,4 @@ const PendingApprovalsTab = () => {
   );
 };
 
-export default PendingApprovalsTab;
+export default AccountsPendingTab;

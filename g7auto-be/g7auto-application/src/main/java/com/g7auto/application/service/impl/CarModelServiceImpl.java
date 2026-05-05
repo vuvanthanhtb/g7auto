@@ -48,7 +48,8 @@ public class CarModelServiceImpl implements CarModelService {
   public PageResponse<CarModelResponse> search(CarModelSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
     return PageResponse.of(
-        carModelQueryRepository.search(request.getName(), request.getManufacturer(), request.getFromDate(), request.getToDate(), pageable),
+        carModelQueryRepository.search(request.getName(), request.getManufacturer(),
+            request.getFromDate(), request.getToDate(), pageable),
         carModelMapper::toResponse,
         request.getFromDate(), request.getToDate());
   }
@@ -91,7 +92,9 @@ public class CarModelServiceImpl implements CarModelService {
       Sheet sheet = wb.getSheetAt(0);
       for (int i = 1; i <= sheet.getLastRowNum(); i++) {
         Row row = sheet.getRow(i);
-        if (row == null) continue;
+        if (row == null) {
+          continue;
+        }
         total++;
         try {
           CarModelRequest req = new CarModelRequest();
@@ -128,7 +131,8 @@ public class CarModelServiceImpl implements CarModelService {
     try (SXSSFWorkbook workbook = ExcelSupport.createWorkbook()) {
       Sheet sheet = workbook.createSheet("CarModels");
       Row header = sheet.createRow(0);
-      String[] cols = {"name", "manufacturer", "series", "year", "color", "carType", "engine", "transmission", "listedPrice"};
+      String[] cols = {"name", "manufacturer", "series", "year", "color", "carType", "engine",
+          "transmission", "listedPrice"};
       for (int i = 0; i < cols.length; i++) {
         header.createCell(i).setCellValue(cols[i]);
       }
@@ -143,7 +147,8 @@ public class CarModelServiceImpl implements CarModelService {
   public void exportCarModels(HttpServletResponse response) {
     List<CarModelResponse> data = carModelRepository.findAll().stream()
         .map(carModelMapper::toResponse).toList();
-    ExcelExportHelper.export(response, data, CarModelResponse.class, "DANH SÁCH DÒNG XE", "danh-sach-dong-xe");
+    ExcelExportHelper.export(response, data, CarModelResponse.class, "DANH SÁCH DÒNG XE",
+        "danh-sach-dong-xe");
   }
 
   private CarModel get(Long id) {
@@ -152,7 +157,9 @@ public class CarModelServiceImpl implements CarModelService {
 
   private String getCellString(Row row, int col) {
     Cell cell = row.getCell(col);
-    if (cell == null) return "";
+    if (cell == null) {
+      return "";
+    }
     return switch (cell.getCellType()) {
       case STRING -> cell.getStringCellValue().trim();
       case NUMERIC -> String.valueOf((long) cell.getNumericCellValue());

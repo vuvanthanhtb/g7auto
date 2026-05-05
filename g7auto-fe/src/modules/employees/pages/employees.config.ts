@@ -1,35 +1,43 @@
-import {
-  BTN_SUBMIT,
-  BTN_EDIT,
-  BTN_SEARCH,
-  BTN_REFRESH,
-  BTN_EXPORT,
-} from "@/libs/constants/button.constant";
-import { BUTTON, TEXT, SELECT } from "@/libs/constants/form.constant";
-import { TBL_BUTTON, TBL_STRING } from "@/libs/constants/table.constant";
+import { BTN_SUBMIT } from "@/libs/constants/button.constant";
+import { BUTTON, TEXT, SELECT, DATE } from "@/libs/constants/form.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
-import type { BaseTableColumn } from "@/libs/types/table.type";
-
-export const employeeColumns: BaseTableColumn[] = [
-  { name: "fullName", label: "Họ tên", type: TBL_STRING },
-  { name: "position", label: "Chức vụ", type: TBL_STRING },
-  { name: "showroomName", label: "Showroom", type: TBL_STRING },
-  { name: "phone", label: "Điện thoại", type: TBL_STRING },
-  { name: "employeeStatus", label: "Trạng thái", type: TBL_STRING },
-  {
-    name: "action",
-    label: "Thao tác",
-    type: TBL_BUTTON,
-    btnGroup: [{ title: "Sửa", type: "button", action: BTN_EDIT }],
-  },
-];
 
 export const employeeFormConfig: IBaseFormConfig = {
   fields: [
     { type: TEXT, name: "fullName", label: "Họ tên", required: true, size: 12 },
-    { type: TEXT, name: "position", label: "Chức vụ", size: 6 },
-    { type: TEXT, name: "phone", label: "Điện thoại", size: 6 },
-    { type: TEXT, name: "email", label: "Email", size: 12 },
+    {
+      type: TEXT,
+      name: "phone",
+      label: "Số điện thoại",
+      required: true,
+      size: 6,
+    },
+    { type: TEXT, name: "email", label: "Email", size: 6 },
+    {
+      type: TEXT,
+      name: "nationalId",
+      label: "CCCD/CMND",
+      required: true,
+      size: 6,
+    },
+    { type: DATE, name: "birthDate", label: "Ngày sinh", size: 6 },
+    {
+      type: SELECT,
+      name: "gender",
+      label: "Giới tính",
+      option: "genderOptions",
+      size: 6,
+    },
+    { type: DATE, name: "joinDate", label: "Ngày vào làm", size: 6 },
+    { type: TEXT, name: "address", label: "Địa chỉ", size: 12 },
+    {
+      type: SELECT,
+      name: "showroom",
+      label: "Showroom",
+      required: true,
+      option: "showroomOptions",
+      size: 12,
+    },
     {
       type: BUTTON,
       size: 12,
@@ -40,45 +48,12 @@ export const employeeFormConfig: IBaseFormConfig = {
 
 export const employeeInitialValues = {
   fullName: "",
-  position: "",
   phone: "",
   email: "",
-};
-
-export const employeeSearchConfig: IBaseFormConfig = {
-  fields: [
-    { type: TEXT, name: "fullName", label: "Họ và tên", size: 3 },
-    {
-      type: SELECT,
-      name: "employeeStatus",
-      label: "Trạng thái",
-      option: "employeeStatusOptions",
-      size: 3,
-    },
-    {
-      type: BUTTON,
-      size: 6,
-      style: { justifyContent: "flex-start" },
-      childs: [
-        {
-          title: "Làm mới",
-          type: "button",
-          action: BTN_REFRESH,
-          style: { background: "#757575", color: "#fff" },
-        },
-        {
-          title: "Tìm kiếm",
-          type: "button",
-          action: BTN_SEARCH,
-          style: { background: "#1976d2", color: "#fff" },
-        },
-        {
-          title: "Xuất Excel",
-          type: "button",
-          action: BTN_EXPORT,
-          style: { background: "#2e7d32", color: "#fff" },
-        },
-      ],
-    },
-  ],
+  nationalId: "",
+  address: "",
+  birthDate: "",
+  gender: "",
+  joinDate: "",
+  showroom: null,
 };

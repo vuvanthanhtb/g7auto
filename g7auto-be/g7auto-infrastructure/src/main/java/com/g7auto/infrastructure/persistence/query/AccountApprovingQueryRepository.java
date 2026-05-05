@@ -1,7 +1,7 @@
 package com.g7auto.infrastructure.persistence.query;
 
 import com.g7auto.core.entity.AccountApprovingAction;
-import com.g7auto.core.entity.AccountApprovingStatus;
+import com.g7auto.core.entity.ApprovingStatus;
 import com.g7auto.core.entity.Role;
 import com.g7auto.core.sql.DynamicSqlBuilder;
 import com.g7auto.core.sql.PagingJdbcExecutor;
@@ -46,7 +46,7 @@ public class AccountApprovingQueryRepository {
     a.setStatus(rs.getString("status"));
     String statusApproving = rs.getString("status_approving");
     if (statusApproving != null) {
-      a.setStatusApproving(AccountApprovingStatus.valueOf(statusApproving));
+      a.setStatusApproving(ApprovingStatus.valueOf(statusApproving));
     }
     String action = rs.getString("action");
     if (action != null) {
@@ -64,13 +64,14 @@ public class AccountApprovingQueryRepository {
   private final PagingJdbcExecutor pagingJdbcExecutor;
 
   public Page<AccountApproving> search(String username, String fullName,
-      List<String> statusApproving, String action, String fromDate, String toDate, Pageable pageable) {
+      List<String> statusApproving, String action, String fromDate, String toDate,
+      Pageable pageable) {
 
     DynamicSqlBuilder builder = new DynamicSqlBuilder(BASE_SQL);
     builder
         .andLike("a.username", "username", username, true, true)
         .andLike("a.full_name", "fullName", fullName, true, true)
-        .andEqual("a.action", "action", action)
+        .andEqual("a.employee_approval_action", "action", action)
         .andGreaterOrEqual("a.updated_at", "fromDate", DateParserUtils.parseFrom(fromDate))
         .andSmaller("a.updated_at", "toDate", DateParserUtils.parseTo(toDate));
     if (!statusApproving.isEmpty()) {

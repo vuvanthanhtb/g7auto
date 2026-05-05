@@ -6,11 +6,16 @@ import {
   BTN_EXPORT,
 } from "@/libs/constants/button.constant";
 import { BUTTON, TEXT } from "@/libs/constants/form.constant";
-import { TBL_STRING, TBL_BUTTON } from "@/libs/constants/table.constant";
+import {
+  TBL_STRING,
+  TBL_BUTTON,
+  NUMERICAL_ORDER,
+} from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
 
 export const customerColumns: BaseTableColumn[] = [
+  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
   { name: "fullName", label: "Họ tên", type: TBL_STRING },
   { name: "phone", label: "Điện thoại", type: TBL_STRING },
   { name: "email", label: "Email", type: TBL_STRING },

@@ -12,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import lombok.AccessLevel;
@@ -42,7 +41,7 @@ public class Employee extends BaseEntity {
   @Column(length = 20, comment = "Số điện thoại cá nhân")
   String phone;
 
-  @Column(length = 150, comment = "Email cá nhân")
+  @Column(unique = true, length = 150, comment = "Email cá nhân")
   String email;
 
   @Column(length = 500, comment = "Địa chỉ thường trú")
@@ -68,7 +67,6 @@ public class Employee extends BaseEntity {
   @JoinColumn(name = "showroom_id", comment = "Showroom nơi nhân viên làm việc (FK)")
   Showroom showroom;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "account_id", comment = "Tài khoản hệ thống tương ứng (FK)")
-  Account account;
+  @Column(name = "username", length = 100, comment = "Tên đăng nhập đề xuất")
+  String username;
 }

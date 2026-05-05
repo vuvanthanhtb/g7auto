@@ -3,7 +3,15 @@ import { Spinner } from "react-bootstrap";
 import type { ButtonProps } from "@/libs/types/button.type";
 
 const ButtonComponent = (props: ButtonProps) => {
-  const { title, type, style = {}, className = "", onClick, disabled = false, isLoading = false } = props;
+  const {
+    title,
+    type,
+    style = {},
+    className = "",
+    onClick,
+    disabled = false,
+    isLoading = false,
+  } = props;
   return (
     <button
       type={type}
@@ -14,10 +22,19 @@ const ButtonComponent = (props: ButtonProps) => {
     >
       {isLoading ? (
         <>
-          <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
+          <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+            className="me-2"
+          />
           {title}
         </>
-      ) : title}
+      ) : (
+        title
+      )}
     </button>
   );
 };

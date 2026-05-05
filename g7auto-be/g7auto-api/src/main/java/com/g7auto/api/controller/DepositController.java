@@ -41,7 +41,8 @@ public class DepositController {
 
   @PostMapping
   public ResponseEntity<ApiResponse<DepositResponse>> create(@RequestBody DepositRequest req) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok(depositService.create(req)));
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(ApiResponse.ok(depositService.create(req)));
   }
 
   @PostMapping("/{id}/refund")

@@ -4,7 +4,7 @@ import com.g7auto.core.constant.codes.ValidationErrorCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -43,9 +43,9 @@ public class EmployeeRequest {
   LocalDate joinDate;
 
   @Schema(description = "ID Showroom nơi nhân viên làm việc")
-  @NotNull(message = ValidationErrorCode.G7_AUTO_00800)
   Long showroomId;
 
-  @Schema(description = "ID Tài khoản hệ thống tương ứng")
-  Long accountId;
+  @Schema(description = "Tên đăng nhập hệ thống tương ứng")
+  @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Tên đăng nhập chỉ bao gồm các ký tự chữ và số")
+  String username;
 }

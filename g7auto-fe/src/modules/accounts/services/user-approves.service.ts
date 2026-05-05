@@ -1,27 +1,24 @@
 import http from "@/libs/interceptor";
 import { USER_APPROVES_ENDPOINT } from "./user-approves.endpoint";
-import type { AxiosResponse } from "axios";
-import type { ResponseBase } from "@/libs/interceptor/types";
 import type {
   AccountApprovedPage,
   AccountApprovedSearchQuery,
-} from "../pages/tabs/approved-users-tab/approved-users-tab.type";
+} from "../pages/tabs/accounts-approved-tab/approved-users-tab.type";
 import type {
+  AccountPendingPage,
   AccountPendingSearchQuery,
-  AccountPendingTable,
-} from "../pages/tabs/pending-approvals-tab/pending-approvals-tab.type";
-
-type AR<T> = Promise<AxiosResponse<ResponseBase<T>>>;
+} from "../pages/tabs/accounts-pending-tab/pending-approvals-tab.type";
+import type { IResponse } from "@/libs/interceptor/types";
 
 interface IUserApprovesRepository {
   getPendingApprovals(
     params?: AccountPendingSearchQuery,
-  ): AR<AccountPendingTable>;
+  ): IResponse<AccountPendingPage>;
   getApprovedUsers(
     params?: AccountApprovedSearchQuery,
-  ): AR<AccountApprovedPage>;
-  changeStatus(username: string, action: string): AR<string>;
-  requestApproval(username: string, action: string): AR<string>;
+  ): IResponse<AccountApprovedPage>;
+  changeStatus(username: string, action: string): IResponse<string>;
+  requestApproval(username: string, action: string): IResponse<string>;
 }
 
 class UserApprovesRepository implements IUserApprovesRepository {
@@ -35,7 +32,7 @@ class UserApprovesRepository implements IUserApprovesRepository {
   }
 
   getPendingApprovals(params?: AccountPendingSearchQuery) {
-    return http.call<AccountPendingTable>({
+    return http.call<AccountPendingPage>({
       url: USER_APPROVES_ENDPOINT.SEARCH_PENDING,
       method: "GET",
       params,

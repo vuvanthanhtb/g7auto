@@ -34,6 +34,38 @@ export const accountColumns: BaseTableColumn[] = [
   { name: "role", label: "Vai trò", type: TBL_STRING },
   { name: "statusDisplay", label: "Trạng thái", type: TBL_STRING },
   {
+    name: "createdAt",
+    label: "Ngày tạo",
+    type: TBL_STRING,
+    styleCell: {
+      textAlign: "center",
+    },
+  },
+  {
+    name: "createdBy",
+    label: "Người tạo",
+    type: TBL_STRING,
+    styleCell: {
+      minWidth: 100,
+    },
+  },
+  {
+    name: "updatedAt",
+    label: "Ngày cập nhật",
+    type: TBL_STRING,
+    styleCell: {
+      textAlign: "center",
+    },
+  },
+  {
+    name: "updatedBy",
+    label: "Người cập nhật",
+    type: TBL_STRING,
+    styleCell: {
+      minWidth: 120,
+    },
+  },
+  {
     name: "action",
     label: "Thao tác",
     type: TBL_BUTTON,
@@ -43,24 +75,28 @@ export const accountColumns: BaseTableColumn[] = [
         type: "button",
         action: BTN_ACTIVE,
         refShow: ["status"],
+        style: { background: "#2e7d32", color: "#fff" },
       },
       {
         title: "Ngừng hoạt động",
         type: "button",
         action: BTN_INACTIVE,
         refShow: ["status"],
+        style: { background: "#ed6c02", color: "#fff" },
       },
       {
         title: "Khóa",
         type: "button",
         action: BTN_LOCK,
         refShow: ["status"],
+        style: { background: "#d32f2f", color: "#fff" },
       },
       {
         title: "Mở khóa",
         type: "button",
         action: BTN_UNLOCK,
         refShow: ["status"],
+        style: { background: "#0288d1", color: "#fff" },
       },
     ],
   },
