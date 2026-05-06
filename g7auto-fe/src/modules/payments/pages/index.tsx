@@ -39,7 +39,7 @@ const PaymentsPage = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    document.title = t("PAGE_HEADER_PAYMENTS") + " — G7Auto";
+    document.title = t("PAYMENTS_PAGE_HEADER") + " — G7Auto";
     dispatch(getPayments({ page, size: 10 }));
   }, [dispatch, page]);
 
@@ -79,10 +79,10 @@ const PaymentsPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("PAGE_HEADER_PAYMENTS")}
+          {t("PAYMENTS_PAGE_HEADER")}
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-          {t("BTN_CREATE_PAYMENT")}
+          {t("PAYMENTS_BTN_CREATE")}
         </Button>
       </Box>
       <BaseFormComponent formConfig={getPaymentSearchConfig()} handlers={searchHandlers} />
@@ -95,7 +95,7 @@ const PaymentsPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("DRAWER_DETAIL_PAYMENT") : t("BTN_CREATE_PAYMENT")}
+        title={editId ? t("PAYMENTS_DRAWER_DETAIL") : t("PAYMENTS_BTN_CREATE")}
         onClose={() => { setDrawerOpen(false); dispatch(clearSelectedPayments()); }}
       >
         <BaseFormComponent

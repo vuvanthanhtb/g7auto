@@ -94,7 +94,7 @@ public class PagingJdbcExecutor {
   }
 
   private long count(String baseSql, Map<String, Object> params) {
-    String countSql = "SELECT COUNT(*) FROM (" + baseSql + ") t";
+    String countSql = String.format("SELECT COUNT(*) FROM (%s) t", baseSql);
     Long total = jdbc.queryForObject(countSql, params, Long.class);
     return total != null ? total : 0L;
   }

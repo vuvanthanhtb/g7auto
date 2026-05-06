@@ -5,6 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import { t } from "@/libs/i18n";
 
 interface Props {
   open: boolean;
@@ -29,7 +30,7 @@ const BaseModalComponent: React.FC<Props> = ({
         <>
           <DialogTitle>
             <Typography fontWeight={600} fontSize={16}>
-              {title}
+              {t(title)}
             </Typography>
           </DialogTitle>
           <Divider />
@@ -47,7 +48,7 @@ const BaseModalComponent: React.FC<Props> = ({
               onClick={onClose}
               sx={{ textTransform: "none" }}
             >
-              Đóng
+              {t("COMMON_BTN_CLOSE")}
             </Button>
           </DialogActions>
         </>

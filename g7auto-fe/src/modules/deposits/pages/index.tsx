@@ -21,10 +21,10 @@ const DepositsPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("PAGE_HEADER_DEPOSITS")}
+          {t("DEPOSITS_PAGE_HEADER")}
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-          {t("BTN_CREATE_DEPOSIT")}
+          {t("DEPOSITS_BTN_CREATE")}
         </Button>
       </Box>
       <BaseFormComponent formConfig={getDepositSearchConfig()} options={{ depositStatusOptions }} handlers={searchHandlers} />
@@ -37,7 +37,7 @@ const DepositsPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("DRAWER_DETAIL_DEPOSIT") : t("BTN_CREATE_DEPOSIT")}
+        title={editId ? t("DEPOSITS_DRAWER_DETAIL") : t("DEPOSITS_BTN_CREATE")}
         onClose={closeDrawer}
       >
         <BaseFormComponent

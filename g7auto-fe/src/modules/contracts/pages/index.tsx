@@ -21,10 +21,10 @@ const ContractsPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("PAGE_HEADER_CONTRACTS")}
+          {t("CONTRACTS_PAGE_HEADER")}
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-          {t("BTN_CREATE_CONTRACT")}
+          {t("CONTRACTS_BTN_CREATE")}
         </Button>
       </Box>
       <BaseFormComponent formConfig={getContractSearchConfig()} options={{ contractStatusOptions }} handlers={searchHandlers} />
@@ -37,7 +37,7 @@ const ContractsPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("DRAWER_DETAIL_CONTRACT") : t("BTN_CREATE_CONTRACT")}
+        title={editId ? t("CONTRACTS_DRAWER_DETAIL") : t("CONTRACTS_BTN_CREATE")}
         onClose={closeDrawer}
       >
         <BaseFormComponent

@@ -11,6 +11,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { t } from "@/libs/i18n";
 
 interface ConfirmOptions {
   title?: string;
@@ -77,11 +78,11 @@ export const ConfirmDialogProvider = ({
         slotProps={{ backdrop: { sx: { backdropFilter: "blur(2px)" } } }}
       >
         <DialogTitle sx={{ fontWeight: 600, fontSize: 16 }}>
-          {state.title}
+          {t(state.title ?? "")}
         </DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ color: "#3c4043", fontSize: 14 }}>
-            {state.message}
+            {t(state.message ?? "")}
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2, gap: 1 }}>
@@ -91,7 +92,7 @@ export const ConfirmDialogProvider = ({
             onClick={() => handleClose(false)}
             sx={{ textTransform: "none", minWidth: 72 }}
           >
-            {state.cancelText}
+            {t(state.cancelText ?? "")}
           </Button>
           <Button
             variant="contained"
@@ -101,7 +102,7 @@ export const ConfirmDialogProvider = ({
             sx={{ textTransform: "none", minWidth: 72 }}
             autoFocus
           >
-            {state.confirmText}
+            {t(state.confirmText ?? "")}
           </Button>
         </DialogActions>
       </Dialog>

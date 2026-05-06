@@ -37,7 +37,7 @@ const CarModelsPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("PAGE_HEADER_CAR_MODELS")}
+          {t("CAR_MODELS_PAGE_HEADER")}
         </Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
           <ImportButton
@@ -48,7 +48,7 @@ const CarModelsPage = () => {
             onSuccess={() => dispatch(getCarModels({ page: 1, size: 10 }))}
           />
           <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-            {t("BTN_ADD_NEW")}
+            {t("COMMON_BTN_ADD_NEW")}
           </Button>
         </Box>
       </Box>
@@ -66,7 +66,7 @@ const CarModelsPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("DRAWER_EDIT_CAR_MODEL") : t("DRAWER_ADD_CAR_MODEL")}
+        title={editId ? t("CAR_MODELS_DRAWER_EDIT") : t("CAR_MODELS_DRAWER_ADD")}
         onClose={closeDrawer}
       >
         <BaseFormComponent

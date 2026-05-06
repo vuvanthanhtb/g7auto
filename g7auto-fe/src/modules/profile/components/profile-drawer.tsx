@@ -16,45 +16,45 @@ import { t } from "@/libs/i18n";
 
 const getProfileFormConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "username", label: t("FIELD_LOGIN_NAME"), size: 12, disabled: true },
-    { type: TEXT, name: "fullName", label: t("FIELD_FULL_NAME_PROFILE"), required: true, size: 12 },
-    { type: TEXT, name: "email", label: t("LABEL_EMAIL"), required: true, size: 12 },
+    { type: TEXT, name: "username", label: "PROFILE_FIELD_LOGIN_NAME", size: 12, disabled: true },
+    { type: TEXT, name: "fullName", label: "PROFILE_FIELD_FULL_NAME", required: true, size: 12 },
+    { type: TEXT, name: "email", label: "COMMON_LABEL_EMAIL", required: true, size: 12 },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: t("BTN_SAVE_INFO"), type: "submit", action: BTN_SUBMIT }],
+      childs: [{ title: "PROFILE_BTN_SAVE_INFO", type: "submit", action: BTN_SUBMIT }],
     },
   ],
 });
 
 const getProfileValidation = () => Yup.object({
-  fullName: Yup.string().required(t("VALIDATION_FULL_NAME_REQUIRED")),
+  fullName: Yup.string().required(t("PROFILE_VALIDATION_FULL_NAME_REQUIRED")),
   email: Yup.string()
-    .email(t("VALIDATION_EMAIL_INVALID"))
-    .required(t("VALIDATION_EMAIL_REQUIRED")),
+    .email(t("PROFILE_VALIDATION_EMAIL_INVALID"))
+    .required(t("PROFILE_VALIDATION_EMAIL_REQUIRED")),
 });
 
 const getPasswordFormConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "currentPassword", label: t("FIELD_CURRENT_PASSWORD"), required: true, size: 12, isPassword: true },
-    { type: TEXT, name: "newPassword", label: t("FIELD_NEW_PASSWORD"), required: true, size: 12, isPassword: true },
-    { type: TEXT, name: "confirmPassword", label: t("FIELD_CONFIRM_PASSWORD"), required: true, size: 12, isPassword: true },
+    { type: TEXT, name: "currentPassword", label: "PROFILE_FIELD_CURRENT_PASSWORD", required: true, size: 12, isPassword: true },
+    { type: TEXT, name: "newPassword", label: "PROFILE_FIELD_NEW_PASSWORD", required: true, size: 12, isPassword: true },
+    { type: TEXT, name: "confirmPassword", label: "PROFILE_FIELD_CONFIRM_PASSWORD", required: true, size: 12, isPassword: true },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: t("BTN_CHANGE_PASSWORD"), type: "submit", action: BTN_SUBMIT }],
+      childs: [{ title: "PROFILE_BTN_CHANGE_PASSWORD", type: "submit", action: BTN_SUBMIT }],
     },
   ],
 });
 
 const getPasswordValidation = () => Yup.object({
-  currentPassword: Yup.string().required(t("VALIDATION_CURRENT_PASSWORD_REQUIRED")),
+  currentPassword: Yup.string().required(t("PROFILE_VALIDATION_CURRENT_PASSWORD_REQUIRED")),
   newPassword: Yup.string()
-    .min(6, t("VALIDATION_NEW_PASSWORD_MIN"))
-    .required(t("VALIDATION_NEW_PASSWORD_REQUIRED")),
+    .min(6, t("PROFILE_VALIDATION_NEW_PASSWORD_MIN"))
+    .required(t("PROFILE_VALIDATION_NEW_PASSWORD_REQUIRED")),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("newPassword")], t("VALIDATION_CONFIRM_PASSWORD_MATCH"))
-    .required(t("VALIDATION_CONFIRM_PASSWORD_REQUIRED")),
+    .oneOf([Yup.ref("newPassword")], t("PROFILE_VALIDATION_CONFIRM_PASSWORD_MATCH"))
+    .required(t("PROFILE_VALIDATION_CONFIRM_PASSWORD_REQUIRED")),
 });
 
 interface Props {

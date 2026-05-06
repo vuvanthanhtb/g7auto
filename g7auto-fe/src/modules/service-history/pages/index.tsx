@@ -39,7 +39,7 @@ const ServiceHistoryPage = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    document.title = t("PAGE_HEADER_SERVICE_HISTORY") + " — G7Auto";
+    document.title = t("SERVICE_HISTORY_PAGE_HEADER") + " — G7Auto";
     dispatch(getServiceHistory({ page, size: 10 }));
   }, [dispatch, page]);
 
@@ -79,10 +79,10 @@ const ServiceHistoryPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("PAGE_HEADER_SERVICE_HISTORY")}
+          {t("SERVICE_HISTORY_PAGE_HEADER")}
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-          {t("BTN_ADD_SERVICE")}
+          {t("SERVICE_HISTORY_BTN_ADD")}
         </Button>
       </Box>
       <BaseFormComponent formConfig={getServiceHistorySearchConfig()} handlers={searchHandlers} />
@@ -95,7 +95,7 @@ const ServiceHistoryPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("DRAWER_EDIT_SERVICE") : t("BTN_ADD_SERVICE")}
+        title={editId ? t("SERVICE_HISTORY_DRAWER_EDIT") : t("SERVICE_HISTORY_BTN_ADD")}
         onClose={() => { setDrawerOpen(false); dispatch(clearSelectedServiceHistory()); }}
       >
         <BaseFormComponent

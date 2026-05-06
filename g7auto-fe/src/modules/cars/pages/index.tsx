@@ -21,10 +21,10 @@ const CarsPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("PAGE_HEADER_CARS")}
+          {t("CARS_PAGE_HEADER")}
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-          {t("BTN_ADD_CAR")}
+          {t("CARS_BTN_ADD")}
         </Button>
       </Box>
       <BaseFormComponent formConfig={getCarSearchConfig()} options={{ carStatusOptions }} handlers={searchHandlers} />
@@ -37,7 +37,7 @@ const CarsPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("DRAWER_EDIT_CAR") : t("DRAWER_ADD_CAR")}
+        title={editId ? t("CARS_DRAWER_EDIT") : t("CARS_DRAWER_ADD")}
         onClose={closeDrawer}
       >
         <BaseFormComponent

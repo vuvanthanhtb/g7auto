@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { Spinner } from "react-bootstrap";
 import type { ButtonProps } from "@/libs/types/button.type";
+import { t } from "@/libs/i18n";
 
 const ButtonComponent = (props: ButtonProps) => {
   const {
@@ -30,10 +31,10 @@ const ButtonComponent = (props: ButtonProps) => {
             aria-hidden="true"
             className="me-2"
           />
-          {title}
+          {t(title)}
         </>
       ) : (
-        title
+        t(title)
       )}
     </button>
   );

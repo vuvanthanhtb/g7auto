@@ -15,27 +15,26 @@ import {
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
-import { t } from "@/libs/i18n";
 
 export const getCarModelColumns = (): BaseTableColumn[] => [
-  { name: "NUMERICAL_ORDER", label: "LABEL_STT", type: NUMERICAL_ORDER },
-  { name: "name", label: "LABEL_CAR_MODEL_NAME", type: TBL_STRING },
-  { name: "manufacturer", label: "LABEL_MANUFACTURER", type: TBL_STRING },
+  { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
+  { name: "name", label: "COMMON_LABEL_CAR_MODEL_NAME", type: TBL_STRING },
+  { name: "manufacturer", label: "COMMON_LABEL_MANUFACTURER", type: TBL_STRING },
   {
     name: "year",
-    label: "LABEL_YEAR",
+    label: "COMMON_LABEL_YEAR",
     type: TBL_STRING,
     styleCell: { textAlign: "center" },
   },
-  { name: "listedPrice", label: "LABEL_LISTED_PRICE", type: TBL_NUMBER },
+  { name: "listedPrice", label: "COMMON_LABEL_LISTED_PRICE", type: TBL_NUMBER },
   {
     name: "action",
-    label: "LABEL_ACTION",
+    label: "COMMON_LABEL_ACTION",
     type: TBL_BUTTON,
     styleCell: { justifyContent: "center" },
     btnGroup: [
-      { title: "BTN_EDIT_ACTION", type: "button", action: BTN_EDIT },
-      { title: "BTN_DELETE_ACTION", type: "button", action: BTN_DELETE },
+      { title: "COMMON_BTN_EDIT", type: "button", action: BTN_EDIT },
+      { title: "COMMON_BTN_DELETE", type: "button", action: BTN_DELETE },
     ],
   },
 ];
@@ -45,34 +44,34 @@ export const getCarModelFormConfig = (): IBaseFormConfig => ({
     {
       type: TEXT,
       name: "name",
-      label: "FIELD_CAR_MODEL_NAME",
+      label: "CAR_MODELS_FIELD_NAME",
       required: true,
       size: 12,
     },
     {
       type: TEXT,
       name: "manufacturer",
-      label: "FIELD_MANUFACTURER",
+      label: "CAR_MODELS_FIELD_MANUFACTURER",
       required: true,
       size: 6,
     },
-    { type: NUMBER_INPUT, name: "year", label: "FIELD_YEAR", size: 6 },
+    { type: NUMBER_INPUT, name: "year", label: "CAR_MODELS_FIELD_YEAR", size: 6 },
     {
       type: NUMBER_INPUT,
       name: "listedPrice",
-      label: "FIELD_LISTED_PRICE",
+      label: "CAR_MODELS_FIELD_LISTED_PRICE",
       size: 12,
     },
     {
       type: TEXT,
       name: "description",
-      label: t("FIELD_DESCRIPTION"),
+      label: "CAR_MODELS_FIELD_DESCRIPTION",
       size: 12,
     },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "BTN_SAVE", type: "submit", action: BTN_SUBMIT }],
+      childs: [{ title: "COMMON_BTN_SAVE", type: "submit", action: BTN_SUBMIT }],
     },
   ],
 });
@@ -87,11 +86,11 @@ export const carModelInitialValues = {
 
 export const getCarModelSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "name", label: "FIELD_CAR_MODEL_NAME", size: 3 },
+    { type: TEXT, name: "name", label: "CAR_MODELS_FIELD_NAME", size: 3 },
     {
       type: TEXT,
       name: "manufacturer",
-      label: "FIELD_MANUFACTURER_SEARCH",
+      label: "CAR_MODELS_FIELD_MANUFACTURER_SEARCH",
       size: 3,
     },
     {
@@ -99,19 +98,19 @@ export const getCarModelSearchConfig = (): IBaseFormConfig => ({
       size: 6,
       childs: [
         {
-          title: "BTN_REFRESH_ACTION",
+          title: "COMMON_BTN_REFRESH",
           type: "button",
           action: BTN_REFRESH,
           style: { background: "#757575", color: "#fff" },
         },
         {
-          title: "BTN_SEARCH_ACTION",
+          title: "COMMON_BTN_SEARCH",
           type: "button",
           action: BTN_SEARCH,
           style: { background: "#1976d2", color: "#fff" },
         },
         {
-          title: "BTN_EXPORT_EXCEL",
+          title: "COMMON_BTN_EXPORT",
           type: "button",
           action: BTN_EXPORT,
           style: { background: "#2e7d32", color: "#fff" },

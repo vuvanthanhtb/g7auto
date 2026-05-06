@@ -25,7 +25,7 @@ const CustomersPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("PAGE_HEADER_CUSTOMERS")}
+          {t("CUSTOMERS_PAGE_HEADER")}
         </Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
           <ImportButton
@@ -34,7 +34,7 @@ const CustomersPage = () => {
             onSuccess={() => dispatch(getCustomers({ page, size: 10 }))}
           />
           <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-            {t("BTN_ADD_CUSTOMER")}
+            {t("CUSTOMERS_BTN_ADD")}
           </Button>
         </Box>
       </Box>
@@ -48,7 +48,7 @@ const CustomersPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("DRAWER_EDIT_CUSTOMER") : t("BTN_ADD_CUSTOMER")}
+        title={editId ? t("CUSTOMERS_DRAWER_EDIT") : t("CUSTOMERS_BTN_ADD")}
         onClose={closeDrawer}
       >
         <BaseFormComponent

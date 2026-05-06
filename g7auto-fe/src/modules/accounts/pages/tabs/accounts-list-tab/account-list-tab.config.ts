@@ -25,67 +25,66 @@ import {
   roleOptions as baseRoleOptions,
 } from "@/libs/constants/options.constant";
 import type { AccountSearchForm } from "./account-list-tab.type";
-import { t } from "@/libs/i18n";
 
 export const getAccountColumns = (): BaseTableColumn[] => [
-  { name: "NUMERICAL_ORDER", label: t("LABEL_STT"), type: NUMERICAL_ORDER },
-  { name: "username", label: t("LABEL_ACCOUNT"), type: TBL_STRING },
-  { name: "fullName", label: t("LABEL_FULL_NAME"), type: TBL_STRING },
-  { name: "email", label: t("LABEL_EMAIL"), type: TBL_STRING },
-  { name: "role", label: t("LABEL_ROLE"), type: TBL_STRING },
-  { name: "statusDisplay", label: t("LABEL_STATUS"), type: TBL_STRING },
+  { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
+  { name: "username", label: "COMMON_LABEL_ACCOUNT", type: TBL_STRING },
+  { name: "fullName", label: "COMMON_LABEL_FULL_NAME", type: TBL_STRING },
+  { name: "email", label: "COMMON_LABEL_EMAIL", type: TBL_STRING },
+  { name: "role", label: "COMMON_LABEL_ROLE", type: TBL_STRING },
+  { name: "statusDisplay", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
   {
     name: "createdAt",
-    label: t("LABEL_CREATED_AT"),
+    label: "COMMON_LABEL_CREATED_AT",
     type: TBL_STRING,
     styleCell: { textAlign: "center" },
   },
   {
     name: "createdBy",
-    label: t("LABEL_CREATED_BY"),
+    label: "COMMON_LABEL_CREATED_BY",
     type: TBL_STRING,
     styleCell: { minWidth: 100 },
   },
   {
     name: "updatedAt",
-    label: t("LABEL_UPDATED_AT"),
+    label: "COMMON_LABEL_UPDATED_AT",
     type: TBL_STRING,
     styleCell: { textAlign: "center" },
   },
   {
     name: "updatedBy",
-    label: t("LABEL_UPDATED_BY"),
+    label: "COMMON_LABEL_UPDATED_BY",
     type: TBL_STRING,
     styleCell: { minWidth: 120 },
   },
   {
     name: "action",
-    label: t("LABEL_ACTION"),
+    label: "COMMON_LABEL_ACTION",
     type: TBL_BUTTON,
     btnGroup: [
       {
-        title: t("BTN_ACTIVE_ACTION"),
+        title: "COMMON_BTN_ACTIVE",
         type: "button",
         action: BTN_ACTIVE,
         refShow: ["status"],
         style: { background: "#2e7d32", color: "#fff" },
       },
       {
-        title: t("BTN_INACTIVE_ACTION"),
+        title: "COMMON_BTN_INACTIVE",
         type: "button",
         action: BTN_INACTIVE,
         refShow: ["status"],
         style: { background: "#ed6c02", color: "#fff" },
       },
       {
-        title: t("BTN_LOCK_ACTION"),
+        title: "COMMON_BTN_LOCK",
         type: "button",
         action: BTN_LOCK,
         refShow: ["status"],
         style: { background: "#d32f2f", color: "#fff" },
       },
       {
-        title: t("BTN_UNLOCK_ACTION"),
+        title: "COMMON_BTN_UNLOCK",
         type: "button",
         action: BTN_UNLOCK,
         refShow: ["status"],
@@ -128,19 +127,19 @@ export const accountsInitialValues: AccountSearchForm = {
 
 export const getAccountSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "fullName", label: t("LABEL_FULL_NAME"), size: 3 },
-    { type: TEXT, name: "username", label: t("LABEL_ACCOUNT"), size: 3 },
+    { type: TEXT, name: "fullName", label: "COMMON_LABEL_FULL_NAME", size: 3 },
+    { type: TEXT, name: "username", label: "COMMON_LABEL_ACCOUNT", size: 3 },
     {
       type: SELECT,
       name: "status",
-      label: t("LABEL_STATUS"),
+      label: "COMMON_LABEL_STATUS",
       option: "accountStatusOptions",
       size: 3,
     },
     {
       type: SELECT,
       name: "role",
-      label: t("LABEL_ROLE"),
+      label: "COMMON_LABEL_ROLE",
       option: "roleOptions",
       size: 3,
     },
@@ -149,19 +148,19 @@ export const getAccountSearchConfig = (): IBaseFormConfig => ({
       size: 12,
       childs: [
         {
-          title: t("BTN_REFRESH_ACTION"),
+          title: "COMMON_BTN_REFRESH",
           type: "button",
           action: BTN_REFRESH,
           style: { background: "#757575", color: "#fff" },
         },
         {
-          title: t("BTN_SEARCH_ACTION"),
+          title: "COMMON_BTN_SEARCH",
           type: "button",
           action: BTN_SEARCH,
           style: { background: "#1976d2", color: "#fff" },
         },
         {
-          title: t("BTN_EXPORT_EXCEL"),
+          title: "COMMON_BTN_EXPORT",
           type: "button",
           action: BTN_EXPORT,
           style: { background: "#2e7d32", color: "#fff" },

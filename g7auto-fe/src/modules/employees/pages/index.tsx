@@ -47,14 +47,14 @@ const EmployeePage = () => {
         }}
       >
         <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("PAGE_HEADER_EMPLOYEES")}
+          {t("EMPLOYEES_PAGE_HEADER")}
         </Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={openCreate}
         >
-          {t("BTN_ADD_EMPLOYEE")}
+          {t("EMPLOYEES_BTN_ADD")}
         </Button>
       </Box>
       <Tabs
@@ -62,16 +62,16 @@ const EmployeePage = () => {
         onChange={(_, v) => setTab(v)}
         sx={{ mb: 2, borderBottom: 1, borderColor: "divider" }}
       >
-        <Tab label={t("TAB_EMPLOYEE_LIST")} />
-        <Tab label={t("TAB_PENDING_APPROVAL")} />
-        <Tab label={t("TAB_APPROVED")} />
+        <Tab label={t("EMPLOYEES_TAB_LIST")} />
+        <Tab label={t("COMMON_TAB_PENDING")} />
+        <Tab label={t("COMMON_TAB_APPROVED")} />
       </Tabs>
       {tab === 0 && <EmployeesListTab />}
       {tab === 1 && <EmployeesPendingTab />}
       {tab === 2 && <EmployeesApprovedTab />}
       <BaseDrawer
         open={drawerOpen}
-        title={t("BTN_ADD_EMPLOYEE")}
+        title={t("EMPLOYEES_BTN_ADD")}
         onClose={closeDrawer}
       >
         <BaseFormComponent

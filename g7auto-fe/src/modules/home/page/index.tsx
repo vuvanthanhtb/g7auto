@@ -21,7 +21,7 @@ const HomePage = () => {
   const totalContracts = useAppSelector((state) => state.contracts.contractTable.totalElements);
 
   useEffect(() => {
-    document.title = t("PAGE_TITLE_HOME");
+    document.title = t("HOME_PAGE_TITLE");
     dispatch(getCars({ page: 1, size: 1 }));
     dispatch(getCustomers({ page: 1, size: 1 }));
     dispatch(getContracts({ page: 1, size: 1 }));
@@ -29,18 +29,18 @@ const HomePage = () => {
 
   const greeting = () => {
     const h = new Date().getHours();
-    if (h < 12) return t("GREETING_MORNING");
-    if (h < 18) return t("GREETING_AFTERNOON");
-    return t("GREETING_EVENING");
+    if (h < 12) return t("HOME_GREETING_MORNING");
+    if (h < 18) return t("HOME_GREETING_AFTERNOON");
+    return t("HOME_GREETING_EVENING");
   };
 
   const displayName = user?.fullName ?? user?.username ?? t("HOME_DEFAULT_NAME");
 
   const stats = [
-    { label: t("STAT_TOTAL_CARS"), value: totalCars, icon: <DirectionsCarIcon sx={{ fontSize: 22 }} />, color: "#1a73e8", bg: "#e8f0fe", path: "/xe" },
-    { label: t("STAT_CUSTOMERS"), value: totalCustomers, icon: <PeopleIcon sx={{ fontSize: 22 }} />, color: "#2e7d32", bg: "#e8f5e9", path: "/khach-hang" },
-    { label: t("STAT_CONTRACTS"), value: totalContracts, icon: <DescriptionIcon sx={{ fontSize: 22 }} />, color: "#e65100", bg: "#fff3e0", path: "/hop-dong" },
-    { label: t("STAT_SHOWROOMS"), value: "", icon: <StoreIcon sx={{ fontSize: 22 }} />, color: "#6a1b9a", bg: "#f3e5f5", path: "/showroom" },
+    { label: t("HOME_STAT_TOTAL_CARS"), value: totalCars, icon: <DirectionsCarIcon sx={{ fontSize: 22 }} />, color: "#1a73e8", bg: "#e8f0fe", path: "/xe" },
+    { label: t("HOME_STAT_CUSTOMERS"), value: totalCustomers, icon: <PeopleIcon sx={{ fontSize: 22 }} />, color: "#2e7d32", bg: "#e8f5e9", path: "/khach-hang" },
+    { label: t("HOME_STAT_CONTRACTS"), value: totalContracts, icon: <DescriptionIcon sx={{ fontSize: 22 }} />, color: "#e65100", bg: "#fff3e0", path: "/hop-dong" },
+    { label: t("HOME_STAT_SHOWROOMS"), value: "", icon: <StoreIcon sx={{ fontSize: 22 }} />, color: "#6a1b9a", bg: "#f3e5f5", path: "/showroom" },
   ];
 
   return (

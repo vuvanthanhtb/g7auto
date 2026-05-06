@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { t } from "@/libs/i18n";
 
 interface Props {
   open: boolean;
@@ -47,7 +48,7 @@ const BaseDrawerComponent: React.FC<Props> = ({
             }}
           >
             <Typography fontWeight={600} fontSize={16}>
-              {title}
+              {t(title)}
             </Typography>
             <IconButton size="small" onClick={onClose}>
               <CloseIcon fontSize="small" />

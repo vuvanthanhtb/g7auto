@@ -30,6 +30,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,11 +48,12 @@ public class CarModelServiceImpl implements CarModelService {
   @Override
   public PageResponse<CarModelResponse> search(CarModelSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
-    return PageResponse.of(
-        carModelQueryRepository.search(request.getName(), request.getManufacturer(),
-            request.getFromDate(), request.getToDate(), pageable),
-        carModelMapper::toResponse,
-        request.getFromDate(), request.getToDate());
+    String fromDate = request.getFromDate();
+    String toDate = request.getToDate();
+
+    Page<CarModel> carModelPage = carModelQueryRepository.search(request.getName(), request.getManufacturer(),
+        fromDate, toDate, pageable);
+    return PageResponse.of(carModelPage, carModelMapper::toResponse, fromDate, toDate);
   }
 
   @Override

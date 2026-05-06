@@ -21,10 +21,10 @@ const QuotationsPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("PAGE_HEADER_QUOTATIONS")}
+          {t("QUOTATIONS_PAGE_HEADER")}
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-          {t("BTN_CREATE_QUOTATION")}
+          {t("QUOTATIONS_BTN_CREATE")}
         </Button>
       </Box>
       <BaseFormComponent formConfig={getQuotationSearchConfig()} options={{ quotationStatusOptions }} handlers={searchHandlers} />
@@ -37,7 +37,7 @@ const QuotationsPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("DRAWER_DETAIL_QUOTATION") : t("BTN_CREATE_QUOTATION")}
+        title={editId ? t("QUOTATIONS_DRAWER_DETAIL") : t("QUOTATIONS_BTN_CREATE")}
         onClose={closeDrawer}
       >
         <BaseFormComponent

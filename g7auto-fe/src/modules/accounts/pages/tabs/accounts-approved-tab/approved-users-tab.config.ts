@@ -12,43 +12,42 @@ import {
   userApprovalStatusOptions,
 } from "@/libs/constants/options.constant";
 import type { AccountApprovedSearchForm } from "./approved-users-tab.type";
-import { t } from "@/libs/i18n";
 
 export const getApprovedColumns = (): BaseTableColumn[] => [
-  { name: "NUMERICAL_ORDER", label: t("LABEL_STT"), type: NUMERICAL_ORDER },
-  { name: "username", label: t("LABEL_ACCOUNT"), type: TBL_STRING },
-  { name: "fullName", label: t("LABEL_FULL_NAME"), type: TBL_STRING },
-  { name: "email", label: t("LABEL_EMAIL"), type: TBL_STRING },
-  { name: "actionDisplay", label: t("LABEL_CHANGE_REQUEST"), type: TBL_STRING },
+  { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
+  { name: "username", label: "COMMON_LABEL_ACCOUNT", type: TBL_STRING },
+  { name: "fullName", label: "COMMON_LABEL_FULL_NAME", type: TBL_STRING },
+  { name: "email", label: "COMMON_LABEL_EMAIL", type: TBL_STRING },
+  { name: "actionDisplay", label: "COMMON_LABEL_CHANGE_REQUEST", type: TBL_STRING },
   {
     name: "statusDisplay",
-    label: t("LABEL_STATUS"),
+    label: "COMMON_LABEL_STATUS",
     type: TBL_STRING,
     refColor: ["statusApproving"],
   },
   {
     name: "createdAt",
-    label: t("LABEL_CREATED_AT"),
+    label: "COMMON_LABEL_CREATED_AT",
     type: TBL_STRING,
     styleCell: { textAlign: "center" },
   },
   {
     name: "updatedAt",
-    label: t("LABEL_APPROVED_AT"),
+    label: "COMMON_LABEL_APPROVED_AT",
     type: TBL_STRING,
     styleCell: { textAlign: "center" },
   },
-  { name: "updatedBy", label: t("LABEL_APPROVED_BY"), type: TBL_STRING },
+  { name: "updatedBy", label: "COMMON_LABEL_APPROVED_BY", type: TBL_STRING },
 ];
 
 export const getApprovedSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "fullName", label: t("LABEL_FULL_NAME"), size: 3 },
-    { type: TEXT, name: "username", label: t("LABEL_ACCOUNT"), size: 3 },
+    { type: TEXT, name: "fullName", label: "COMMON_LABEL_FULL_NAME", size: 3 },
+    { type: TEXT, name: "username", label: "COMMON_LABEL_ACCOUNT", size: 3 },
     {
       type: SELECT,
       name: "statusApproving",
-      label: t("LABEL_STATUS"),
+      label: "COMMON_LABEL_STATUS",
       option: "statusOptions",
       size: 3,
     },
@@ -57,13 +56,13 @@ export const getApprovedSearchConfig = (): IBaseFormConfig => ({
       size: 12,
       childs: [
         {
-          title: t("BTN_REFRESH_ACTION"),
+          title: "COMMON_BTN_REFRESH",
           type: "button",
           action: BTN_REFRESH,
           style: { background: "#757575", color: "#fff" },
         },
         {
-          title: t("BTN_SEARCH_ACTION"),
+          title: "COMMON_BTN_SEARCH",
           type: "button",
           action: BTN_SEARCH,
           style: { background: "#1976d2", color: "#fff" },

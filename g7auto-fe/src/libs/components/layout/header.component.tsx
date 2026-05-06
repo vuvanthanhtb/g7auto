@@ -33,10 +33,10 @@ const getRoleLabel = (): Record<
   string,
   { label: string; color: "error" | "warning" | "info" | "success" | "default" }
 > => ({
-  [SUPERADMIN]: { label: t("ROLE_SUPERADMIN"), color: "error" },
-  [ADMIN]: { label: t("ROLE_ADMIN"), color: "warning" },
-  [DIRECTOR]: { label: t("ROLE_DIRECTOR"), color: "info" },
-  [SHOWROOM_MANAGER]: { label: t("ROLE_SHOWROOM_MANAGER"), color: "success" },
+  [SUPERADMIN]: { label: t("COMMON_ROLE_SUPERADMIN"), color: "error" },
+  [ADMIN]: { label: t("COMMON_ROLE_ADMIN"), color: "warning" },
+  [DIRECTOR]: { label: t("COMMON_ROLE_DIRECTOR"), color: "info" },
+  [SHOWROOM_MANAGER]: { label: t("COMMON_ROLE_SHOWROOM_MANAGER"), color: "success" },
 });
 
 const LOCALE_FLAGS: Record<Locale, string> = {
@@ -79,7 +79,7 @@ const HeaderComponent = () => {
 
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-      <Tooltip title={locale === "vi" ? t("LOCALE_SWITCH_TO_EN") : t("LOCALE_SWITCH_TO_VI")}>
+      <Tooltip title={locale === "vi" ? t("COMMON_LOCALE_EN") : t("COMMON_LOCALE_VI")}>
         <Button
           size="small"
           onClick={handleToggleLocale}
@@ -129,7 +129,7 @@ const HeaderComponent = () => {
         )}
       </Box>
 
-      <Tooltip title={t("TOOLTIP_ACCOUNT")}>
+      <Tooltip title={t("COMMON_TOOLTIP_ACCOUNT")}>
         <IconButton size="small" onClick={(e) => setAnchor(e.currentTarget)}>
           <Avatar
             sx={{
@@ -178,13 +178,13 @@ const HeaderComponent = () => {
           <ListItemIcon>
             <PersonIcon fontSize="small" />
           </ListItemIcon>
-          {t("MENU_PROFILE")}
+          {t("COMMON_MENU_PROFILE")}
         </MenuItem>
         <MenuItem onClick={handleLogout} sx={{ color: "error.main" }}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" color="error" />
           </ListItemIcon>
-          {t("MENU_LOGOUT")}
+          {t("COMMON_MENU_LOGOUT")}
         </MenuItem>
       </Menu>
       <ProfileDrawer open={profileOpen} onClose={() => setProfileOpen(false)} />

@@ -276,7 +276,7 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
                             style={btn.style ?? {}}
                             action={btn.action}
                             onClick={() => handleCellAction?.(row, btn.action)}
-                            title={t(btn.title ?? "")}
+                            title={btn.title}
                           />
                         );
                       })}

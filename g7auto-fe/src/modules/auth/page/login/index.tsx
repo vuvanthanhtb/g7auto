@@ -20,7 +20,7 @@ const LoginPage = () => {
     useState<Record<string, unknown>>(initialValues);
 
   useEffect(() => {
-    document.title = t("PAGE_TITLE_LOGIN");
+    document.title = t("LOGIN_PAGE_TITLE");
   }, []);
 
   if (isAuthenticated) return <Navigate to={HOME_PATH.BASE} replace />;

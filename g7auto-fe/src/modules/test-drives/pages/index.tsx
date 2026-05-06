@@ -31,10 +31,10 @@ const TestDrivesPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("PAGE_HEADER_TEST_DRIVES")}
+          {t("TEST_DRIVES_PAGE_HEADER")}
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-          {t("BTN_REGISTER_TEST_DRIVE")}
+          {t("TEST_DRIVES_BTN_REGISTER")}
         </Button>
       </Box>
       <BaseFormComponent
@@ -51,7 +51,7 @@ const TestDrivesPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("DRAWER_DETAIL_TEST_DRIVE") : t("BTN_REGISTER_TEST_DRIVE")}
+        title={editId ? t("TEST_DRIVES_DRAWER_DETAIL") : t("TEST_DRIVES_BTN_REGISTER")}
         onClose={closeDrawer}
       >
         <BaseFormComponent

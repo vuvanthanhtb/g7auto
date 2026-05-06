@@ -35,7 +35,7 @@ const ShowroomsPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("PAGE_HEADER_SHOWROOMS")}
+          {t("SHOWROOMS_PAGE_HEADER")}
         </Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
           <ImportButton
@@ -46,7 +46,7 @@ const ShowroomsPage = () => {
             onSuccess={() => dispatch(getAllShowrooms())}
           />
           <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-            {t("BTN_ADD_NEW")}
+            {t("COMMON_BTN_ADD_NEW")}
           </Button>
         </Box>
       </Box>
@@ -60,7 +60,7 @@ const ShowroomsPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("DRAWER_EDIT_SHOWROOM") : t("DRAWER_ADD_SHOWROOM")}
+        title={editId ? t("SHOWROOMS_DRAWER_EDIT") : t("SHOWROOMS_DRAWER_ADD")}
         onClose={closeDrawer}
       >
         <BaseFormComponent

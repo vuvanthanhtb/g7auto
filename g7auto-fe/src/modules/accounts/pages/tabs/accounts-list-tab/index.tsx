@@ -30,7 +30,7 @@ const AccountsListTab = () => {
         onChange={onchange}
         values={searchParams}
       />
-      <TableTitleComponent title={t("TAB_ACCOUNT_LIST")} />
+      <TableTitleComponent title={t("ACCOUNTS_TAB_LIST")} />
       <BaseTableComponent
         tableConfig={getAccountColumns()}
         reducer="accounts"

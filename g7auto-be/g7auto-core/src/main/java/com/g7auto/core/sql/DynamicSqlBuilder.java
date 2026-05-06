@@ -81,10 +81,9 @@ public class DynamicSqlBuilder {
    * AND col IN (:p_0, :p_1, ...) — tự expand từng phần tử thành named param riêng. Bỏ qua nếu
    * collection rỗng.
    */
-  public DynamicSqlBuilder andIn(String columnExpr, String paramName,
-      Collection<?> values) {
+  public void andIn(String columnExpr, String paramName, Collection<?> values) {
     if (values == null || values.isEmpty()) {
-      return this;
+      return;
     }
 
     List<String> generatedNames = new ArrayList<>();
@@ -97,15 +96,13 @@ public class DynamicSqlBuilder {
 
     this.sql.append(" AND ").append(columnExpr)
         .append(" IN (").append(String.join(", ", generatedNames)).append(") ");
-    return this;
   }
 
   /**
    * AND col IN (:p_0, :p_1, ...) — bắt buộc phải có phần tử. Nếu collection rỗng → AND 1 = 0 (không
    * có kết quả).
    */
-  public DynamicSqlBuilder andInRequired(String paramName,
-      Collection<?> values) {
+  public DynamicSqlBuilder andInRequired(String paramName, Collection<?> values) {
     if (values == null || values.isEmpty()) {
       this.sql.append(" AND 1 = 0 ");
       return this;
@@ -156,10 +153,10 @@ public class DynamicSqlBuilder {
   /**
    * AND với điều kiện SQL thô (params phải tự add bằng param()).
    */
-  public DynamicSqlBuilder andRaw(String condition,
+  public void andRaw(String condition,
       Map<String, Object> params) {
     if (!StringUtils.hasText(condition)) {
-      return this;
+      return;
     }
 
     this.sql.append(" AND ").append(condition.trim()).append(" ");
@@ -176,7 +173,6 @@ public class DynamicSqlBuilder {
       });
     }
 
-    return this;
   }
 
   private void replaceInSql(String target, String replacement) {

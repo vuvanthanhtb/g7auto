@@ -32,10 +32,10 @@ const CarTransfersPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("PAGE_HEADER_TRANSFERS")}
+          {t("TRANSFERS_PAGE_HEADER")}
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-          {t("BTN_CREATE_TRANSFER")}
+          {t("TRANSFERS_BTN_CREATE")}
         </Button>
       </Box>
       <BaseFormComponent
@@ -52,7 +52,7 @@ const CarTransfersPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("DRAWER_DETAIL_TRANSFER") : t("DRAWER_CREATE_TRANSFER")}
+        title={editId ? t("TRANSFERS_DRAWER_DETAIL") : t("TRANSFERS_DRAWER_CREATE")}
         onClose={closeDrawer}
       >
         <BaseFormComponent

@@ -14,37 +14,37 @@ import type { BaseTableColumn, IBaseFormConfig } from "@/libs/types";
 import type { EmployeePendingSearchForm } from "./employees-pending-tab.type";
 
 export const getEmployeePendingColumns = (): BaseTableColumn[] => [
-  { name: "NUMERICAL_ORDER", label: "LABEL_STT", type: NUMERICAL_ORDER },
-  { name: "username", label: "LABEL_ACCOUNT", type: TBL_STRING },
-  { name: "fullName", label: "LABEL_FULL_NAME", type: TBL_STRING },
+  { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
+  { name: "username", label: "COMMON_LABEL_ACCOUNT", type: TBL_STRING },
+  { name: "fullName", label: "COMMON_LABEL_FULL_NAME", type: TBL_STRING },
   {
     name: "phone",
-    label: "LABEL_PHONE",
+    label: "COMMON_LABEL_PHONE",
     type: TBL_STRING,
     styleCell: { textAlign: "center" },
   },
-  { name: "showroomName", label: "LABEL_SHOWROOM", type: TBL_STRING },
+  { name: "showroomName", label: "COMMON_LABEL_SHOWROOM", type: TBL_STRING },
   {
     name: "nationalId",
-    label: "LABEL_NATIONAL_ID",
+    label: "COMMON_LABEL_NATIONAL_ID",
     type: TBL_STRING,
     styleCell: { textAlign: "center" },
   },
-  { name: "employeeStatus", label: "LABEL_ACTION_TYPE", type: TBL_STRING },
+  { name: "employeeStatus", label: "COMMON_LABEL_ACTION_TYPE", type: TBL_STRING },
   {
     name: "createdAt",
-    label: "LABEL_REQUEST_DATE",
+    label: "COMMON_LABEL_REQUEST_DATE",
     type: TBL_STRING,
     styleCell: { textAlign: "center" },
   },
   {
     name: "action_btn",
-    label: "LABEL_ACTION",
+    label: "COMMON_LABEL_ACTION",
     type: TBL_BUTTON,
     btnGroup: [
-      { title: "BTN_APPROVE_ACTION", type: "button", action: BTN_APPROVE },
+      { title: "COMMON_BTN_APPROVE", type: "button", action: BTN_APPROVE },
       {
-        title: "BTN_REJECT_ACTION",
+        title: "COMMON_BTN_REJECT",
         type: "button",
         action: BTN_REJECT,
         style: { background: "#dc004e", color: "#fff" },
@@ -64,7 +64,7 @@ export const getEmployeePendingSearchConfig = (): IBaseFormConfig => ({
     {
       type: TEXT,
       name: "fullName",
-      label: "FIELD_FULL_NAME_SEARCH",
+      label: "CUSTOMERS_FIELD_FULL_NAME_SEARCH",
       size: 4,
     },
     {
@@ -73,13 +73,13 @@ export const getEmployeePendingSearchConfig = (): IBaseFormConfig => ({
       style: { justifyContent: "flex-start" },
       childs: [
         {
-          title: "BTN_REFRESH_ACTION",
+          title: "COMMON_BTN_REFRESH",
           type: "button",
           action: BTN_REFRESH,
           style: { background: "#757575", color: "#fff" },
         },
         {
-          title: "BTN_SEARCH_ACTION",
+          title: "COMMON_BTN_SEARCH",
           type: "button",
           action: BTN_SEARCH,
           style: { background: "#1976d2", color: "#fff" },
