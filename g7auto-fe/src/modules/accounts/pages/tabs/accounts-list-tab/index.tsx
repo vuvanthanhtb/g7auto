@@ -1,8 +1,8 @@
 import BaseFormComponent from "@/libs/components/ui/base-form";
 import BaseTableComponent from "@/libs/components/ui/base-table";
 import {
-  accountSearchConfig,
-  accountColumns,
+  getAccountSearchConfig,
+  getAccountColumns,
   accountStatusOptions,
   roleOptions,
   showButtons,
@@ -10,6 +10,7 @@ import {
 import { useAccountList } from "./use-account-list";
 import TableTitleComponent from "@/libs/components/ui/table-title";
 import type { AccountSearchForm } from "./account-list-tab.type";
+import { t } from "@/libs/i18n";
 
 const AccountsListTab = () => {
   const {
@@ -23,15 +24,15 @@ const AccountsListTab = () => {
   return (
     <>
       <BaseFormComponent<AccountSearchForm>
-        formConfig={accountSearchConfig}
+        formConfig={getAccountSearchConfig()}
         options={{ accountStatusOptions, roleOptions }}
         handlers={searchHandlers}
         onChange={onchange}
         values={searchParams}
       />
-      <TableTitleComponent title="Danh sách tài khoản" />
+      <TableTitleComponent title={t("TAB_ACCOUNT_LIST")} />
       <BaseTableComponent
-        tableConfig={accountColumns}
+        tableConfig={getAccountColumns()}
         reducer="accounts"
         state="accountTable"
         handleCellAction={handleCellAction}

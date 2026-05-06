@@ -8,12 +8,13 @@ import { showroomsService } from "../shell/showroom.service";
 import { useAppDispatch } from "@/shell/redux/hooks";
 import { getAllShowrooms } from "../shell/showrooms.slice";
 import {
-  showroomColumns,
-  showroomFormConfig,
-  showroomSearchConfig,
+  getShowroomColumns,
+  getShowroomFormConfig,
+  getShowroomSearchConfig,
 } from "./showrooms.config";
 import { showroomValidation } from "./showrooms.validation";
 import { useShowrooms } from "./use-showrooms";
+import { t } from "@/libs/i18n";
 
 const ShowroomsPage = () => {
   const dispatch = useAppDispatch();
@@ -32,16 +33,9 @@ const ShowroomsPage = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-        }}
-      >
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          Quản lý Showroom
+          {t("PAGE_HEADER_SHOWROOMS")}
         </Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
           <ImportButton
@@ -51,21 +45,14 @@ const ShowroomsPage = () => {
             onDownloadTemplate={() => showroomsService.downloadTemplate()}
             onSuccess={() => dispatch(getAllShowrooms())}
           />
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={openCreate}
-          >
-            Thêm mới
+          <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
+            {t("BTN_ADD_NEW")}
           </Button>
         </Box>
       </Box>
-      <BaseFormComponent
-        formConfig={showroomSearchConfig}
-        handlers={searchHandlers}
-      />
+      <BaseFormComponent formConfig={getShowroomSearchConfig()} handlers={searchHandlers} />
       <BaseTableComponent
-        tableConfig={showroomColumns}
+        tableConfig={getShowroomColumns()}
         reducer="showrooms"
         state="showroomTable"
         handleCellAction={handleCellAction}
@@ -73,11 +60,11 @@ const ShowroomsPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? "Chỉnh sửa showroom" : "Thêm showroom"}
+        title={editId ? t("DRAWER_EDIT_SHOWROOM") : t("DRAWER_ADD_SHOWROOM")}
         onClose={closeDrawer}
       >
         <BaseFormComponent
-          formConfig={showroomFormConfig}
+          formConfig={getShowroomFormConfig()}
           validationSchema={showroomValidation}
           values={formValues}
           onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}

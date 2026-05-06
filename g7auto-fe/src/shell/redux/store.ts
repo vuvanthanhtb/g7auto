@@ -23,11 +23,13 @@ import paymentsReducer from "@/modules/payments/shell/payments.slice";
 import serviceHistoryReducer from "@/modules/service-history/shell/service-history.slice";
 import testDrivesReducer from "@/modules/test-drives/shell/test-drives.slice";
 import accountsReducer from "@/modules/accounts/shell/accounts.slice";
+import localeReducer from "./locale.slice";
 
 const authPersistConfig = { key: "auth", storage, whitelist: ["isAuthenticated", "user", "roles", "accessToken", "refreshToken"] };
 
 const rootReducer = combineReducers({
   loading: loadingReducer,
+  locale: localeReducer,
   auth: persistReducer(authPersistConfig, authReducer),
   showrooms: showroomsReducer,
   carModels: carModelsReducer,

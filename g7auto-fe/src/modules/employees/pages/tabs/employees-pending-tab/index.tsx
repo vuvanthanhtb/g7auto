@@ -9,8 +9,8 @@ import {
   approveEmployeeApproving,
 } from "@/modules/employees/shell/employees.slice";
 import {
-  employeePendingColumns,
-  employeePendingSearchConfig,
+  getEmployeePendingColumns,
+  getEmployeePendingSearchConfig,
   pendingInitialValues,
 } from "./employees-pending-tab.config";
 import { parsePendingFormSearch } from "./employees-pending-tab.utils";
@@ -43,7 +43,6 @@ const EmployeesPendingTab = () => {
     if (key === BTN_REJECT) {
       const ok = await confirm(`Từ chối yêu cầu nhân viên "${row.fullName}"?`);
       if (ok) {
-        // TODO: implement reject endpoint when backend provides it
         dispatch(getPendingApprovals(parsePendingFormSearch(searchParams)));
       }
     }
@@ -70,13 +69,13 @@ const EmployeesPendingTab = () => {
   return (
     <>
       <BaseFormComponent<EmployeePendingSearchForm>
-        formConfig={employeePendingSearchConfig}
+        formConfig={getEmployeePendingSearchConfig()}
         handlers={searchHandlers}
         values={searchParams}
         onChange={onchange}
       />
       <BaseTableComponent
-        tableConfig={employeePendingColumns}
+        tableConfig={getEmployeePendingColumns()}
         reducer="employees"
         state="pendingTable"
         handleCellAction={handleCellAction}

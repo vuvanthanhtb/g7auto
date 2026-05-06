@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/shell/redux/hooks";
 import { getCars } from "@/modules/cars/shell/cars.slice";
 import { getCustomers } from "@/modules/customers/shell/customers.slice";
 import { getContracts } from "@/modules/contracts/shell/contracts.slice";
+import { t } from "@/libs/i18n";
 import styles from "./home.module.scss";
 
 const HomePage = () => {
@@ -20,7 +21,7 @@ const HomePage = () => {
   const totalContracts = useAppSelector((state) => state.contracts.contractTable.totalElements);
 
   useEffect(() => {
-    document.title = "Tổng quan — G7Auto";
+    document.title = t("PAGE_TITLE_HOME");
     dispatch(getCars({ page: 1, size: 1 }));
     dispatch(getCustomers({ page: 1, size: 1 }));
     dispatch(getContracts({ page: 1, size: 1 }));
@@ -28,18 +29,18 @@ const HomePage = () => {
 
   const greeting = () => {
     const h = new Date().getHours();
-    if (h < 12) return "Chào buổi sáng";
-    if (h < 18) return "Chào buổi chiều";
-    return "Chào buổi tối";
+    if (h < 12) return t("GREETING_MORNING");
+    if (h < 18) return t("GREETING_AFTERNOON");
+    return t("GREETING_EVENING");
   };
 
-  const displayName = user?.fullName ?? user?.username ?? "bạn";
+  const displayName = user?.fullName ?? user?.username ?? t("HOME_DEFAULT_NAME");
 
   const stats = [
-    { label: "Tổng xe", value: totalCars, icon: <DirectionsCarIcon sx={{ fontSize: 22 }} />, color: "#1a73e8", bg: "#e8f0fe", path: "/xe" },
-    { label: "Khách hàng", value: totalCustomers, icon: <PeopleIcon sx={{ fontSize: 22 }} />, color: "#2e7d32", bg: "#e8f5e9", path: "/khach-hang" },
-    { label: "Hợp đồng", value: totalContracts, icon: <DescriptionIcon sx={{ fontSize: 22 }} />, color: "#e65100", bg: "#fff3e0", path: "/hop-dong" },
-    { label: "Showroom", value: "", icon: <StoreIcon sx={{ fontSize: 22 }} />, color: "#6a1b9a", bg: "#f3e5f5", path: "/showroom" },
+    { label: t("STAT_TOTAL_CARS"), value: totalCars, icon: <DirectionsCarIcon sx={{ fontSize: 22 }} />, color: "#1a73e8", bg: "#e8f0fe", path: "/xe" },
+    { label: t("STAT_CUSTOMERS"), value: totalCustomers, icon: <PeopleIcon sx={{ fontSize: 22 }} />, color: "#2e7d32", bg: "#e8f5e9", path: "/khach-hang" },
+    { label: t("STAT_CONTRACTS"), value: totalContracts, icon: <DescriptionIcon sx={{ fontSize: 22 }} />, color: "#e65100", bg: "#fff3e0", path: "/hop-dong" },
+    { label: t("STAT_SHOWROOMS"), value: "", icon: <StoreIcon sx={{ fontSize: 22 }} />, color: "#6a1b9a", bg: "#f3e5f5", path: "/showroom" },
   ];
 
   return (
@@ -47,7 +48,7 @@ const HomePage = () => {
       <div className={styles.banner}>
         <div>
           <h2>{greeting()}, {displayName}!</h2>
-          <p>Chào mừng bạn đến với hệ thống quản lý G7Auto.</p>
+          <p>{t("HOME_WELCOME")}</p>
         </div>
         <AutoAwesomeIcon className={styles.bannerIcon} />
       </div>

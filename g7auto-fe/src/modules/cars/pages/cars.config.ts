@@ -18,62 +18,39 @@ import {
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
+import { t } from "@/libs/i18n";
 
-export const carColumns: BaseTableColumn[] = [
-  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
-  { name: "licensePlate", label: "Biển số", type: TBL_STRING },
-  { name: "carModelName", label: "Dòng xe", type: TBL_STRING },
-  { name: "color", label: "Màu sắc", type: TBL_STRING },
-  { name: "showroomName", label: "Showroom", type: TBL_STRING },
-  { name: "status", label: "Trạng thái", type: TBL_STRING },
+export const getCarColumns = (): BaseTableColumn[] => [
+  { name: "NUMERICAL_ORDER", label: t("LABEL_STT"), type: NUMERICAL_ORDER },
+  { name: "licensePlate", label: t("LABEL_LICENSE_PLATE"), type: TBL_STRING },
+  { name: "carModelName", label: t("LABEL_CAR_MODEL"), type: TBL_STRING },
+  { name: "color", label: t("LABEL_COLOR"), type: TBL_STRING },
+  { name: "showroomName", label: t("LABEL_SHOWROOM"), type: TBL_STRING },
+  { name: "status", label: t("LABEL_STATUS"), type: TBL_STRING },
   {
     name: "action",
-    label: "Thao tác",
+    label: t("LABEL_ACTION"),
     type: TBL_BUTTON,
-    btnGroup: [{ title: "Sửa", type: "button", action: BTN_EDIT }],
+    btnGroup: [{ title: t("BTN_EDIT_ACTION"), type: "button", action: BTN_EDIT }],
   },
 ];
 
-export const carFormConfig: IBaseFormConfig = {
+export const getCarFormConfig = (): IBaseFormConfig => ({
   fields: [
-    {
-      type: TEXT,
-      name: "licensePlate",
-      label: "Biển số xe",
-      required: true,
-      size: 6,
-    },
-    { type: TEXT, name: "color", label: "Màu sắc", size: 6 },
-    {
-      type: NUMBER_INPUT,
-      name: "carModelId",
-      label: "Mã dòng xe",
-      required: true,
-      size: 6,
-    },
-    {
-      type: NUMBER_INPUT,
-      name: "showroomId",
-      label: "Mã showroom",
-      required: true,
-      size: 6,
-    },
-    { type: NUMBER_INPUT, name: "salePrice", label: "Giá bán (VND)", size: 12 },
-    {
-      type: SELECT,
-      name: "status",
-      label: "Trạng thái",
-      option: "carStatusOptions",
-      size: 12,
-    },
-    { type: TEXT, name: "vin", label: "Số VIN", size: 12 },
+    { type: TEXT, name: "licensePlate", label: t("FIELD_LICENSE_PLATE"), required: true, size: 6 },
+    { type: TEXT, name: "color", label: t("LABEL_COLOR"), size: 6 },
+    { type: NUMBER_INPUT, name: "carModelId", label: t("FIELD_CAR_MODEL_ID"), required: true, size: 6 },
+    { type: NUMBER_INPUT, name: "showroomId", label: t("FIELD_SHOWROOM_ID"), required: true, size: 6 },
+    { type: NUMBER_INPUT, name: "salePrice", label: t("FIELD_SALE_PRICE"), size: 12 },
+    { type: SELECT, name: "status", label: t("LABEL_STATUS"), option: "carStatusOptions", size: 12 },
+    { type: TEXT, name: "vin", label: t("FIELD_VIN"), size: 12 },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "Lưu", type: "submit", action: BTN_SUBMIT }],
+      childs: [{ title: t("BTN_SAVE"), type: "submit", action: BTN_SUBMIT }],
     },
   ],
-};
+});
 
 export const carInitialValues = {
   licensePlate: "",
@@ -85,38 +62,17 @@ export const carInitialValues = {
   vin: "",
 };
 
-export const carSearchConfig: IBaseFormConfig = {
+export const getCarSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    {
-      type: SELECT,
-      name: "status",
-      label: "Trạng thái",
-      option: "carStatusOptions",
-      size: 3,
-    },
+    { type: SELECT, name: "status", label: t("LABEL_STATUS"), option: "carStatusOptions", size: 3 },
     {
       type: BUTTON,
       size: 9,
       childs: [
-        {
-          title: "Làm mới",
-          type: "button",
-          action: BTN_REFRESH,
-          style: { background: "#757575", color: "#fff" },
-        },
-        {
-          title: "Tìm kiếm",
-          type: "button",
-          action: BTN_SEARCH,
-          style: { background: "#1976d2", color: "#fff" },
-        },
-        {
-          title: "Xuất Excel",
-          type: "button",
-          action: BTN_EXPORT,
-          style: { background: "#2e7d32", color: "#fff" },
-        },
+        { title: t("BTN_REFRESH_ACTION"), type: "button", action: BTN_REFRESH, style: { background: "#757575", color: "#fff" } },
+        { title: t("BTN_SEARCH_ACTION"), type: "button", action: BTN_SEARCH, style: { background: "#1976d2", color: "#fff" } },
+        { title: t("BTN_EXPORT_EXCEL"), type: "button", action: BTN_EXPORT, style: { background: "#2e7d32", color: "#fff" } },
       ],
     },
   ],
-};
+});

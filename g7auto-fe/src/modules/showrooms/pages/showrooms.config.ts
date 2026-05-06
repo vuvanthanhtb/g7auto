@@ -14,42 +14,37 @@ import {
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
+import { t } from "@/libs/i18n";
 
-export const showroomColumns: BaseTableColumn[] = [
-  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
-  { name: "name", label: "Tên showroom", type: TBL_STRING },
-  { name: "address", label: "Địa chỉ", type: TBL_STRING },
-  { name: "phone", label: "Điện thoại", type: TBL_STRING },
+export const getShowroomColumns = (): BaseTableColumn[] => [
+  { name: "NUMERICAL_ORDER", label: t("LABEL_STT"), type: NUMERICAL_ORDER },
+  { name: "name", label: t("LABEL_SHOWROOM_NAME"), type: TBL_STRING },
+  { name: "address", label: t("LABEL_ADDRESS"), type: TBL_STRING },
+  { name: "phone", label: t("LABEL_PHONE"), type: TBL_STRING },
   {
     name: "action",
-    label: "Thao tác",
+    label: t("LABEL_ACTION"),
     type: TBL_BUTTON,
     btnGroup: [
-      { title: "Sửa", type: "button", action: BTN_EDIT },
-      { title: "Xóa", type: "button", action: BTN_DELETE },
+      { title: t("BTN_EDIT_ACTION"), type: "button", action: BTN_EDIT },
+      { title: t("BTN_DELETE_ACTION"), type: "button", action: BTN_DELETE },
     ],
   },
 ];
 
-export const showroomFormConfig: IBaseFormConfig = {
+export const getShowroomFormConfig = (): IBaseFormConfig => ({
   fields: [
-    {
-      type: TEXT,
-      name: "name",
-      label: "Tên showroom",
-      required: true,
-      size: 12,
-    },
-    { type: TEXT, name: "address", label: "Địa chỉ", required: true, size: 12 },
-    { type: TEXT, name: "phone", label: "Điện thoại", size: 6 },
-    { type: TEXT, name: "email", label: "Email", size: 6 },
+    { type: TEXT, name: "name", label: t("FIELD_SHOWROOM_NAME"), required: true, size: 12 },
+    { type: TEXT, name: "address", label: t("FIELD_ADDRESS"), required: true, size: 12 },
+    { type: TEXT, name: "phone", label: t("LABEL_PHONE"), size: 6 },
+    { type: TEXT, name: "email", label: t("LABEL_EMAIL"), size: 6 },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "Lưu", type: "submit", action: BTN_SUBMIT }],
+      childs: [{ title: t("BTN_SAVE"), type: "submit", action: BTN_SUBMIT }],
     },
   ],
-};
+});
 
 export const showroomInitialValues = {
   name: "",
@@ -58,32 +53,17 @@ export const showroomInitialValues = {
   email: "",
 };
 
-export const showroomSearchConfig: IBaseFormConfig = {
+export const getShowroomSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "name", label: "Tên showroom", size: 3 },
+    { type: TEXT, name: "name", label: t("FIELD_SHOWROOM_NAME"), size: 3 },
     {
       type: BUTTON,
       size: 9,
       childs: [
-        {
-          title: "Làm mới",
-          type: "button",
-          action: BTN_REFRESH,
-          style: { background: "#757575", color: "#fff" },
-        },
-        {
-          title: "Tìm kiếm",
-          type: "button",
-          action: BTN_SEARCH,
-          style: { background: "#1976d2", color: "#fff" },
-        },
-        {
-          title: "Xuất Excel",
-          type: "button",
-          action: BTN_EXPORT,
-          style: { background: "#2e7d32", color: "#fff" },
-        },
+        { title: t("BTN_REFRESH_ACTION"), type: "button", action: BTN_REFRESH, style: { background: "#757575", color: "#fff" } },
+        { title: t("BTN_SEARCH_ACTION"), type: "button", action: BTN_SEARCH, style: { background: "#1976d2", color: "#fff" } },
+        { title: t("BTN_EXPORT_EXCEL"), type: "button", action: BTN_EXPORT, style: { background: "#2e7d32", color: "#fff" } },
       ],
     },
   ],
-};
+});

@@ -3,11 +3,12 @@ import AddIcon from "@mui/icons-material/Add";
 import BaseTableComponent from "@/libs/components/ui/base-table";
 import BaseDrawer from "@/libs/components/ui/base-drawer";
 import BaseFormComponent from "@/libs/components/ui/base-form";
-import { carColumns, carFormConfig, carSearchConfig } from "./cars.config";
+import { getCarColumns, getCarFormConfig, getCarSearchConfig } from "./cars.config";
 import { carValidation } from "./cars.validation";
 import { BTN_SUBMIT } from "@/libs/constants/button.constant";
 import { carStatusOptions } from "@/libs/constants/options.constant";
 import { useCars } from "./use-cars";
+import { t } from "@/libs/i18n";
 
 const CarsPage = () => {
   const {
@@ -20,15 +21,15 @@ const CarsPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          Quản lý Kho xe
+          {t("PAGE_HEADER_CARS")}
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-          Thêm xe
+          {t("BTN_ADD_CAR")}
         </Button>
       </Box>
-      <BaseFormComponent formConfig={carSearchConfig} options={{ carStatusOptions }} handlers={searchHandlers} />
+      <BaseFormComponent formConfig={getCarSearchConfig()} options={{ carStatusOptions }} handlers={searchHandlers} />
       <BaseTableComponent
-        tableConfig={carColumns}
+        tableConfig={getCarColumns()}
         reducer="cars"
         state="carTable"
         handleCellAction={handleCellAction}
@@ -36,11 +37,11 @@ const CarsPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? "Chỉnh sửa xe" : "Thêm xe"}
+        title={editId ? t("DRAWER_EDIT_CAR") : t("DRAWER_ADD_CAR")}
         onClose={closeDrawer}
       >
         <BaseFormComponent
-          formConfig={carFormConfig}
+          formConfig={getCarFormConfig()}
           validationSchema={carValidation}
           values={formValues}
           options={{ carStatusOptions }}

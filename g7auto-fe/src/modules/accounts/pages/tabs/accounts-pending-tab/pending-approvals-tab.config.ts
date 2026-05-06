@@ -13,39 +13,36 @@ import {
   NUMERICAL_ORDER,
 } from "@/libs/constants/table.constant";
 import type { AccountPendingSearchForm } from "./pending-approvals-tab.type";
+import { t } from "@/libs/i18n";
 
-export const pendingColumns: BaseTableColumn[] = [
-  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
-  { name: "username", label: "Tài khoản", type: TBL_STRING },
-  { name: "fullName", label: "Họ tên", type: TBL_STRING },
-  { name: "email", label: "Email", type: TBL_STRING },
-  { name: "role", label: "Vai trò", type: TBL_STRING },
-  { name: "statusDisplay", label: "Trạng thái", type: TBL_STRING },
+export const getPendingColumns = (): BaseTableColumn[] => [
+  { name: "NUMERICAL_ORDER", label: t("LABEL_STT"), type: NUMERICAL_ORDER },
+  { name: "username", label: t("LABEL_ACCOUNT"), type: TBL_STRING },
+  { name: "fullName", label: t("LABEL_FULL_NAME"), type: TBL_STRING },
+  { name: "email", label: t("LABEL_EMAIL"), type: TBL_STRING },
+  { name: "role", label: t("LABEL_ROLE"), type: TBL_STRING },
+  { name: "statusDisplay", label: t("LABEL_STATUS"), type: TBL_STRING },
   {
     name: "actionDisplay",
-    label: "Yêu cầu thay đổi",
+    label: t("LABEL_CHANGE_REQUEST"),
     type: TBL_STRING,
-    styleCell: {
-      color: "#cb1010",
-    },
+    styleCell: { color: "#cb1010" },
   },
   {
     name: "createdAt",
-    label: "Ngày tạo",
+    label: t("LABEL_CREATED_AT"),
     type: TBL_STRING,
-    styleCell: {
-      textAlign: "center",
-    },
+    styleCell: { textAlign: "center" },
   },
-  { name: "createdBy", label: "Người tạo", type: TBL_STRING },
+  { name: "createdBy", label: t("LABEL_CREATED_BY"), type: TBL_STRING },
   {
     name: "action_btn",
-    label: "Thao tác",
+    label: t("LABEL_ACTION"),
     type: TBL_BUTTON,
     btnGroup: [
-      { title: "Duyệt", type: "button", action: BTN_APPROVE },
+      { title: t("BTN_APPROVE_ACTION"), type: "button", action: BTN_APPROVE },
       {
-        title: "Từ chối",
+        title: t("BTN_REJECT_ACTION"),
         type: "button",
         action: BTN_REJECT,
         style: { background: "#dc004e", color: "#fff" },
@@ -54,25 +51,23 @@ export const pendingColumns: BaseTableColumn[] = [
   },
 ];
 
-export const pendingSearchConfig: IBaseFormConfig = {
+export const getPendingSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "fullName", label: "Họ tên", size: 3 },
-    { type: TEXT, name: "username", label: "Tài khoản", size: 3 },
+    { type: TEXT, name: "fullName", label: t("LABEL_FULL_NAME"), size: 3 },
+    { type: TEXT, name: "username", label: t("LABEL_ACCOUNT"), size: 3 },
     {
       type: BUTTON,
       size: 3,
-      style: {
-        justifyContent: "flex-start",
-      },
+      style: { justifyContent: "flex-start" },
       childs: [
         {
-          title: "Làm mới",
+          title: t("BTN_REFRESH_ACTION"),
           type: "button",
           action: BTN_REFRESH,
           style: { background: "#757575", color: "#fff" },
         },
         {
-          title: "Tìm kiếm",
+          title: t("BTN_SEARCH_ACTION"),
           type: "button",
           action: BTN_SEARCH,
           style: { background: "#1976d2", color: "#fff" },
@@ -80,7 +75,7 @@ export const pendingSearchConfig: IBaseFormConfig = {
       ],
     },
   ],
-};
+});
 
 export const pendingInitialValues: AccountPendingSearchForm = {
   username: "",

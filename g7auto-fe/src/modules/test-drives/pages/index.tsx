@@ -4,13 +4,14 @@ import BaseTableComponent from "@/libs/components/ui/base-table";
 import BaseDrawer from "@/libs/components/ui/base-drawer";
 import BaseFormComponent from "@/libs/components/ui/base-form";
 import {
-  testDriveColumns,
-  testDrivesFormConfig,
-  testDriveSearchConfig,
+  getTestDriveColumns,
+  getTestDrivesFormConfig,
+  getTestDriveSearchConfig,
 } from "./test-drives.config";
 import { testDrivesValidation } from "./test-drives.validation";
 import { testDriveStatusOptions } from "@/libs/constants/options.constant";
 import { useTestDrives } from "./use-test-drives";
+import { t } from "@/libs/i18n";
 
 const TestDrivesPage = () => {
   const {
@@ -28,32 +29,21 @@ const TestDrivesPage = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-        }}
-      >
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          Quản lý Lái thử
+          {t("PAGE_HEADER_TEST_DRIVES")}
         </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={openCreate}
-        >
-          Đăng ký lái thử
+        <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
+          {t("BTN_REGISTER_TEST_DRIVE")}
         </Button>
       </Box>
       <BaseFormComponent
-        formConfig={testDriveSearchConfig}
+        formConfig={getTestDriveSearchConfig()}
         options={{ testDriveStatusOptions }}
         handlers={searchHandlers}
       />
       <BaseTableComponent
-        tableConfig={testDriveColumns}
+        tableConfig={getTestDriveColumns()}
         reducer="testDrives"
         state="testDriveTable"
         handleCellAction={handleCellAction}
@@ -61,11 +51,11 @@ const TestDrivesPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? "Chi tiết lái thử" : "Đăng ký lái thử"}
+        title={editId ? t("DRAWER_DETAIL_TEST_DRIVE") : t("BTN_REGISTER_TEST_DRIVE")}
         onClose={closeDrawer}
       >
         <BaseFormComponent
-          formConfig={testDrivesFormConfig}
+          formConfig={getTestDrivesFormConfig()}
           validationSchema={testDrivesValidation}
           values={formValues}
           onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}

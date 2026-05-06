@@ -14,10 +14,10 @@ import BaseDrawer from "@/libs/components/ui/base-drawer";
 import BaseFormComponent from "@/libs/components/ui/base-form";
 import type { ServiceHistoryRequest } from "../shell/service-history.type";
 import {
-  serviceHistoryColumns,
-  serviceHistoryFormConfig,
+  getServiceHistoryColumns,
+  getServiceHistoryFormConfig,
   serviceHistoryInitialValues,
-  serviceHistorySearchConfig,
+  getServiceHistorySearchConfig,
 } from "./service-history.config";
 import { serviceHistoryValidation } from "./service-history.validation";
 import {
@@ -26,6 +26,7 @@ import {
   BTN_REFRESH,
   BTN_EXPORT,
 } from "@/libs/constants/button.constant";
+import { t } from "@/libs/i18n";
 
 type TableRow = Record<string, unknown>;
 
@@ -38,7 +39,7 @@ const ServiceHistoryPage = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    document.title = "Lịch sử dịch vụ — G7Auto";
+    document.title = t("PAGE_HEADER_SERVICE_HISTORY") + " — G7Auto";
     dispatch(getServiceHistory({ page, size: 10 }));
   }, [dispatch, page]);
 
@@ -78,15 +79,15 @@ const ServiceHistoryPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          Quản lý Lịch sử dịch vụ
+          {t("PAGE_HEADER_SERVICE_HISTORY")}
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-          Thêm dịch vụ
+          {t("BTN_ADD_SERVICE")}
         </Button>
       </Box>
-      <BaseFormComponent formConfig={serviceHistorySearchConfig} handlers={searchHandlers} />
+      <BaseFormComponent formConfig={getServiceHistorySearchConfig()} handlers={searchHandlers} />
       <BaseTableComponent
-        tableConfig={serviceHistoryColumns}
+        tableConfig={getServiceHistoryColumns()}
         reducer="serviceHistory"
         state="serviceHistoryTable"
         handleCellAction={handleCellAction}
@@ -94,11 +95,11 @@ const ServiceHistoryPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? "Chỉnh sửa" : "Thêm dịch vụ"}
+        title={editId ? t("DRAWER_EDIT_SERVICE") : t("BTN_ADD_SERVICE")}
         onClose={() => { setDrawerOpen(false); dispatch(clearSelectedServiceHistory()); }}
       >
         <BaseFormComponent
-          formConfig={serviceHistoryFormConfig}
+          formConfig={getServiceHistoryFormConfig()}
           validationSchema={serviceHistoryValidation}
           values={formValues}
           onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}

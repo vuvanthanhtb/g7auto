@@ -24,6 +24,7 @@ import type {
   IField,
 } from "@/libs/types/config-form.type";
 import type { ButtonProps } from "@/libs/types/button.type";
+import { t } from "@/libs/i18n";
 
 const BaseFormComponent = <T extends Record<string, any>>(
   props: BaseFormComponentProps<T>,
@@ -98,7 +99,7 @@ const BaseFormComponent = <T extends Record<string, any>>(
                     <Col key={index} md={field.size} xs={12} className="mb-3">
                       <Form.Group controlId={name}>
                         <Form.Label>
-                          {field.label}
+                          {t(field.label ?? "")}
                           {field?.required && (
                             <span className={styles["form-required"]}>*</span>
                           )}
@@ -140,7 +141,7 @@ const BaseFormComponent = <T extends Record<string, any>>(
                     <Col key={index} md={field.size} xs={12} className="mb-3">
                       <Form.Group controlId={name}>
                         <Form.Label>
-                          {field.label}
+                          {t(field.label ?? "")}
                           {field?.required && (
                             <span className={styles["form-required"]}>*</span>
                           )}
@@ -188,7 +189,7 @@ const BaseFormComponent = <T extends Record<string, any>>(
                     >
                       <Form.Group controlId={name}>
                         <Form.Label>
-                          {field.label}
+                          {t(field.label ?? "")}
                           {field?.required && (
                             <span className={styles["form-required"]}>*</span>
                           )}
@@ -228,7 +229,7 @@ const BaseFormComponent = <T extends Record<string, any>>(
                     <Col key={index} md={field.size} xs={12} className="mb-3">
                       <Form.Group controlId={name}>
                         <Form.Label>
-                          {field.label}
+                          {t(field.label ?? "")}
                           {field?.required && (
                             <span className={styles["form-required"]}>*</span>
                           )}
@@ -269,7 +270,7 @@ const BaseFormComponent = <T extends Record<string, any>>(
                     <Col key={index} md={field.size} xs={12} className="mb-3">
                       <Form.Group controlId={name}>
                         <Form.Label>
-                          {field.label}
+                          {t(field.label ?? "")}
                           {field?.required && (
                             <span className={styles["form-required"]}>*</span>
                           )}
@@ -321,7 +322,7 @@ const BaseFormComponent = <T extends Record<string, any>>(
                             type="button"
                             isLoading={isLoading}
                             disabled={child.disabled || isLoading}
-                            title={child.title}
+                            title={t(child.title ?? "")}
                             action={child.action}
                             className="me-2"
                             style={child?.style || {}}

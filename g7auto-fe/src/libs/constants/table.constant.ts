@@ -10,3 +10,4 @@ export const PAGE_SIZE_NO_LIMIT = { pageIndex: 1, pageSize: 9999 };
 export const TBL_STRING = "string";
 export const TBL_BUTTON = "button";
 export const TBL_CHECKBOX = "checkbox";
+export const TBL_NUMBER = "number";

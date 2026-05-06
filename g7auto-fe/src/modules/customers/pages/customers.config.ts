@@ -13,41 +13,36 @@ import {
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
+import { t } from "@/libs/i18n";
 
-export const customerColumns: BaseTableColumn[] = [
-  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
-  { name: "fullName", label: "Họ tên", type: TBL_STRING },
-  { name: "phone", label: "Điện thoại", type: TBL_STRING },
-  { name: "email", label: "Email", type: TBL_STRING },
-  { name: "idCard", label: "CMND/CCCD", type: TBL_STRING },
+export const getCustomerColumns = (): BaseTableColumn[] => [
+  { name: "NUMERICAL_ORDER", label: t("LABEL_STT"), type: NUMERICAL_ORDER },
+  { name: "fullName", label: t("LABEL_FULL_NAME"), type: TBL_STRING },
+  { name: "phone", label: t("LABEL_PHONE"), type: TBL_STRING },
+  { name: "email", label: t("LABEL_EMAIL"), type: TBL_STRING },
+  { name: "idCard", label: t("LABEL_NATIONAL_ID"), type: TBL_STRING },
   {
     name: "action",
-    label: "Thao tác",
+    label: t("LABEL_ACTION"),
     type: TBL_BUTTON,
-    btnGroup: [{ title: "Sửa", type: "button", action: BTN_EDIT }],
+    btnGroup: [{ title: t("BTN_EDIT_ACTION"), type: "button", action: BTN_EDIT }],
   },
 ];
 
-export const customerFormConfig: IBaseFormConfig = {
+export const getCustomerFormConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "fullName", label: "Họ tên", required: true, size: 12 },
-    {
-      type: TEXT,
-      name: "phone",
-      label: "Số điện thoại",
-      required: true,
-      size: 6,
-    },
-    { type: TEXT, name: "email", label: "Email", size: 6 },
-    { type: TEXT, name: "idCard", label: "CMND/CCCD", size: 6 },
-    { type: TEXT, name: "address", label: "Địa chỉ", size: 12 },
+    { type: TEXT, name: "fullName", label: t("FIELD_FULL_NAME"), required: true, size: 12 },
+    { type: TEXT, name: "phone", label: t("FIELD_PHONE"), required: true, size: 6 },
+    { type: TEXT, name: "email", label: t("LABEL_EMAIL"), size: 6 },
+    { type: TEXT, name: "idCard", label: t("FIELD_NATIONAL_ID"), size: 6 },
+    { type: TEXT, name: "address", label: t("FIELD_ADDRESS"), size: 12 },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "Lưu", type: "submit", action: BTN_SUBMIT }],
+      childs: [{ title: t("BTN_SAVE"), type: "submit", action: BTN_SUBMIT }],
     },
   ],
-};
+});
 
 export const customerInitialValues = {
   fullName: "",
@@ -57,34 +52,19 @@ export const customerInitialValues = {
   address: "",
 };
 
-export const customerSearchConfig: IBaseFormConfig = {
+export const getCustomerSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "fullName", label: "Họ và tên", size: 3 },
-    { type: TEXT, name: "phone", label: "Số điện thoại", size: 3 },
+    { type: TEXT, name: "fullName", label: t("FIELD_FULL_NAME_SEARCH"), size: 3 },
+    { type: TEXT, name: "phone", label: t("FIELD_PHONE"), size: 3 },
     {
       type: BUTTON,
       size: 6,
       style: { justifyContent: "flex-start" },
       childs: [
-        {
-          title: "Làm mới",
-          type: "button",
-          action: BTN_REFRESH,
-          style: { background: "#757575", color: "#fff" },
-        },
-        {
-          title: "Tìm kiếm",
-          type: "button",
-          action: BTN_SEARCH,
-          style: { background: "#1976d2", color: "#fff" },
-        },
-        {
-          title: "Xuất Excel",
-          type: "button",
-          action: BTN_EXPORT,
-          style: { background: "#2e7d32", color: "#fff" },
-        },
+        { title: t("BTN_REFRESH_ACTION"), type: "button", action: BTN_REFRESH, style: { background: "#757575", color: "#fff" } },
+        { title: t("BTN_SEARCH_ACTION"), type: "button", action: BTN_SEARCH, style: { background: "#1976d2", color: "#fff" } },
+        { title: t("BTN_EXPORT_EXCEL"), type: "button", action: BTN_EXPORT, style: { background: "#2e7d32", color: "#fff" } },
       ],
     },
   ],
-};
+});

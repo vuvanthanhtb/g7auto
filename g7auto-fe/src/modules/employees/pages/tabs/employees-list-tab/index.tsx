@@ -1,6 +1,6 @@
 import BaseFormComponent from "@/libs/components/ui/base-form";
 import BaseTableComponent from "@/libs/components/ui/base-table";
-import { employeeListSearchConfig, employeeListColumns } from "./employees-list-tab.config";
+import { getEmployeeListSearchConfig, getEmployeeListColumns } from "./employees-list-tab.config";
 import { useEmployeesList } from "./use-employees-list";
 import type { EmployeeListSearchForm } from "./employees-list-tab.type";
 
@@ -11,14 +11,14 @@ const EmployeesListTab = () => {
   return (
     <>
       <BaseFormComponent<EmployeeListSearchForm>
-        formConfig={employeeListSearchConfig}
+        formConfig={getEmployeeListSearchConfig()}
         options={{ employeeStatusOptions }}
         handlers={searchHandlers}
         values={searchParams}
         onChange={onchange}
       />
       <BaseTableComponent
-        tableConfig={employeeListColumns}
+        tableConfig={getEmployeeListColumns()}
         reducer="employees"
         state="employeeTable"
         handleCellAction={handleCellAction}

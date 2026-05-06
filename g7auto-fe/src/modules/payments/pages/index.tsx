@@ -14,10 +14,10 @@ import BaseDrawer from "@/libs/components/ui/base-drawer";
 import BaseFormComponent from "@/libs/components/ui/base-form";
 import type { PaymentRequest } from "../shell/payments.type";
 import {
-  paymentColumns,
-  paymentsFormConfig,
+  getPaymentColumns,
+  getPaymentsFormConfig,
   paymentsInitialValues,
-  paymentSearchConfig,
+  getPaymentSearchConfig,
 } from "./payments.config";
 import { paymentsValidation } from "./payments.validation";
 import {
@@ -26,6 +26,7 @@ import {
   BTN_REFRESH,
   BTN_EXPORT,
 } from "@/libs/constants/button.constant";
+import { t } from "@/libs/i18n";
 
 type TableRow = Record<string, unknown>;
 
@@ -38,7 +39,7 @@ const PaymentsPage = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    document.title = "Thanh toán — G7Auto";
+    document.title = t("PAGE_HEADER_PAYMENTS") + " — G7Auto";
     dispatch(getPayments({ page, size: 10 }));
   }, [dispatch, page]);
 
@@ -78,15 +79,15 @@ const PaymentsPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          Quản lý Thanh toán
+          {t("PAGE_HEADER_PAYMENTS")}
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-          Tạo thanh toán
+          {t("BTN_CREATE_PAYMENT")}
         </Button>
       </Box>
-      <BaseFormComponent formConfig={paymentSearchConfig} handlers={searchHandlers} />
+      <BaseFormComponent formConfig={getPaymentSearchConfig()} handlers={searchHandlers} />
       <BaseTableComponent
-        tableConfig={paymentColumns}
+        tableConfig={getPaymentColumns()}
         reducer="payments"
         state="paymentTable"
         handleCellAction={handleCellAction}
@@ -94,11 +95,11 @@ const PaymentsPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? "Chi tiết thanh toán" : "Tạo thanh toán"}
+        title={editId ? t("DRAWER_DETAIL_PAYMENT") : t("BTN_CREATE_PAYMENT")}
         onClose={() => { setDrawerOpen(false); dispatch(clearSelectedPayments()); }}
       >
         <BaseFormComponent
-          formConfig={paymentsFormConfig}
+          formConfig={getPaymentsFormConfig()}
           validationSchema={paymentsValidation}
           values={formValues}
           onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}

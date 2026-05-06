@@ -4,6 +4,7 @@ import ProfileDrawer from "@/modules/profile/components/profile-drawer";
 import {
   Avatar,
   Box,
+  Button,
   Chip,
   Divider,
   IconButton,
@@ -24,15 +25,28 @@ import {
   DIRECTOR,
   SHOWROOM_MANAGER,
 } from "@/libs/constants/roles.constant";
+import { changeLocale } from "@/shell/redux/locale.slice";
+import type { Locale } from "@/libs/i18n/types";
+import { t } from "@/libs/i18n";
 
-const ROLE_LABEL: Record<
+const getRoleLabel = (): Record<
   string,
   { label: string; color: "error" | "warning" | "info" | "success" | "default" }
-> = {
-  [SUPERADMIN]: { label: "Quản trị viên hệ thống", color: "error" },
-  [ADMIN]: { label: "Quản trị viên", color: "warning" },
-  [DIRECTOR]: { label: "Giám đốc", color: "info" },
-  [SHOWROOM_MANAGER]: { label: "Quản lý showroom", color: "success" },
+> => ({
+  [SUPERADMIN]: { label: t("ROLE_SUPERADMIN"), color: "error" },
+  [ADMIN]: { label: t("ROLE_ADMIN"), color: "warning" },
+  [DIRECTOR]: { label: t("ROLE_DIRECTOR"), color: "info" },
+  [SHOWROOM_MANAGER]: { label: t("ROLE_SHOWROOM_MANAGER"), color: "success" },
+});
+
+const LOCALE_FLAGS: Record<Locale, string> = {
+  vi: "🇻🇳",
+  en: "🇬🇧",
+};
+
+const LOCALE_NEXT: Record<Locale, Locale> = {
+  vi: "en",
+  en: "vi",
 };
 
 const HeaderComponent = () => {
@@ -40,7 +54,9 @@ const HeaderComponent = () => {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.auth.user);
   const roles = useAppSelector((state) => state.auth.roles);
+  const locale = useAppSelector((state) => state.locale.locale);
 
+  const ROLE_LABEL = getRoleLabel();
   const primaryRole = [SUPERADMIN, ADMIN, DIRECTOR, SHOWROOM_MANAGER].find(
     (r) => roles.includes(r),
   );
@@ -55,10 +71,35 @@ const HeaderComponent = () => {
     navigate(AUTH_PATH.LOGIN, { replace: true });
   };
 
+  const handleToggleLocale = () => {
+    dispatch(changeLocale(LOCALE_NEXT[locale]));
+  };
+
   const displayName = user?.fullName ?? user?.username ?? "User";
 
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+      <Tooltip title={locale === "vi" ? t("LOCALE_SWITCH_TO_EN") : t("LOCALE_SWITCH_TO_VI")}>
+        <Button
+          size="small"
+          onClick={handleToggleLocale}
+          sx={{
+            minWidth: 44,
+            px: 1,
+            py: 0.25,
+            fontSize: 12,
+            fontWeight: 600,
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: 1,
+            color: "text.primary",
+            "&:hover": { borderColor: "primary.main", bgcolor: "action.hover" },
+          }}
+        >
+          {LOCALE_FLAGS[LOCALE_NEXT[locale]]}&nbsp;{LOCALE_NEXT[locale].toUpperCase()}
+        </Button>
+      </Tooltip>
+
       <Box
         sx={{
           display: { xs: "none", sm: "flex" },
@@ -88,7 +129,7 @@ const HeaderComponent = () => {
         )}
       </Box>
 
-      <Tooltip title="Tài khoản">
+      <Tooltip title={t("TOOLTIP_ACCOUNT")}>
         <IconButton size="small" onClick={(e) => setAnchor(e.currentTarget)}>
           <Avatar
             sx={{
@@ -137,13 +178,13 @@ const HeaderComponent = () => {
           <ListItemIcon>
             <PersonIcon fontSize="small" />
           </ListItemIcon>
-          Hồ sơ
+          {t("MENU_PROFILE")}
         </MenuItem>
         <MenuItem onClick={handleLogout} sx={{ color: "error.main" }}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" color="error" />
           </ListItemIcon>
-          Đăng xuất
+          {t("MENU_LOGOUT")}
         </MenuItem>
       </Menu>
       <ProfileDrawer open={profileOpen} onClose={() => setProfileOpen(false)} />

@@ -5,8 +5,8 @@ import { getApprovedUsers } from "@/modules/accounts/shell/accounts.slice";
 import { useAppDispatch } from "@/shell/redux/hooks";
 import { useState, useEffect } from "react";
 import {
-  approvedSearchConfig,
-  approvedColumns,
+  getApprovedSearchConfig,
+  getApprovedColumns,
   statusOptions,
   approvedInitialValues,
 } from "./approved-users-tab.config";
@@ -57,14 +57,14 @@ const AccountApprovedTab = () => {
   return (
     <>
       <BaseFormComponent<AccountApprovedSearchForm>
-        formConfig={approvedSearchConfig}
+        formConfig={getApprovedSearchConfig()}
         values={searchParams}
         options={{ statusOptions }}
         handlers={searchHandlers}
         onChange={onChange}
       />
       <BaseTableComponent
-        tableConfig={approvedColumns}
+        tableConfig={getApprovedColumns()}
         reducer="accounts"
         state="approvedTable"
         handlePageChange={handlePageChange}

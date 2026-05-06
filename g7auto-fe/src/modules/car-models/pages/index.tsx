@@ -7,51 +7,70 @@ import ImportButton from "@/libs/components/ui/import-button";
 import { carModelsService } from "../shell/car-model.service";
 import { useAppDispatch } from "@/shell/redux/hooks";
 import { getCarModels } from "../shell/car-models.slice";
-import { carModelColumns, carModelFormConfig, carModelSearchConfig } from "./car-models.config";
+import {
+  getCarModelColumns,
+  getCarModelFormConfig,
+  getCarModelSearchConfig,
+} from "./car-models.config";
 import { carModelValidation } from "./car-models.validation";
-import { BTN_SUBMIT } from "@/libs/constants/button.constant";
 import { useCarModels } from "./use-car-models";
+import type { CarModelSearchForm } from "../shell/car-model.type";
+import { t } from "@/libs/i18n";
 
 const CarModelsPage = () => {
   const dispatch = useAppDispatch();
   const {
-    drawerOpen, editId, formValues, page,
-    openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers,
-    setFormValues, setPage,
+    drawerOpen,
+    editId,
+    formValues,
+    openCreate,
+    closeDrawer,
+    handleCellAction,
+    searchHandlers,
+    formHandlers,
+    setFormValues,
+    handlePageChange,
+    handleFormChange,
   } = useCarModels();
 
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          Quản lý Dòng xe
+          {t("PAGE_HEADER_CAR_MODELS")}
         </Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
           <ImportButton
-            onImport={(file) => carModelsService.importFile(file).then((r) => r?.data)}
+            onImport={(file) =>
+              carModelsService.importFile(file).then((r) => r?.data)
+            }
             onDownloadTemplate={() => carModelsService.downloadTemplate()}
-            onSuccess={() => dispatch(getCarModels({ page, size: 10 }))}
+            onSuccess={() => dispatch(getCarModels({ page: 1, size: 10 }))}
           />
           <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-            Thêm mới
+            {t("BTN_ADD_NEW")}
           </Button>
         </Box>
       </Box>
-      <BaseFormComponent formConfig={carModelSearchConfig} handlers={searchHandlers} />
+      <BaseFormComponent<CarModelSearchForm>
+        formConfig={getCarModelSearchConfig()}
+        handlers={searchHandlers}
+        onChange={handleFormChange}
+      />
       <BaseTableComponent
-        tableConfig={carModelColumns}
+        tableConfig={getCarModelColumns()}
         reducer="carModels"
         state="carModelTable"
         handleCellAction={handleCellAction}
-        handlePageChange={(_, p) => setPage(p)}
+        handlePageChange={handlePageChange}
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? "Chỉnh sửa dòng xe" : "Thêm dòng xe"}
+        title={editId ? t("DRAWER_EDIT_CAR_MODEL") : t("DRAWER_ADD_CAR_MODEL")}
         onClose={closeDrawer}
       >
         <BaseFormComponent
-          formConfig={carModelFormConfig}
+          formConfig={getCarModelFormConfig()}
           validationSchema={carModelValidation}
           values={formValues}
           onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}

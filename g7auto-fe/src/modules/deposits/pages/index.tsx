@@ -3,11 +3,12 @@ import AddIcon from "@mui/icons-material/Add";
 import BaseTableComponent from "@/libs/components/ui/base-table";
 import BaseDrawer from "@/libs/components/ui/base-drawer";
 import BaseFormComponent from "@/libs/components/ui/base-form";
-import { depositColumns, depositsFormConfig, depositSearchConfig } from "./deposits.config";
+import { getDepositColumns, getDepositsFormConfig, getDepositSearchConfig } from "./deposits.config";
 import { depositsValidation } from "./deposits.validation";
 import { BTN_SUBMIT } from "@/libs/constants/button.constant";
 import { depositStatusOptions } from "@/libs/constants/options.constant";
 import { useDeposits } from "./use-deposits";
+import { t } from "@/libs/i18n";
 
 const DepositsPage = () => {
   const {
@@ -20,15 +21,15 @@ const DepositsPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          Quản lý Đặt cọc
+          {t("PAGE_HEADER_DEPOSITS")}
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-          Tạo đặt cọc
+          {t("BTN_CREATE_DEPOSIT")}
         </Button>
       </Box>
-      <BaseFormComponent formConfig={depositSearchConfig} options={{ depositStatusOptions }} handlers={searchHandlers} />
+      <BaseFormComponent formConfig={getDepositSearchConfig()} options={{ depositStatusOptions }} handlers={searchHandlers} />
       <BaseTableComponent
-        tableConfig={depositColumns}
+        tableConfig={getDepositColumns()}
         reducer="deposits"
         state="depositTable"
         handleCellAction={handleCellAction}
@@ -36,11 +37,11 @@ const DepositsPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? "Chi tiết đặt cọc" : "Tạo đặt cọc"}
+        title={editId ? t("DRAWER_DETAIL_DEPOSIT") : t("BTN_CREATE_DEPOSIT")}
         onClose={closeDrawer}
       >
         <BaseFormComponent
-          formConfig={depositsFormConfig}
+          formConfig={getDepositsFormConfig()}
           validationSchema={depositsValidation}
           values={formValues}
           onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}

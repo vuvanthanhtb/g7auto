@@ -12,81 +12,49 @@ import type {
   ChangePasswordRequest,
 } from "@/modules/auth/shell/auth.type";
 import * as Yup from "yup";
+import { t } from "@/libs/i18n";
 
-const profileFormConfig: IBaseFormConfig = {
+const getProfileFormConfig = (): IBaseFormConfig => ({
   fields: [
-    {
-      type: TEXT,
-      name: "username",
-      label: "Tên đăng nhập",
-      size: 12,
-      disabled: true,
-    },
-    {
-      type: TEXT,
-      name: "fullName",
-      label: "Họ và tên",
-      required: true,
-      size: 12,
-    },
-    { type: TEXT, name: "email", label: "Email", required: true, size: 12 },
+    { type: TEXT, name: "username", label: t("FIELD_LOGIN_NAME"), size: 12, disabled: true },
+    { type: TEXT, name: "fullName", label: t("FIELD_FULL_NAME_PROFILE"), required: true, size: 12 },
+    { type: TEXT, name: "email", label: t("LABEL_EMAIL"), required: true, size: 12 },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "Lưu thông tin", type: "submit", action: BTN_SUBMIT }],
+      childs: [{ title: t("BTN_SAVE_INFO"), type: "submit", action: BTN_SUBMIT }],
     },
   ],
-};
-
-const profileValidation = Yup.object({
-  fullName: Yup.string().required("Họ và tên không được để trống"),
-  email: Yup.string()
-    .email("Email không hợp lệ")
-    .required("Email không được để trống"),
 });
 
-const passwordFormConfig: IBaseFormConfig = {
+const getProfileValidation = () => Yup.object({
+  fullName: Yup.string().required(t("VALIDATION_FULL_NAME_REQUIRED")),
+  email: Yup.string()
+    .email(t("VALIDATION_EMAIL_INVALID"))
+    .required(t("VALIDATION_EMAIL_REQUIRED")),
+});
+
+const getPasswordFormConfig = (): IBaseFormConfig => ({
   fields: [
-    {
-      type: TEXT,
-      name: "currentPassword",
-      label: "Mật khẩu hiện tại",
-      required: true,
-      size: 12,
-      isPassword: true,
-    },
-    {
-      type: TEXT,
-      name: "newPassword",
-      label: "Mật khẩu mới",
-      required: true,
-      size: 12,
-      isPassword: true,
-    },
-    {
-      type: TEXT,
-      name: "confirmPassword",
-      label: "Xác nhận mật khẩu mới",
-      required: true,
-      size: 12,
-      isPassword: true,
-    },
+    { type: TEXT, name: "currentPassword", label: t("FIELD_CURRENT_PASSWORD"), required: true, size: 12, isPassword: true },
+    { type: TEXT, name: "newPassword", label: t("FIELD_NEW_PASSWORD"), required: true, size: 12, isPassword: true },
+    { type: TEXT, name: "confirmPassword", label: t("FIELD_CONFIRM_PASSWORD"), required: true, size: 12, isPassword: true },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "Đổi mật khẩu", type: "submit", action: BTN_SUBMIT }],
+      childs: [{ title: t("BTN_CHANGE_PASSWORD"), type: "submit", action: BTN_SUBMIT }],
     },
   ],
-};
+});
 
-const passwordValidation = Yup.object({
-  currentPassword: Yup.string().required("Vui lòng nhập mật khẩu hiện tại"),
+const getPasswordValidation = () => Yup.object({
+  currentPassword: Yup.string().required(t("VALIDATION_CURRENT_PASSWORD_REQUIRED")),
   newPassword: Yup.string()
-    .min(6, "Mật khẩu tối thiểu 6 ký tự")
-    .required("Vui lòng nhập mật khẩu mới"),
+    .min(6, t("VALIDATION_NEW_PASSWORD_MIN"))
+    .required(t("VALIDATION_NEW_PASSWORD_REQUIRED")),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("newPassword")], "Mật khẩu xác nhận không khớp")
-    .required("Vui lòng xác nhận mật khẩu"),
+    .oneOf([Yup.ref("newPassword")], t("VALIDATION_CONFIRM_PASSWORD_MATCH"))
+    .required(t("VALIDATION_CONFIRM_PASSWORD_REQUIRED")),
 });
 
 interface Props {
@@ -130,13 +98,13 @@ const ProfileDrawer: React.FC<Props> = ({ open, onClose }) => {
   };
 
   return (
-    <BaseDrawer open={open} onClose={onClose} title="Hồ sơ cá nhân">
+    <BaseDrawer open={open} onClose={onClose} title={t("PROFILE_TITLE")}>
       <Typography variant="subtitle2" fontWeight={600} sx={{ mb: 1 }}>
-        Thông tin cá nhân
+        {t("PROFILE_PERSONAL_INFO")}
       </Typography>
       <BaseFormComponent
-        formConfig={profileFormConfig}
-        validationSchema={profileValidation}
+        formConfig={getProfileFormConfig()}
+        validationSchema={getProfileValidation()}
         values={profileValues}
         onChange={(d) =>
           setProfileValues((p) => ({ ...p, ...d }) as typeof profileValues)
@@ -147,11 +115,11 @@ const ProfileDrawer: React.FC<Props> = ({ open, onClose }) => {
       <Divider sx={{ my: 2 }} />
 
       <Typography variant="subtitle2" fontWeight={600} sx={{ mb: 1 }}>
-        Đổi mật khẩu
+        {t("PROFILE_CHANGE_PASSWORD")}
       </Typography>
       <BaseFormComponent
-        formConfig={passwordFormConfig}
-        validationSchema={passwordValidation}
+        formConfig={getPasswordFormConfig()}
+        validationSchema={getPasswordValidation()}
         values={passwordValues}
         handlers={{ [BTN_SUBMIT]: handleChangePassword }}
       />

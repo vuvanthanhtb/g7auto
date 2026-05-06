@@ -5,8 +5,8 @@ import { BTN_SEARCH, BTN_REFRESH } from "@/libs/constants/button.constant";
 import { useAppDispatch } from "@/shell/redux/hooks";
 import { getApprovedApprovals } from "@/modules/employees/shell/employees.slice";
 import {
-  employeeApprovedColumns,
-  employeeApprovedSearchConfig,
+  getEmployeeApprovedColumns,
+  getEmployeeApprovedSearchConfig,
   approvedInitialValues,
 } from "./employees-approved-tab.config";
 import { parseApprovedFormSearch } from "./employees-approved-tab.utils";
@@ -48,13 +48,13 @@ const EmployeesApprovedTab = () => {
   return (
     <>
       <BaseFormComponent<EmployeeApprovedSearchForm>
-        formConfig={employeeApprovedSearchConfig}
+        formConfig={getEmployeeApprovedSearchConfig()}
         handlers={searchHandlers}
         values={searchParams}
         onChange={onchange}
       />
       <BaseTableComponent
-        tableConfig={employeeApprovedColumns}
+        tableConfig={getEmployeeApprovedColumns()}
         reducer="employees"
         state="approvedTable"
         handlePageChange={handlePageChange}

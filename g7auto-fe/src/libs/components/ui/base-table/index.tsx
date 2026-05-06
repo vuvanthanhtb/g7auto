@@ -11,7 +11,13 @@ import type { ButtonProps } from "@/libs/types/button.type";
 import ButtonComponent from "../button";
 import type { BaseTableColumn } from "@/libs/types/table.type";
 import { BUTTON, CHECKBOX } from "@/libs/constants/form.constant";
-import { NUMERICAL_ORDER, TBL_STRING } from "@/libs/constants/table.constant";
+import {
+  NUMERICAL_ORDER,
+  TBL_NUMBER,
+  TBL_STRING,
+} from "@/libs/constants/table.constant";
+import { formatNumber } from "@/libs/utils";
+import { t } from "@/libs/i18n";
 
 type TableRow = Record<string, unknown>;
 
@@ -149,7 +155,7 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
                   key={`head-${index}`}
                   style={{ textAlign: "center", ...col.style }}
                 >
-                  {col.label}
+                  {t(col.label ?? "")}
                 </th>
               );
             })}
@@ -212,7 +218,7 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
                   );
                 }
 
-                if (col.type === TBL_STRING) {
+                if ([TBL_STRING, TBL_NUMBER].includes(col.type)) {
                   let styleCell: React.CSSProperties = col.styleCell ?? {};
                   if (Array.isArray(col?.refColor)) {
                     styleCell = {
@@ -223,10 +229,16 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
                   return (
                     <td
                       key={`cell-${colIndex}-str`}
-                      style={styleCell}
+                      style={
+                        col.type === TBL_NUMBER
+                          ? { ...styleCell, textAlign: "right" }
+                          : styleCell
+                      }
                       className="align-middle"
                     >
-                      {String(row[col.name] ?? "")}
+                      {col.type === TBL_NUMBER
+                        ? formatNumber(row[col.name] as number)
+                        : String(row[col.name] ?? "")}
                     </td>
                   );
                 }
@@ -264,7 +276,7 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
                             style={btn.style ?? {}}
                             action={btn.action}
                             onClick={() => handleCellAction?.(row, btn.action)}
-                            title={btn.title}
+                            title={t(btn.title ?? "")}
                           />
                         );
                       })}

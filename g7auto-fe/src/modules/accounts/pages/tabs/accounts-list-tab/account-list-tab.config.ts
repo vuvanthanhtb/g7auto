@@ -25,74 +25,67 @@ import {
   roleOptions as baseRoleOptions,
 } from "@/libs/constants/options.constant";
 import type { AccountSearchForm } from "./account-list-tab.type";
+import { t } from "@/libs/i18n";
 
-export const accountColumns: BaseTableColumn[] = [
-  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
-  { name: "username", label: "Tài khoản", type: TBL_STRING },
-  { name: "fullName", label: "Họ tên", type: TBL_STRING },
-  { name: "email", label: "Email", type: TBL_STRING },
-  { name: "role", label: "Vai trò", type: TBL_STRING },
-  { name: "statusDisplay", label: "Trạng thái", type: TBL_STRING },
+export const getAccountColumns = (): BaseTableColumn[] => [
+  { name: "NUMERICAL_ORDER", label: t("LABEL_STT"), type: NUMERICAL_ORDER },
+  { name: "username", label: t("LABEL_ACCOUNT"), type: TBL_STRING },
+  { name: "fullName", label: t("LABEL_FULL_NAME"), type: TBL_STRING },
+  { name: "email", label: t("LABEL_EMAIL"), type: TBL_STRING },
+  { name: "role", label: t("LABEL_ROLE"), type: TBL_STRING },
+  { name: "statusDisplay", label: t("LABEL_STATUS"), type: TBL_STRING },
   {
     name: "createdAt",
-    label: "Ngày tạo",
+    label: t("LABEL_CREATED_AT"),
     type: TBL_STRING,
-    styleCell: {
-      textAlign: "center",
-    },
+    styleCell: { textAlign: "center" },
   },
   {
     name: "createdBy",
-    label: "Người tạo",
+    label: t("LABEL_CREATED_BY"),
     type: TBL_STRING,
-    styleCell: {
-      minWidth: 100,
-    },
+    styleCell: { minWidth: 100 },
   },
   {
     name: "updatedAt",
-    label: "Ngày cập nhật",
+    label: t("LABEL_UPDATED_AT"),
     type: TBL_STRING,
-    styleCell: {
-      textAlign: "center",
-    },
+    styleCell: { textAlign: "center" },
   },
   {
     name: "updatedBy",
-    label: "Người cập nhật",
+    label: t("LABEL_UPDATED_BY"),
     type: TBL_STRING,
-    styleCell: {
-      minWidth: 120,
-    },
+    styleCell: { minWidth: 120 },
   },
   {
     name: "action",
-    label: "Thao tác",
+    label: t("LABEL_ACTION"),
     type: TBL_BUTTON,
     btnGroup: [
       {
-        title: "Hoạt động",
+        title: t("BTN_ACTIVE_ACTION"),
         type: "button",
         action: BTN_ACTIVE,
         refShow: ["status"],
         style: { background: "#2e7d32", color: "#fff" },
       },
       {
-        title: "Ngừng hoạt động",
+        title: t("BTN_INACTIVE_ACTION"),
         type: "button",
         action: BTN_INACTIVE,
         refShow: ["status"],
         style: { background: "#ed6c02", color: "#fff" },
       },
       {
-        title: "Khóa",
+        title: t("BTN_LOCK_ACTION"),
         type: "button",
         action: BTN_LOCK,
         refShow: ["status"],
         style: { background: "#d32f2f", color: "#fff" },
       },
       {
-        title: "Mở khóa",
+        title: t("BTN_UNLOCK_ACTION"),
         type: "button",
         action: BTN_UNLOCK,
         refShow: ["status"],
@@ -133,21 +126,21 @@ export const accountsInitialValues: AccountSearchForm = {
   size: 10,
 };
 
-export const accountSearchConfig: IBaseFormConfig = {
+export const getAccountSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "fullName", label: "Họ tên", size: 3 },
-    { type: TEXT, name: "username", label: "Tài khoản", size: 3 },
+    { type: TEXT, name: "fullName", label: t("LABEL_FULL_NAME"), size: 3 },
+    { type: TEXT, name: "username", label: t("LABEL_ACCOUNT"), size: 3 },
     {
       type: SELECT,
       name: "status",
-      label: "Trạng thái",
+      label: t("LABEL_STATUS"),
       option: "accountStatusOptions",
       size: 3,
     },
     {
       type: SELECT,
       name: "role",
-      label: "Vai trò",
+      label: t("LABEL_ROLE"),
       option: "roleOptions",
       size: 3,
     },
@@ -156,19 +149,19 @@ export const accountSearchConfig: IBaseFormConfig = {
       size: 12,
       childs: [
         {
-          title: "Làm mới",
+          title: t("BTN_REFRESH_ACTION"),
           type: "button",
           action: BTN_REFRESH,
           style: { background: "#757575", color: "#fff" },
         },
         {
-          title: "Tìm kiếm",
+          title: t("BTN_SEARCH_ACTION"),
           type: "button",
           action: BTN_SEARCH,
           style: { background: "#1976d2", color: "#fff" },
         },
         {
-          title: "Xuất Excel",
+          title: t("BTN_EXPORT_EXCEL"),
           type: "button",
           action: BTN_EXPORT,
           style: { background: "#2e7d32", color: "#fff" },
@@ -176,7 +169,7 @@ export const accountSearchConfig: IBaseFormConfig = {
       ],
     },
   ],
-};
+});
 
 export const accountStatusOptions = [
   defaultSelectOption,

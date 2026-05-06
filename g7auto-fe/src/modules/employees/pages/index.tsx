@@ -7,10 +7,11 @@ import EmployeesPendingTab from "./tabs/employees-pending-tab";
 import BaseDrawer from "@/libs/components/ui/base-drawer";
 import BaseFormComponent from "@/libs/components/ui/base-form";
 import { useEmployees } from "./use-employees";
-import { employeeFormConfig } from "./employees.config";
+import { getEmployeeFormConfig } from "./employees.config";
 import { employeeValidation } from "./employees.validation";
 import { useAppSelector } from "@/shell/redux/hooks";
 import { genderOptions } from "@/libs/constants/options.constant";
+import { t } from "@/libs/i18n";
 
 const EmployeePage = () => {
   const [tab, setTab] = useState(0);
@@ -46,14 +47,14 @@ const EmployeePage = () => {
         }}
       >
         <Typography variant="h6" fontWeight={700} className="page-title">
-          Quản lý Nhân viên
+          {t("PAGE_HEADER_EMPLOYEES")}
         </Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={openCreate}
         >
-          Thêm nhân viên
+          {t("BTN_ADD_EMPLOYEE")}
         </Button>
       </Box>
       <Tabs
@@ -61,20 +62,20 @@ const EmployeePage = () => {
         onChange={(_, v) => setTab(v)}
         sx={{ mb: 2, borderBottom: 1, borderColor: "divider" }}
       >
-        <Tab label="Danh sách nhân viên" />
-        <Tab label="Chờ phê duyệt" />
-        <Tab label="Đã phê duyệt" />
+        <Tab label={t("TAB_EMPLOYEE_LIST")} />
+        <Tab label={t("TAB_PENDING_APPROVAL")} />
+        <Tab label={t("TAB_APPROVED")} />
       </Tabs>
       {tab === 0 && <EmployeesListTab />}
       {tab === 1 && <EmployeesPendingTab />}
       {tab === 2 && <EmployeesApprovedTab />}
       <BaseDrawer
         open={drawerOpen}
-        title="Thêm nhân viên"
+        title={t("BTN_ADD_EMPLOYEE")}
         onClose={closeDrawer}
       >
         <BaseFormComponent
-          formConfig={employeeFormConfig}
+          formConfig={getEmployeeFormConfig()}
           validationSchema={employeeValidation}
           values={formValues}
           options={{ genderOptions, showroomOptions }}

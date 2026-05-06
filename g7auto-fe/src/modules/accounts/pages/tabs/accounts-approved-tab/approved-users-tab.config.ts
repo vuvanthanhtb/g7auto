@@ -12,46 +12,43 @@ import {
   userApprovalStatusOptions,
 } from "@/libs/constants/options.constant";
 import type { AccountApprovedSearchForm } from "./approved-users-tab.type";
+import { t } from "@/libs/i18n";
 
-export const approvedColumns: BaseTableColumn[] = [
-  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
-  { name: "username", label: "Tài khoản", type: TBL_STRING },
-  { name: "fullName", label: "Họ tên", type: TBL_STRING },
-  { name: "email", label: "Email", type: TBL_STRING },
-  { name: "actionDisplay", label: "Yêu cầu thay đổi", type: TBL_STRING },
+export const getApprovedColumns = (): BaseTableColumn[] => [
+  { name: "NUMERICAL_ORDER", label: t("LABEL_STT"), type: NUMERICAL_ORDER },
+  { name: "username", label: t("LABEL_ACCOUNT"), type: TBL_STRING },
+  { name: "fullName", label: t("LABEL_FULL_NAME"), type: TBL_STRING },
+  { name: "email", label: t("LABEL_EMAIL"), type: TBL_STRING },
+  { name: "actionDisplay", label: t("LABEL_CHANGE_REQUEST"), type: TBL_STRING },
   {
     name: "statusDisplay",
-    label: "Trạng thái",
+    label: t("LABEL_STATUS"),
     type: TBL_STRING,
     refColor: ["statusApproving"],
   },
   {
     name: "createdAt",
-    label: "Ngày tạo",
+    label: t("LABEL_CREATED_AT"),
     type: TBL_STRING,
-    styleCell: {
-      textAlign: "center",
-    },
+    styleCell: { textAlign: "center" },
   },
   {
     name: "updatedAt",
-    label: "Ngày duyệt",
+    label: t("LABEL_APPROVED_AT"),
     type: TBL_STRING,
-    styleCell: {
-      textAlign: "center",
-    },
+    styleCell: { textAlign: "center" },
   },
-  { name: "updatedBy", label: "Người duyệt", type: TBL_STRING },
+  { name: "updatedBy", label: t("LABEL_APPROVED_BY"), type: TBL_STRING },
 ];
 
-export const approvedSearchConfig: IBaseFormConfig = {
+export const getApprovedSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "fullName", label: "Họ tên", size: 3 },
-    { type: TEXT, name: "username", label: "Tài khoản", size: 3 },
+    { type: TEXT, name: "fullName", label: t("LABEL_FULL_NAME"), size: 3 },
+    { type: TEXT, name: "username", label: t("LABEL_ACCOUNT"), size: 3 },
     {
       type: SELECT,
       name: "statusApproving",
-      label: "Trạng thái",
+      label: t("LABEL_STATUS"),
       option: "statusOptions",
       size: 3,
     },
@@ -60,13 +57,13 @@ export const approvedSearchConfig: IBaseFormConfig = {
       size: 12,
       childs: [
         {
-          title: "Làm mới",
+          title: t("BTN_REFRESH_ACTION"),
           type: "button",
           action: BTN_REFRESH,
           style: { background: "#757575", color: "#fff" },
         },
         {
-          title: "Tìm kiếm",
+          title: t("BTN_SEARCH_ACTION"),
           type: "button",
           action: BTN_SEARCH,
           style: { background: "#1976d2", color: "#fff" },
@@ -74,7 +71,7 @@ export const approvedSearchConfig: IBaseFormConfig = {
       ],
     },
   ],
-};
+});
 
 export const approvedInitialValues: AccountApprovedSearchForm = {
   username: "",

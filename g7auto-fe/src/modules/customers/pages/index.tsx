@@ -7,10 +7,11 @@ import ImportButton from "@/libs/components/ui/import-button";
 import { customersService } from "../shell/customers.service";
 import { useAppDispatch } from "@/shell/redux/hooks";
 import { getCustomers } from "../shell/customers.slice";
-import { customerColumns, customerFormConfig, customerSearchConfig } from "./customers.config";
+import { getCustomerColumns, getCustomerFormConfig, getCustomerSearchConfig } from "./customers.config";
 import { customerValidation } from "./customers.validation";
 import { BTN_SUBMIT } from "@/libs/constants/button.constant";
 import { useCustomers } from "./use-customers";
+import { t } from "@/libs/i18n";
 
 const CustomersPage = () => {
   const dispatch = useAppDispatch();
@@ -24,7 +25,7 @@ const CustomersPage = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          Quản lý Khách hàng
+          {t("PAGE_HEADER_CUSTOMERS")}
         </Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
           <ImportButton
@@ -33,13 +34,13 @@ const CustomersPage = () => {
             onSuccess={() => dispatch(getCustomers({ page, size: 10 }))}
           />
           <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-            Thêm khách hàng
+            {t("BTN_ADD_CUSTOMER")}
           </Button>
         </Box>
       </Box>
-      <BaseFormComponent formConfig={customerSearchConfig} handlers={searchHandlers} />
+      <BaseFormComponent formConfig={getCustomerSearchConfig()} handlers={searchHandlers} />
       <BaseTableComponent
-        tableConfig={customerColumns}
+        tableConfig={getCustomerColumns()}
         reducer="customers"
         state="customerTable"
         handleCellAction={handleCellAction}
@@ -47,11 +48,11 @@ const CustomersPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? "Chỉnh sửa khách hàng" : "Thêm khách hàng"}
+        title={editId ? t("DRAWER_EDIT_CUSTOMER") : t("BTN_ADD_CUSTOMER")}
         onClose={closeDrawer}
       >
         <BaseFormComponent
-          formConfig={customerFormConfig}
+          formConfig={getCustomerFormConfig()}
           validationSchema={customerValidation}
           values={formValues}
           onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}

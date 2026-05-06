@@ -4,13 +4,14 @@ import BaseTableComponent from "@/libs/components/ui/base-table";
 import BaseDrawer from "@/libs/components/ui/base-drawer";
 import BaseFormComponent from "@/libs/components/ui/base-form";
 import {
-  carTransferColumns,
-  carTransfersFormConfig,
-  carTransferSearchConfig,
+  getCarTransferColumns,
+  getCarTransfersFormConfig,
+  getCarTransferSearchConfig,
 } from "./car-transfers.config";
 import { carTransfersValidation } from "./car-transfers.validation";
 import { transferStatusOptions } from "@/libs/constants/options.constant";
 import { useCarTransfers } from "./use-car-transfers";
+import { t } from "@/libs/i18n";
 
 const CarTransfersPage = () => {
   const {
@@ -29,32 +30,21 @@ const CarTransfersPage = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-        }}
-      >
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h6" fontWeight={700} className="page-title">
-          Quản lý Điều chuyển xe
+          {t("PAGE_HEADER_TRANSFERS")}
         </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={openCreate}
-        >
-          Tạo phiếu
+        <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
+          {t("BTN_CREATE_TRANSFER")}
         </Button>
       </Box>
       <BaseFormComponent
-        formConfig={carTransferSearchConfig}
+        formConfig={getCarTransferSearchConfig()}
         options={{ transferStatusOptions }}
         handlers={searchHandlers}
       />
       <BaseTableComponent
-        tableConfig={carTransferColumns}
+        tableConfig={getCarTransferColumns()}
         reducer="carTransfers"
         state="carTransferTable"
         handleCellAction={handleCellAction}
@@ -62,11 +52,11 @@ const CarTransfersPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? "Chi tiết điều chuyển" : "Tạo phiếu điều chuyển"}
+        title={editId ? t("DRAWER_DETAIL_TRANSFER") : t("DRAWER_CREATE_TRANSFER")}
         onClose={closeDrawer}
       >
         <BaseFormComponent
-          formConfig={carTransfersFormConfig}
+          formConfig={getCarTransfersFormConfig()}
           validationSchema={carTransfersValidation}
           values={formValues}
           onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}

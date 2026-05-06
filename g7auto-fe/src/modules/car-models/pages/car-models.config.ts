@@ -10,59 +10,72 @@ import { BUTTON, TEXT, NUMBER_INPUT } from "@/libs/constants/form.constant";
 import {
   NUMERICAL_ORDER,
   TBL_BUTTON,
+  TBL_NUMBER,
   TBL_STRING,
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
+import { t } from "@/libs/i18n";
 
-export const carModelColumns: BaseTableColumn[] = [
-  { name: "NUMERICAL_ORDER", label: "STT", type: NUMERICAL_ORDER },
-  { name: "name", label: "Tên dòng xe", type: TBL_STRING },
-  { name: "manufacturer", label: "Hãng", type: TBL_STRING },
-  { name: "year", label: "Năm SX", type: TBL_STRING },
-  { name: "listedPrice", label: "Giá niêm yết", type: TBL_STRING },
+export const getCarModelColumns = (): BaseTableColumn[] => [
+  { name: "NUMERICAL_ORDER", label: "LABEL_STT", type: NUMERICAL_ORDER },
+  { name: "name", label: "LABEL_CAR_MODEL_NAME", type: TBL_STRING },
+  { name: "manufacturer", label: "LABEL_MANUFACTURER", type: TBL_STRING },
+  {
+    name: "year",
+    label: "LABEL_YEAR",
+    type: TBL_STRING,
+    styleCell: { textAlign: "center" },
+  },
+  { name: "listedPrice", label: "LABEL_LISTED_PRICE", type: TBL_NUMBER },
   {
     name: "action",
-    label: "Thao tác",
+    label: "LABEL_ACTION",
     type: TBL_BUTTON,
+    styleCell: { justifyContent: "center" },
     btnGroup: [
-      { title: "Sửa", type: "button", action: BTN_EDIT },
-      { title: "Xóa", type: "button", action: BTN_DELETE },
+      { title: "BTN_EDIT_ACTION", type: "button", action: BTN_EDIT },
+      { title: "BTN_DELETE_ACTION", type: "button", action: BTN_DELETE },
     ],
   },
 ];
 
-export const carModelFormConfig: IBaseFormConfig = {
+export const getCarModelFormConfig = (): IBaseFormConfig => ({
   fields: [
     {
       type: TEXT,
       name: "name",
-      label: "Tên dòng xe",
+      label: "FIELD_CAR_MODEL_NAME",
       required: true,
       size: 12,
     },
     {
       type: TEXT,
       name: "manufacturer",
-      label: "Hãng sản xuất",
+      label: "FIELD_MANUFACTURER",
       required: true,
       size: 6,
     },
-    { type: NUMBER_INPUT, name: "year", label: "Năm sản xuất", size: 6 },
+    { type: NUMBER_INPUT, name: "year", label: "FIELD_YEAR", size: 6 },
     {
       type: NUMBER_INPUT,
       name: "listedPrice",
-      label: "Giá niêm yết (VND)",
+      label: "FIELD_LISTED_PRICE",
       size: 12,
     },
-    { type: TEXT, name: "description", label: "Mô tả", size: 12 },
+    {
+      type: TEXT,
+      name: "description",
+      label: t("FIELD_DESCRIPTION"),
+      size: 12,
+    },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "Lưu", type: "submit", action: BTN_SUBMIT }],
+      childs: [{ title: "BTN_SAVE", type: "submit", action: BTN_SUBMIT }],
     },
   ],
-};
+});
 
 export const carModelInitialValues = {
   name: "",
@@ -72,28 +85,33 @@ export const carModelInitialValues = {
   description: "",
 };
 
-export const carModelSearchConfig: IBaseFormConfig = {
+export const getCarModelSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "name", label: "Tên dòng xe", size: 3 },
-    { type: TEXT, name: "manufacturer", label: "Hãng xe", size: 3 },
+    { type: TEXT, name: "name", label: "FIELD_CAR_MODEL_NAME", size: 3 },
+    {
+      type: TEXT,
+      name: "manufacturer",
+      label: "FIELD_MANUFACTURER_SEARCH",
+      size: 3,
+    },
     {
       type: BUTTON,
       size: 6,
       childs: [
         {
-          title: "Làm mới",
+          title: "BTN_REFRESH_ACTION",
           type: "button",
           action: BTN_REFRESH,
           style: { background: "#757575", color: "#fff" },
         },
         {
-          title: "Tìm kiếm",
+          title: "BTN_SEARCH_ACTION",
           type: "button",
           action: BTN_SEARCH,
           style: { background: "#1976d2", color: "#fff" },
         },
         {
-          title: "Xuất Excel",
+          title: "BTN_EXPORT_EXCEL",
           type: "button",
           action: BTN_EXPORT,
           style: { background: "#2e7d32", color: "#fff" },
@@ -101,4 +119,4 @@ export const carModelSearchConfig: IBaseFormConfig = {
       ],
     },
   ],
-};
+});

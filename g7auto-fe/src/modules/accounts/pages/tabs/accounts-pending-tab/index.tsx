@@ -16,8 +16,8 @@ import { useAppDispatch } from "@/shell/redux/hooks";
 import { useState, useEffect } from "react";
 import { type TableRow } from "../../account.utils";
 import {
-  pendingSearchConfig,
-  pendingColumns,
+  getPendingSearchConfig,
+  getPendingColumns,
   pendingInitialValues,
 } from "./pending-approvals-tab.config";
 import type { AccountPendingSearchForm } from "./pending-approvals-tab.type";
@@ -73,13 +73,13 @@ const AccountsPendingTab = () => {
   return (
     <>
       <BaseFormComponent<AccountPendingSearchForm>
-        formConfig={pendingSearchConfig}
+        formConfig={getPendingSearchConfig()}
         options={{ userApproveActionOptions }}
         handlers={searchHandlers}
         onChange={onchange}
       />
       <BaseTableComponent
-        tableConfig={pendingColumns}
+        tableConfig={getPendingColumns()}
         reducer="accounts"
         state="pendingTable"
         handleCellAction={handleCellAction}
