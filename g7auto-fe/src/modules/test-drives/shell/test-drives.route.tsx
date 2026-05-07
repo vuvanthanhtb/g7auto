@@ -9,7 +9,7 @@ export const TEST_DRIVES_CONFIG: RouteMeta[] = [
     key: "test-drives",
     path: TEST_DRIVES_PATH.BASE,
     pathOriginal: TEST_DRIVES_PATH.BASE,
-    label: "Lái thử",
+    label: "MENU_TEST_DRIVES",
     icon: <DriveEtaIcon />,
     isAuth: true,
     roles: ["SUPERADMIN", "ADMIN", "DIRECTOR", "SHOWROOM_MANAGER", "SALES"],

@@ -3,6 +3,7 @@ package com.g7auto.application.mapper;
 import com.g7auto.application.dto.request.EmployeeRequest;
 import com.g7auto.application.dto.response.EmployeeResponse;
 import com.g7auto.core.entity.ApprovingStatus;
+import com.g7auto.domain.entity.Account;
 import com.g7auto.domain.entity.Employee;
 import com.g7auto.domain.entity.EmployeeApproval;
 import org.mapstruct.AfterMapping;
@@ -41,4 +42,13 @@ public interface EmployeeApprovalMapper {
   @Mapping(target = "updatedBy", ignore = true)
   void mapEmployeeToEmployeeApproval(Employee employee,
       @MappingTarget EmployeeApproval employeeApproval);
+
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
+  @Mapping(target = "createdBy", ignore = true)
+  @Mapping(target = "updatedBy", ignore = true)
+  void mapEmployeeApprovalToAccount(EmployeeApproval employeeApproval,
+      @MappingTarget Account account);
 }

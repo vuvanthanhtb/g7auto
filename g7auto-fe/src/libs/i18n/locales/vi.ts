@@ -89,6 +89,23 @@ export const vi: Record<string, string> = {
   COMMON_MENU_LOGOUT: "Đăng xuất",
   COMMON_LOCALE_EN: "Switch to English",
   COMMON_LOCALE_VI: "Chuyển sang Tiếng Việt",
+  COMMON_LOCALE_ZH: "切换到中文",
+
+  // === SIDEBAR MENU ===
+  MENU_HOME: "Tổng quan",
+  MENU_SHOWROOMS: "Showroom",
+  MENU_CAR_MODELS: "Dòng xe",
+  MENU_CARS: "Kho xe",
+  MENU_CUSTOMERS: "Khách hàng",
+  MENU_EMPLOYEES: "Nhân viên",
+  MENU_CAR_TRANSFERS: "Điều chuyển xe",
+  MENU_CONTRACTS: "Hợp đồng",
+  MENU_DEPOSITS: "Đặt cọc",
+  MENU_QUOTATIONS: "Báo giá",
+  MENU_PAYMENTS: "Thanh toán",
+  MENU_SERVICE_HISTORY: "Lịch sử dịch vụ",
+  MENU_TEST_DRIVES: "Lái thử",
+  MENU_ACCOUNTS: "Tài khoản",
 
   // === HOME ===
   HOME_PAGE_TITLE: "Tổng quan — G7Auto",

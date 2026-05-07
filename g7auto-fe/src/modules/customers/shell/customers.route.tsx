@@ -9,7 +9,7 @@ export const CUSTOMERS_CONFIG: RouteMeta[] = [
     key: "customers",
     path: CUSTOMERS_PATH.BASE,
     pathOriginal: CUSTOMERS_PATH.BASE,
-    label: "Khách hàng",
+    label: "MENU_CUSTOMERS",
     icon: <PeopleIcon />,
     isAuth: true,
     roles: ["SUPERADMIN", "ADMIN", "DIRECTOR", "SHOWROOM_MANAGER", "SALES"],

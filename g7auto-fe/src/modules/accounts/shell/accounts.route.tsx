@@ -9,7 +9,7 @@ export const ACCOUNTS_CONFIG: RouteMeta[] = [
     key: "accounts",
     path: ACCOUNTS_PATH.BASE,
     pathOriginal: ACCOUNTS_PATH.BASE,
-    label: "Tài khoản",
+    label: "MENU_ACCOUNTS",
     icon: <ManageAccountsIcon />,
     isAuth: true,
     roles: ["SUPERADMIN", "ADMIN"],

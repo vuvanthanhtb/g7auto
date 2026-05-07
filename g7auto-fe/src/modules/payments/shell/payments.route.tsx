@@ -9,7 +9,7 @@ export const PAYMENTS_CONFIG: RouteMeta[] = [
     key: "payments",
     path: PAYMENTS_PATH.BASE,
     pathOriginal: PAYMENTS_PATH.BASE,
-    label: "Thanh toán",
+    label: "MENU_PAYMENTS",
     icon: <PaymentIcon />,
     isAuth: true,
     roles: ["SUPERADMIN", "ADMIN", "DIRECTOR", "SHOWROOM_MANAGER", "ACCOUNTANT"],

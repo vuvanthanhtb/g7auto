@@ -89,6 +89,23 @@ export const en: Record<string, string> = {
   COMMON_MENU_LOGOUT: "Logout",
   COMMON_LOCALE_EN: "Switch to English",
   COMMON_LOCALE_VI: "Chuyển sang Tiếng Việt",
+  COMMON_LOCALE_ZH: "切换到中文",
+
+  // === SIDEBAR MENU ===
+  MENU_HOME: "Overview",
+  MENU_SHOWROOMS: "Showrooms",
+  MENU_CAR_MODELS: "Car Models",
+  MENU_CARS: "Car Inventory",
+  MENU_CUSTOMERS: "Customers",
+  MENU_EMPLOYEES: "Employees",
+  MENU_CAR_TRANSFERS: "Car Transfers",
+  MENU_CONTRACTS: "Contracts",
+  MENU_DEPOSITS: "Deposits",
+  MENU_QUOTATIONS: "Quotations",
+  MENU_PAYMENTS: "Payments",
+  MENU_SERVICE_HISTORY: "Service History",
+  MENU_TEST_DRIVES: "Test Drives",
+  MENU_ACCOUNTS: "Accounts",
 
   // === HOME ===
   HOME_PAGE_TITLE: "Overview — G7Auto",

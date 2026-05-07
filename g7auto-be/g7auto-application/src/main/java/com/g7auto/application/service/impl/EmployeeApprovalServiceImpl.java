@@ -12,6 +12,7 @@ import com.g7auto.application.mapper.EmployeeMapper;
 import com.g7auto.application.service.EmployeeApprovalService;
 import com.g7auto.core.constant.codes.AuthErrorCode;
 import com.g7auto.core.constant.codes.SuccessCode;
+import com.g7auto.core.entity.AccountStatus;
 import com.g7auto.core.entity.ApprovingStatus;
 import com.g7auto.core.entity.EmployeeApprovalAction;
 import com.g7auto.core.entity.EmployeeStatus;
@@ -29,6 +30,7 @@ import com.g7auto.infrastructure.persistence.AccountRepository;
 import com.g7auto.infrastructure.persistence.EmployeeApprovalRepository;
 import com.g7auto.infrastructure.persistence.EmployeeRepository;
 import com.g7auto.infrastructure.persistence.query.EmployeeApprovalQueryRepository;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -143,29 +145,40 @@ public class EmployeeApprovalServiceImpl implements EmployeeApprovalService {
 
     validateActionOnTarget(account.getRoles());
 
+    boolean isApproved = action.equalsIgnoreCase("APPROVE");
+
     employeeApproval.setStatusApproving(
-        action.equals("APPROVE") ? ApprovingStatus.APPROVED
-            : ApprovingStatus.REJECTED);
+        isApproved ? ApprovingStatus.APPROVED : ApprovingStatus.REJECTED);
 
-    Employee employee = new Employee();
-    employeeMapper.mapEmployeeApprovalToEmployee(employeeApproval, employee);
+    if (isApproved) {
+      Employee employee = new Employee();
+      employeeMapper.mapEmployeeApprovalToEmployee(employeeApproval, employee);
 
-    EmployeeApprovalAction actionApprove = employeeApproval.getEmployeeApprovalAction();
-    if (actionApprove.equals(EmployeeApprovalAction.CREATE)) {
-      employee.setEmployeeStatus(EmployeeStatus.ACTIVE);
-    } else if (actionApprove.equals(EmployeeApprovalAction.UPDATE)) {
-      Employee emp =
-          employeeRepository.findByUsername(username)
-              .orElseThrow(() -> NotFoundUtils.usernameNotFound(username));
-      employee.setId(emp.getId());
-      employee.setEmployeeStatus(EmployeeStatus.ACTIVE);
-    } else if (actionApprove.equals(EmployeeApprovalAction.DELETE)) {
-      employee.setEmployeeStatus(EmployeeStatus.LEAVED);
-    } else {
-      throw new RuntimeException("action status invalid");
+      Account accountApproval = accountRepository.findByUsername(employeeApproval.getUsername())
+          .orElse(null);
+      employeeApprovalMapper.mapEmployeeApprovalToAccount(employeeApproval, accountApproval);
+      Objects.requireNonNull(accountApproval).setStatus(AccountStatus.ACTIVE);
+
+      EmployeeApprovalAction actionApprove = employeeApproval.getEmployeeApprovalAction();
+      if (actionApprove.equals(EmployeeApprovalAction.CREATE)) {
+        employee.setEmployeeStatus(EmployeeStatus.ACTIVE);
+      } else if (actionApprove.equals(EmployeeApprovalAction.UPDATE)) {
+        Employee emp =
+            employeeRepository.findByUsername(username)
+                .orElseThrow(() -> NotFoundUtils.usernameNotFound(username));
+        employee.setId(emp.getId());
+        employee.setEmployeeStatus(EmployeeStatus.ACTIVE);
+      } else if (actionApprove.equals(EmployeeApprovalAction.DELETE)) {
+        employee.setEmployeeStatus(EmployeeStatus.LEAVED);
+        Objects.requireNonNull(accountApproval).setStatus(AccountStatus.INACTIVE);
+      } else {
+        throw new RuntimeException("action status invalid");
+      }
+
+      employeeRepository.save(employee);
+      accountRepository.save(Objects.requireNonNull(accountApproval));
     }
 
-    employeeRepository.save(employee);
     employeeApprovalRepository.save(employeeApproval);
 
     return SuccessCode.G7_AUTO_00002;

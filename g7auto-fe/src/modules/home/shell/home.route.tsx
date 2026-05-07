@@ -9,7 +9,7 @@ export const HOME_CONFIG: RouteMeta[] = [
     key: "home",
     path: HOME_PATH.BASE,
     pathOriginal: HOME_PATH.BASE,
-    label: "Tổng quan",
+    label: "MENU_HOME",
     icon: <HomeIcon />,
     isAuth: false,
     roles: [],

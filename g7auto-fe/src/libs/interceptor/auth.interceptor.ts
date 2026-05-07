@@ -5,8 +5,10 @@ import { TokenService } from "./token.service";
 import { AuthService } from "./auth.service";
 import HTTP_CONFIG from "./http.config";
 
+const MAX_RETRY = 3;
+
 interface RetryableRequest extends AxiosRequestConfig {
-  _retry?: boolean;
+  _retryCount?: number;
 }
 
 type QueueItem = {
@@ -46,7 +48,13 @@ export const setupAuthInterceptor = () => {
       const originalRequest = error.config as RetryableRequest;
       const isAuthEndpoint = originalRequest.url?.includes("/api/auth/");
 
-      if (error.response?.status !== 401 || originalRequest._retry || isAuthEndpoint) {
+      originalRequest._retryCount = (originalRequest._retryCount ?? 0) + 1;
+
+      if (
+        error.response?.status !== 401 ||
+        isAuthEndpoint ||
+        originalRequest._retryCount > MAX_RETRY
+      ) {
         return Promise.reject(error);
       }
 
@@ -60,12 +68,14 @@ export const setupAuthInterceptor = () => {
         return new Promise<string>((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         }).then((newToken) => {
-          originalRequest.headers = { ...originalRequest.headers, Authorization: `Bearer ${newToken}` };
+          originalRequest.headers = {
+            ...originalRequest.headers,
+            Authorization: `Bearer ${newToken}`,
+          };
           return axiosClient(originalRequest);
         });
       }
 
-      originalRequest._retry = true;
       isRefreshing = true;
 
       try {
@@ -79,7 +89,10 @@ export const setupAuthInterceptor = () => {
         const newRefreshToken: string = data.data.refreshToken ?? refreshToken;
         TokenService.setTokens(newAccessToken, newRefreshToken);
         processQueue(null, newAccessToken);
-        originalRequest.headers = { ...originalRequest.headers, Authorization: `Bearer ${newAccessToken}` };
+        originalRequest.headers = {
+          ...originalRequest.headers,
+          Authorization: `Bearer ${newAccessToken}`,
+        };
         return axiosClient(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);

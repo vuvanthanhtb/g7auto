@@ -1,12 +1,14 @@
 import { vi } from "./locales/vi";
 import { en } from "./locales/en";
+import { zh } from "./locales/zh";
 import type { Locale } from "./types";
 
 const LOCALE_KEY = "g7_locale";
-const locales: Record<Locale, Record<string, string>> = { vi, en };
+const locales: Record<Locale, Record<string, string>> = { vi, en, zh };
+const VALID_LOCALES: Locale[] = ["vi", "en", "zh"];
 
 const stored = localStorage.getItem(LOCALE_KEY) as Locale;
-let currentLocale: Locale = stored === "en" ? "en" : "vi";
+let currentLocale: Locale = VALID_LOCALES.includes(stored) ? stored : "vi";
 
 export const getLocale = (): Locale => currentLocale;
 

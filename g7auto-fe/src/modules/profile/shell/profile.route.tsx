@@ -8,7 +8,7 @@ export const PROFILE_CONFIG: RouteMeta[] = [
     key: "profile",
     path: PROFILE_PATH.BASE,
     pathOriginal: PROFILE_PATH.BASE,
-    label: "Hồ sơ",
+    label: "MENU_PROFILE",
     isAuth: false,
     roles: [],
     hidden: true,

@@ -22,6 +22,7 @@ import { SUPERADMIN } from "@/libs/constants/roles.constant";
 import { PATHS_CONFIG } from "@/shell/route/path.config";
 import HeaderComponent from "./header.component";
 import ClockComponent from "./clock.component";
+import { t } from "@/libs/i18n";
 
 const DRAWER_WIDTH = 230;
 
@@ -30,6 +31,7 @@ const MainLayout = () => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const roles = useSelector((state: RootState) => state.auth.roles);
+  const locale = useSelector((state: RootState) => state.locale.locale);
 
   const navItems = PATHS_CONFIG.filter(
     (r) =>
@@ -66,7 +68,7 @@ const MainLayout = () => {
               >
                 <ListItemIcon sx={{ minWidth: 36 }}>{route.icon}</ListItemIcon>
                 <ListItemText
-                  primary={route.label}
+                  primary={t(route.label ?? "")}
                   slotProps={{
                     primary: { fontSize: 14, fontWeight: isActive ? 600 : 400 },
                   }}
@@ -127,10 +129,10 @@ const MainLayout = () => {
               </Box>
             </Box>
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Box sx={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
             <ClockComponent />
-            <HeaderComponent />
           </Box>
+          <HeaderComponent />
         </Toolbar>
       </AppBar>
 
@@ -178,7 +180,7 @@ const MainLayout = () => {
           },
         }}
       >
-        <Outlet />
+        <Outlet key={locale} />
       </Box>
     </Box>
   );

@@ -9,7 +9,7 @@ export const QUOTATIONS_CONFIG: RouteMeta[] = [
     key: "quotations",
     path: QUOTATIONS_PATH.BASE,
     pathOriginal: QUOTATIONS_PATH.BASE,
-    label: "Báo giá",
+    label: "MENU_QUOTATIONS",
     icon: <RequestQuoteIcon />,
     isAuth: true,
     roles: ["SUPERADMIN", "ADMIN", "DIRECTOR", "SHOWROOM_MANAGER", "SALES"],

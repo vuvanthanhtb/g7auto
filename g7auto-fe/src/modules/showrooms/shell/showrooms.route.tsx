@@ -9,7 +9,7 @@ export const SHOWROOMS_CONFIG: RouteMeta[] = [
     key: "showrooms",
     path: SHOWROOMS_PATH.BASE,
     pathOriginal: SHOWROOMS_PATH.BASE,
-    label: "Showroom",
+    label: "MENU_SHOWROOMS",
     icon: <StoreIcon />,
     isAuth: true,
     roles: ["SUPERADMIN", "ADMIN", "DIRECTOR"],

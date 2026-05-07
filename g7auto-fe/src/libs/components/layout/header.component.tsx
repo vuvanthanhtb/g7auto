@@ -36,18 +36,25 @@ const getRoleLabel = (): Record<
   [SUPERADMIN]: { label: t("COMMON_ROLE_SUPERADMIN"), color: "error" },
   [ADMIN]: { label: t("COMMON_ROLE_ADMIN"), color: "warning" },
   [DIRECTOR]: { label: t("COMMON_ROLE_DIRECTOR"), color: "info" },
-  [SHOWROOM_MANAGER]: { label: t("COMMON_ROLE_SHOWROOM_MANAGER"), color: "success" },
+  [SHOWROOM_MANAGER]: {
+    label: t("COMMON_ROLE_SHOWROOM_MANAGER"),
+    color: "success",
+  },
 });
 
 const LOCALE_FLAGS: Record<Locale, string> = {
   vi: "🇻🇳",
   en: "🇬🇧",
+  zh: "🇨🇳",
 };
 
-const LOCALE_NEXT: Record<Locale, Locale> = {
-  vi: "en",
-  en: "vi",
+const LOCALE_LABELS: Record<Locale, string> = {
+  vi: "VI",
+  en: "EN",
+  zh: "中文",
 };
+
+const LOCALES: Locale[] = ["vi", "en", "zh"];
 
 const HeaderComponent = () => {
   const dispatch = useAppDispatch();
@@ -63,6 +70,7 @@ const HeaderComponent = () => {
   const roleInfo = primaryRole ? ROLE_LABEL[primaryRole] : null;
 
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
+  const [localeAnchor, setLocaleAnchor] = useState<null | HTMLElement>(null);
   const [profileOpen, setProfileOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -71,34 +79,56 @@ const HeaderComponent = () => {
     navigate(AUTH_PATH.LOGIN, { replace: true });
   };
 
-  const handleToggleLocale = () => {
-    dispatch(changeLocale(LOCALE_NEXT[locale]));
-  };
-
   const displayName = user?.fullName ?? user?.username ?? "User";
 
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-      <Tooltip title={locale === "vi" ? t("COMMON_LOCALE_EN") : t("COMMON_LOCALE_VI")}>
-        <Button
-          size="small"
-          onClick={handleToggleLocale}
-          sx={{
-            minWidth: 44,
-            px: 1,
-            py: 0.25,
-            fontSize: 12,
-            fontWeight: 600,
-            border: "1px solid",
-            borderColor: "divider",
-            borderRadius: 1,
-            color: "text.primary",
-            "&:hover": { borderColor: "primary.main", bgcolor: "action.hover" },
-          }}
-        >
-          {LOCALE_FLAGS[LOCALE_NEXT[locale]]}&nbsp;{LOCALE_NEXT[locale].toUpperCase()}
-        </Button>
-      </Tooltip>
+      <Button
+        size="small"
+        onClick={(e) => setLocaleAnchor(e.currentTarget)}
+        sx={{
+          minWidth: 44,
+          px: 1,
+          py: 0.25,
+          fontSize: 12,
+          fontWeight: 600,
+          border: "1px solid",
+          borderColor: "divider",
+          borderRadius: 1,
+          color: "text.primary",
+          "&:hover": { borderColor: "primary.main", bgcolor: "action.hover" },
+          marginRight: 10,
+        }}
+      >
+        {LOCALE_FLAGS[locale]}&nbsp;{LOCALE_LABELS[locale]}
+      </Button>
+      <Menu
+        anchorEl={localeAnchor}
+        open={Boolean(localeAnchor)}
+        onClose={() => setLocaleAnchor(null)}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        slotProps={{
+          paper: {
+            elevation: 3,
+            sx: { mt: 0.5, minWidth: 140, borderRadius: 2 },
+          },
+        }}
+      >
+        {LOCALES.map((l) => (
+          <MenuItem
+            key={l}
+            selected={l === locale}
+            onClick={() => {
+              dispatch(changeLocale(l));
+              setLocaleAnchor(null);
+            }}
+            sx={{ fontSize: 13, gap: 1 }}
+          >
+            {LOCALE_FLAGS[l]}&nbsp;{LOCALE_LABELS[l]}
+          </MenuItem>
+        ))}
+      </Menu>
 
       <Box
         sx={{

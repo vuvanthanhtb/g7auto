@@ -9,7 +9,7 @@ export const EMPLOYEES_CONFIG: RouteMeta[] = [
     key: "employees",
     path: EMPLOYEES_PATH.BASE,
     pathOriginal: EMPLOYEES_PATH.BASE,
-    label: "Nhân viên",
+    label: "MENU_EMPLOYEES",
     icon: <BadgeIcon />,
     isAuth: true,
     roles: ["SUPERADMIN", "ADMIN", "DIRECTOR", "SHOWROOM_MANAGER"],

@@ -9,7 +9,7 @@ export const DEPOSITS_CONFIG: RouteMeta[] = [
     key: "deposits",
     path: DEPOSITS_PATH.BASE,
     pathOriginal: DEPOSITS_PATH.BASE,
-    label: "Đặt cọc",
+    label: "MENU_DEPOSITS",
     icon: <HandshakeIcon />,
     isAuth: true,
     roles: ["SUPERADMIN", "ADMIN", "DIRECTOR", "SHOWROOM_MANAGER", "SALES", "ACCOUNTANT"],

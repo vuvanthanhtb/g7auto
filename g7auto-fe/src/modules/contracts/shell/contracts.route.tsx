@@ -9,7 +9,7 @@ export const CONTRACTS_CONFIG: RouteMeta[] = [
     key: "contracts",
     path: CONTRACTS_PATH.BASE,
     pathOriginal: CONTRACTS_PATH.BASE,
-    label: "Hợp đồng",
+    label: "MENU_CONTRACTS",
     icon: <DescriptionIcon />,
     isAuth: true,
     roles: ["SUPERADMIN", "ADMIN", "DIRECTOR", "SHOWROOM_MANAGER", "SALES", "ACCOUNTANT"],

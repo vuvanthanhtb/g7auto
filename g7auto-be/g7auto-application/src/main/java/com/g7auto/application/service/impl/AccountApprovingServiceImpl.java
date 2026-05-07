@@ -139,9 +139,12 @@ public class AccountApprovingServiceImpl implements AccountApprovingService {
   @Transactional
   public String requestApproval(StatusRequest request) {
     String action = request.getAction();
-    if (!action.equalsIgnoreCase("APPROVE") && !action.equalsIgnoreCase("REJECT")) {
+    boolean isApproved = action.equalsIgnoreCase("APPROVE");
+    if (!isApproved && !action.equalsIgnoreCase("REJECT")) {
       throw new BadRequestException("");
     }
+
+//    if (action.equalsIgnoreCase("REJECT"))
 
     String username = request.getUsername();
     AccountApproving approving =
@@ -164,25 +167,25 @@ public class AccountApprovingServiceImpl implements AccountApprovingService {
 
     validateActionOnTarget(account.getRoles());
 
-    approving.setStatusApproving(
-        action.equals("APPROVE") ? ApprovingStatus.APPROVED
-            : ApprovingStatus.REJECTED);
+    approving.setStatusApproving(isApproved ? ApprovingStatus.APPROVED : ApprovingStatus.REJECTED);
 
-    AccountApprovingAction actionApprove = approving.getAction();
-    if (actionApprove.equals(AccountApprovingAction.ACTIVE) || actionApprove.equals(
-        AccountApprovingAction.UNLOCK)) {
-      account.setStatus(AccountStatus.ACTIVE);
-    } else if (actionApprove.equals(AccountApprovingAction.LOCK)) {
-      account.setStatus(AccountStatus.LOCKED);
-    } else if (actionApprove.equals(AccountApprovingAction.INACTIVE)) {
-      account.setStatus(AccountStatus.INACTIVE);
-    } else if (actionApprove.equals(AccountApprovingAction.CHANGE_ROLES)) {
-      account.setRoles(approving.getRoles());
+    if (isApproved) {
+      AccountApprovingAction actionApprove = approving.getAction();
+      if (actionApprove.equals(AccountApprovingAction.ACTIVE) || actionApprove.equals(
+          AccountApprovingAction.UNLOCK)) {
+        account.setStatus(AccountStatus.ACTIVE);
+      } else if (actionApprove.equals(AccountApprovingAction.LOCK)) {
+        account.setStatus(AccountStatus.LOCKED);
+      } else if (actionApprove.equals(AccountApprovingAction.INACTIVE)) {
+        account.setStatus(AccountStatus.INACTIVE);
+      } else if (actionApprove.equals(AccountApprovingAction.CHANGE_ROLES)) {
+        account.setRoles(approving.getRoles());
+      }
+
+      accountRepository.save(account);
     }
 
-    accountRepository.save(account);
     accountApprovingRepository.save(approving);
-
     return SuccessCode.G7_AUTO_00001;
   }
 

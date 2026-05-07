@@ -9,7 +9,7 @@ export const SERVICE_HISTORY_CONFIG: RouteMeta[] = [
     key: "service-history",
     path: SERVICE_HISTORY_PATH.BASE,
     pathOriginal: SERVICE_HISTORY_PATH.BASE,
-    label: "Lịch sử dịch vụ",
+    label: "MENU_SERVICE_HISTORY",
     icon: <BuildIcon />,
     isAuth: true,
     roles: ["SUPERADMIN", "ADMIN", "DIRECTOR", "SHOWROOM_MANAGER", "WAREHOUSE"],

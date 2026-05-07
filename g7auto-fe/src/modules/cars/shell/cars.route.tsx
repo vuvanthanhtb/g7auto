@@ -9,7 +9,7 @@ export const CARS_CONFIG: RouteMeta[] = [
     key: "cars",
     path: CARS_PATH.BASE,
     pathOriginal: CARS_PATH.BASE,
-    label: "Kho xe",
+    label: "MENU_CARS",
     icon: <DirectionsCarIcon />,
     isAuth: true,
     roles: [

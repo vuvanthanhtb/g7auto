@@ -9,7 +9,7 @@ export const CAR_TRANSFERS_CONFIG: RouteMeta[] = [
     key: "car-transfers",
     path: CAR_TRANSFERS_PATH.BASE,
     pathOriginal: CAR_TRANSFERS_PATH.BASE,
-    label: "Điều chuyển xe",
+    label: "MENU_CAR_TRANSFERS",
     icon: <SwapHorizIcon />,
     isAuth: true,
     roles: ["SUPERADMIN", "ADMIN", "DIRECTOR", "SHOWROOM_MANAGER", "WAREHOUSE"],
