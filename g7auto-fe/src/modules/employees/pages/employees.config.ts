@@ -2,6 +2,32 @@ import { BTN_SUBMIT } from "@/libs/constants/button.constant";
 import { BUTTON, TEXT, SELECT, DATE } from "@/libs/constants/form.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 
+type SelectOption = { label: string; value: string | number };
+
+export interface EmployeeFormValues {
+  fullName: string;
+  phone: string;
+  email: string;
+  nationalId: string;
+  address: string;
+  birthDate: string;
+  gender: SelectOption | null;
+  joinDate: string;
+  showroom: SelectOption | null;
+}
+
+export const employeeInitialValues: EmployeeFormValues = {
+  fullName: "",
+  phone: "",
+  email: "",
+  nationalId: "",
+  address: "",
+  birthDate: "",
+  gender: null,
+  joinDate: "",
+  showroom: null,
+};
+
 export const getEmployeeFormConfig = (): IBaseFormConfig => ({
   fields: [
     {
@@ -26,7 +52,12 @@ export const getEmployeeFormConfig = (): IBaseFormConfig => ({
       required: true,
       size: 6,
     },
-    { type: DATE, name: "birthDate", label: "EMPLOYEES_FIELD_BIRTH_DATE", size: 6 },
+    {
+      type: DATE,
+      name: "birthDate",
+      label: "EMPLOYEES_FIELD_BIRTH_DATE",
+      size: 6,
+    },
     {
       type: SELECT,
       name: "gender",
@@ -34,7 +65,12 @@ export const getEmployeeFormConfig = (): IBaseFormConfig => ({
       option: "genderOptions",
       size: 6,
     },
-    { type: DATE, name: "joinDate", label: "EMPLOYEES_FIELD_START_DATE", size: 6 },
+    {
+      type: DATE,
+      name: "joinDate",
+      label: "EMPLOYEES_FIELD_START_DATE",
+      size: 6,
+    },
     { type: TEXT, name: "address", label: "COMMON_LABEL_ADDRESS", size: 12 },
     {
       type: SELECT,
@@ -47,19 +83,9 @@ export const getEmployeeFormConfig = (): IBaseFormConfig => ({
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "COMMON_BTN_SAVE", type: "submit", action: BTN_SUBMIT }],
+      childs: [
+        { title: "COMMON_BTN_SAVE", type: "submit", action: BTN_SUBMIT },
+      ],
     },
   ],
 });
-
-export const employeeInitialValues = {
-  fullName: "",
-  phone: "",
-  email: "",
-  nationalId: "",
-  address: "",
-  birthDate: "",
-  gender: "",
-  joinDate: "",
-  showroom: null,
-};

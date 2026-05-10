@@ -13,3 +13,9 @@ export const formatCurrency = (value: number | null | undefined): string => {
     currency: "VND",
   }).format(value);
 };
+
+export const getDateBefore = (days: number = 30): Date => {
+  const date = new Date();
+  date.setDate(date.getDate() - days);
+  return date;
+};

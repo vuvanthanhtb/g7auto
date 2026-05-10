@@ -1,37 +1,41 @@
 export interface DepositResponse {
   id: number;
-  code: string;
+  quotationId: number;
   customerId: number;
-  customerName: string;
+  customerFullName: string;
   carId: number;
-  carName: string;
-  showroomId: number;
-  showroomName: string;
+  carChassisNumber: string;
   employeeId: number;
-  employeeName: string;
+  employeeFullName: string;
   amount: number;
-  status: string;
   depositDate: string;
-  expiredDate: string;
-  note: string;
+  expiryDate: string;
+  paymentMethod: string;
+  status: string;
+  notes: string;
   createdAt: string;
-  updatedAt: string;
 }
 
 export interface DepositRequest {
+  quotationId?: number;
   customerId: number;
   carId: number;
-  showroomId: number;
-  employeeId: number;
+  employeeId?: number;
   amount: number;
-  depositDate?: string;
-  expiredDate?: string;
-  note?: string;
+  depositDate: string;
+  expiryDate?: string;
+  depositPaymentMethod: string;
+  notes?: string;
 }
 
-export interface DepositQuery {
+export interface DepositSearchForm {
+  status: string;
+  page: number;
+  size: number;
+}
+
+export interface DepositPayload {
+  status?: string;
   page?: number;
   size?: number;
-  status?: string;
-  customerId?: number;
 }

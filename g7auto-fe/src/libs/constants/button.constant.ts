@@ -28,3 +28,4 @@ export const BTN_DETAIL = "detail";
 export const BTN_PAYMENT = "payment";
 export const BTN_ACTIVE = "active";
 export const BTN_INACTIVE = "inactive";
+export const BTN_RECEIVE = "receive";

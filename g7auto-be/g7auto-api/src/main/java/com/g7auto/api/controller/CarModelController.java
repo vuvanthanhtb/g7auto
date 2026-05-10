@@ -7,6 +7,7 @@ import com.g7auto.application.dto.response.ImportResult;
 import com.g7auto.application.service.CarModelService;
 import com.g7auto.core.response.ApiResponse;
 import com.g7auto.core.response.PageResponse;
+import java.util.List;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,22 @@ public class CarModelController {
   public ResponseEntity<ApiResponse<PageResponse<CarModelResponse>>> search(
       @ModelAttribute CarModelSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(carModelService.search(request)));
+  }
+
+  @GetMapping("/list")
+  public ResponseEntity<ApiResponse<PageResponse<CarModelResponse>>> list(
+      @ModelAttribute CarModelSearchRequest request) {
+    return ResponseEntity.ok(ApiResponse.ok(carModelService.search(request)));
+  }
+
+  @GetMapping("/all")
+  public ResponseEntity<ApiResponse<List<CarModelResponse>>> getAll() {
+    return ResponseEntity.ok(ApiResponse.ok(carModelService.findAllList()));
+  }
+
+  @GetMapping("/export")
+  public void exportCarModels(HttpServletResponse response) {
+    carModelService.exportCarModels(response);
   }
 
   @GetMapping("/{id}")

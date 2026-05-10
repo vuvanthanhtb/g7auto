@@ -4,7 +4,8 @@ export interface ShowroomResponse {
   address: string;
   phone: string;
   email: string;
-  manager: string;
+  managerId: number;
+  managerName: string;
   status: string;
 }
 export interface ShowroomRequest {
@@ -12,6 +13,29 @@ export interface ShowroomRequest {
   address: string;
   phone: string;
   email: string;
-  manager: string;
+  managerId?: number;
 }
-export interface ShowroomQuery { name?: string; page?: number; size?: number; }
+export interface ShowroomSearchForm {
+  name: string;
+  phone: string;
+  fromDate: Date | null | string;
+  toDate: Date | null | string;
+  page: number;
+  size: number;
+}
+
+export interface ShowroomPayload {
+  name?: string;
+  phone?: string;
+  fromDate?: string;
+  toDate?: string;
+  page?: number;
+  size?: number;
+}
+
+export interface ShowroomExportPayload {
+  name?: string;
+  phone?: string;
+  fromDate?: string;
+  toDate?: string;
+}

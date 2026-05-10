@@ -1,23 +1,28 @@
 export interface CarTransferResponse {
   id: number;
   carId: number;
-  carName: string;
+  carChassisNumber: string;
   fromShowroomId: number;
   fromShowroomName: string;
   toShowroomId: number;
   toShowroomName: string;
-  status: string;
-  note: string;
+  createdByEmployeeId: number;
   transferDate: string;
+  expectedReceiveDate: string;
+  actualReceiveDate: string;
+  status: string;
+  reason: string;
+  notes: string;
   createdAt: string;
-  updatedAt: string;
 }
 
 export interface CarTransferRequest {
   carId: number;
   fromShowroomId: number;
   toShowroomId: number;
-  note?: string;
+  expectedReceiveDate?: string;
+  reason: string;
+  notes?: string;
 }
 
 export interface CarTransferQuery {

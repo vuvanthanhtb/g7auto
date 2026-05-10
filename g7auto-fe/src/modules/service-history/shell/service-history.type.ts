@@ -1,36 +1,34 @@
 export interface ServiceHistoryResponse {
   id: number;
-  carId: number;
-  carName: string;
   customerId: number;
-  customerName: string;
-  showroomId: number;
-  showroomName: string;
+  customerFullName: string;
   employeeId: number;
-  employeeName: string;
-  serviceType: string;
-  description: string;
-  cost: number;
+  employeeFullName: string;
   serviceDate: string;
+  contactType: string;
+  content: string;
+  result: string;
+  nextReminderDate: string;
   createdAt: string;
-  updatedAt: string;
 }
 
 export interface ServiceHistoryRequest {
-  carId: number;
-  customerId?: number;
-  showroomId: number;
-  employeeId: number;
-  serviceType: string;
-  description?: string;
-  cost?: number;
-  serviceDate?: string;
+  customerId: number;
+  employeeId?: number;
+  serviceDate: string;
+  contactType: string;
+  content?: string;
+  result?: string;
+  nextReminderDate?: string;
 }
 
-export interface ServiceHistoryQuery {
+export interface ServiceHistorySearchForm {
+  page: number;
+  size: number;
+}
+
+export interface ServiceHistoryPayload {
+  customerId?: number;
   page?: number;
   size?: number;
-  carId?: number;
-  customerId?: number;
-  showroomId?: number;
 }

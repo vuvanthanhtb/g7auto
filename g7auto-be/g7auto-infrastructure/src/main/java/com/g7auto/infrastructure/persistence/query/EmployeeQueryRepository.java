@@ -18,9 +18,18 @@ import org.springframework.stereotype.Repository;
 public class EmployeeQueryRepository {
 
   private static final String BASE_SQL = """
-      SELECT e.id, e.full_name, e.phone, e.email, e.address, e.birth_date,
-             e.gender, e.national_id, e.join_date, e.employee_status,
-             e.showroom_id, s.name AS showroom_name,
+      SELECT e.id,
+             e.full_name,
+             e.phone,
+             e.email,
+             e.address,
+             e.birth_date,
+             e.gender,
+             e.national_id,
+             e.join_date,
+             e.employee_status,
+             e.showroom_id,
+             s.name AS showroom_name,
              e.username,
              e.created_at, e.updated_at, e.created_by, e.updated_by
       FROM employees e
@@ -32,6 +41,7 @@ public class EmployeeQueryRepository {
     Employee e = new Employee();
     e.setId(rs.getLong("id"));
     e.setFullName(rs.getString("full_name"));
+    e.setUsername(rs.getString("username"));
     e.setPhone(rs.getString("phone"));
     e.setEmail(rs.getString("email"));
     e.setAddress(rs.getString("address"));

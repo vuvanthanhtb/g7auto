@@ -1,5 +1,8 @@
 import {
   BTN_SUBMIT,
+  BTN_REFUND,
+  BTN_CANCEL,
+  BTN_CONVERT,
   BTN_DETAIL,
   BTN_SEARCH,
   BTN_REFRESH,
@@ -10,21 +13,23 @@ import {
   NUMBER_INPUT,
   DATE,
   SELECT,
+  TEXT,
 } from "@/libs/constants/form.constant";
 import {
   NUMERICAL_ORDER,
   TBL_BUTTON,
   TBL_STRING,
+  TBL_NUMBER,
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
 
 export const getDepositColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
-  { name: "code", label: "COMMON_LABEL_DEPOSIT_CODE", type: TBL_STRING },
-  { name: "customerName", label: "COMMON_LABEL_CUSTOMER", type: TBL_STRING },
-  { name: "carName", label: "COMMON_LABEL_CAR", type: TBL_STRING },
-  { name: "amount", label: "COMMON_LABEL_AMOUNT", type: TBL_STRING },
+  { name: "customerFullName", label: "COMMON_LABEL_CUSTOMER", type: TBL_STRING },
+  { name: "carChassisNumber", label: "CARS_FIELD_CHASSIS_NUMBER", type: TBL_STRING },
+  { name: "amount", label: "COMMON_LABEL_AMOUNT", type: TBL_NUMBER },
+  { name: "depositDate", label: "DEPOSITS_FIELD_DATE", type: TBL_STRING },
   { name: "status", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
   {
     name: "action",
@@ -38,11 +43,13 @@ export const getDepositsFormConfig = (): IBaseFormConfig => ({
   fields: [
     { type: NUMBER_INPUT, name: "customerId", label: "CONTRACTS_FIELD_CUSTOMER_ID", required: true, size: 6 },
     { type: NUMBER_INPUT, name: "carId", label: "CONTRACTS_FIELD_CAR_ID", required: true, size: 6 },
-    { type: NUMBER_INPUT, name: "showroomId", label: "CARS_FIELD_SHOWROOM_ID", required: true, size: 6 },
-    { type: NUMBER_INPUT, name: "employeeId", label: "CONTRACTS_FIELD_EMPLOYEE_ID", required: true, size: 6 },
+    { type: NUMBER_INPUT, name: "employeeId", label: "CONTRACTS_FIELD_EMPLOYEE_ID", size: 6 },
+    { type: NUMBER_INPUT, name: "quotationId", label: "DEPOSITS_FIELD_QUOTATION_ID", size: 6 },
     { type: NUMBER_INPUT, name: "amount", label: "DEPOSITS_FIELD_AMOUNT", required: true, size: 12 },
     { type: DATE, name: "depositDate", label: "DEPOSITS_FIELD_DATE", size: 6 },
-    { type: DATE, name: "expiredDate", label: "DEPOSITS_FIELD_EXPIRED_DATE", size: 6 },
+    { type: DATE, name: "expiryDate", label: "DEPOSITS_FIELD_EXPIRED_DATE", size: 6 },
+    { type: SELECT, name: "depositPaymentMethod", label: "DEPOSITS_FIELD_PAYMENT_METHOD", option: "depositPaymentMethodOptions", required: true, size: 12 },
+    { type: TEXT, name: "notes", label: "CONTRACTS_FIELD_NOTES", size: 12 },
     {
       type: BUTTON,
       size: 12,
@@ -51,14 +58,33 @@ export const getDepositsFormConfig = (): IBaseFormConfig => ({
   ],
 });
 
+export const getDepositsDetailFormConfig = (): IBaseFormConfig => ({
+  fields: [
+    { type: TEXT, name: "notes", label: "CONTRACTS_FIELD_NOTES", size: 12 },
+    {
+      type: BUTTON,
+      size: 12,
+      childs: [
+        { title: "DEPOSITS_BTN_REFUND", type: "button", action: BTN_REFUND, style: { background: "#ed6c02", color: "#fff" } },
+        { title: "DEPOSITS_BTN_CANCEL", type: "button", action: BTN_CANCEL, style: { background: "#d32f2f", color: "#fff" } },
+        { title: "DEPOSITS_BTN_CONVERT", type: "button", action: BTN_CONVERT, style: { background: "#1976d2", color: "#fff" } },
+      ],
+    },
+  ],
+});
+
+export const initDepositSearchForm = { status: "", page: 1, size: 10 };
+
 export const depositsInitialValues = {
+  quotationId: "",
   customerId: "",
   carId: "",
-  showroomId: "",
   employeeId: "",
   amount: "",
   depositDate: "",
-  expiredDate: "",
+  expiryDate: "",
+  depositPaymentMethod: "",
+  notes: "",
 };
 
 export const getDepositSearchConfig = (): IBaseFormConfig => ({

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
@@ -48,12 +49,16 @@ public class CarModelServiceImpl implements CarModelService {
   @Override
   public PageResponse<CarModelResponse> search(CarModelSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
-    String fromDate = request.getFromDate();
-    String toDate = request.getToDate();
+    Page<CarModel> carModelPage = carModelQueryRepository.search(
+        request.getName(), request.getManufacturer(), request.getYear(), pageable);
+    return PageResponse.of(carModelPage, carModelMapper::toResponse);
+  }
 
-    Page<CarModel> carModelPage = carModelQueryRepository.search(request.getName(), request.getManufacturer(),
-        fromDate, toDate, pageable);
-    return PageResponse.of(carModelPage, carModelMapper::toResponse, fromDate, toDate);
+  @Override
+  public List<CarModelResponse> findAllList() {
+    return carModelRepository.findAll().stream()
+        .map(carModelMapper::toResponse)
+        .collect(Collectors.toList());
   }
 
   @Override

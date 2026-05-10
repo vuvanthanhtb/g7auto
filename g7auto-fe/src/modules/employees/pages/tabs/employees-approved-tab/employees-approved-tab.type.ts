@@ -1,4 +1,5 @@
 import type { TablePagination } from "@/libs/types";
+import type { EmployeeResponse } from "@/modules/employees/shell/employees.type";
 
 export interface EmployeeApprovedSearchForm {
   fullName?: string;
@@ -13,4 +14,9 @@ export interface EmployeeApprovedSearchQuery {
   size?: number;
 }
 
-export type EmployeeApprovedPage = TablePagination<Record<string, unknown>>;
+export interface EmployeeApproved extends EmployeeResponse {
+  statusApprovingDisplay: string;
+  employeeStatusDisplay: string;
+}
+
+export type EmployeeApprovedPage = TablePagination<EmployeeApproved>;

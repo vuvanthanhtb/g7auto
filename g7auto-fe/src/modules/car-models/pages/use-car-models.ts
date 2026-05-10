@@ -10,7 +10,7 @@ import {
 } from "../shell/car-models.slice";
 import { carModelsService } from "../shell/car-model.service";
 import { useConfirm } from "@/libs/components/ui/confirm-dialog";
-import { carModelInitialValues } from "./car-models.config";
+import { carModelInitialValues, initCarModelSearchForm } from "./car-models.config";
 import {
   BTN_SEARCH,
   BTN_REFRESH,
@@ -19,7 +19,12 @@ import {
   BTN_DELETE,
   BTN_SUBMIT,
 } from "@/libs/constants/button.constant";
-import type { CarModelSearchForm } from "../shell/car-model.type";
+import type {
+  CarModelExportPayload,
+  CarModelPayload,
+  CarModelRequest,
+  CarModelSearchForm,
+} from "../shell/car-model.type";
 
 type TableRow = Record<string, unknown>;
 
@@ -29,15 +34,34 @@ export const useCarModels = () => {
   const { selected } = useAppSelector((s) => s.carModels);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
-  const [formValues, setFormValues] = useState<CarModelSearchForm>(
+  const [formValues, setFormValues] = useState<Record<string, unknown>>(
     carModelInitialValues,
   );
-  const [searchParams, setSearchParams] = useState<CarModelSearchForm>({});
+  const [searchQuery, setSearchQuery] = useState<CarModelSearchForm>(
+    initCarModelSearchForm,
+  );
+
+  const toPayload = (form: CarModelSearchForm): CarModelPayload => ({
+    name: form.name || undefined,
+    manufacturer: form.manufacturer || undefined,
+    year: form.year || undefined,
+    page: form.page,
+    size: form.size,
+  });
+
+  const toExportPayload = (form: CarModelSearchForm): CarModelExportPayload => ({
+    name: form.name || undefined,
+    manufacturer: form.manufacturer || undefined,
+    year: form.year || undefined,
+  });
 
   useEffect(() => {
     document.title = "Dòng xe — G7Auto";
-    dispatch(getCarModels({ page: 1, size: 10, ...searchParams }));
-  }, [dispatch, searchParams]);
+  }, []);
+
+  useEffect(() => {
+    dispatch(getCarModels(toPayload(searchQuery)));
+  }, [dispatch, searchQuery]);
 
   useEffect(() => {
     if (selected && editId)
@@ -62,54 +86,54 @@ export const useCarModels = () => {
       setDrawerOpen(true);
     }
     if (key === BTN_DELETE) {
-      const ok = await confirm(`Xóa dòng xe "${row.name}"?`);
+      const ok = await confirm(`Xóa dòng xe "${row.name}"?`, {
+        danger: true,
+        confirmText: "Xóa",
+      });
       if (ok) {
         await dispatch(deleteCarModel(row.id as number));
-        dispatch(getCarModels({ page: 1, size: 10, ...searchParams }));
+        dispatch(getCarModels(toPayload(searchQuery)));
       }
     }
   };
 
-  const handleSubmit = async (data: CarModelSearchForm) => {
+  const handleSubmit = async (data: Record<string, unknown>) => {
+    const payload = {
+      ...data,
+      listedPrice: data.listedPrice ? Number(data.listedPrice) : undefined,
+      year: data.year ? String(data.year) : undefined,
+    } as CarModelRequest;
     if (editId)
-      await dispatch(
-        updateCarModel({
-          id: editId,
-          data,
-        }),
-      );
-    else await dispatch(createCarModel(data));
+      await dispatch(updateCarModel({ id: editId, data: payload }));
+    else
+      await dispatch(createCarModel(payload));
     closeDrawer();
-    dispatch(getCarModels({ page: 1, size: 10, ...searchParams }));
+    dispatch(getCarModels(toPayload(searchQuery)));
   };
 
   const searchHandlers = {
-    [BTN_SEARCH]: (values: Record<string, unknown>) => {
-      dispatch(getCarModels({ ...values, page: 1, size: 10 }));
+    [BTN_SEARCH]: (values: CarModelSearchForm) => {
+      setSearchQuery({ ...values, page: 1 });
     },
     [BTN_REFRESH]: () => {
-      dispatch(getCarModels({ page: 1, size: 10, ...searchParams }));
+      setSearchQuery(initCarModelSearchForm);
     },
     [BTN_EXPORT]: async () => {
-      await carModelsService.export();
+      await carModelsService.exportExcel(toExportPayload(searchQuery));
     },
-  };
-
-  const handleFormChange = (values: CarModelSearchForm) => {
-    setFormValues(values);
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };
 
   const handlePageChange = (page: number) => {
-    setSearchParams({ ...searchParams, page });
-    dispatch(getCarModels({ ...searchParams, page }));
+    setSearchQuery((prev) => ({ ...prev, page }));
   };
 
   return {
     drawerOpen,
     editId,
     formValues,
+    searchQuery,
     openCreate,
     closeDrawer,
     handleCellAction,
@@ -117,6 +141,5 @@ export const useCarModels = () => {
     formHandlers,
     setFormValues,
     handlePageChange,
-    handleFormChange,
   };
 };

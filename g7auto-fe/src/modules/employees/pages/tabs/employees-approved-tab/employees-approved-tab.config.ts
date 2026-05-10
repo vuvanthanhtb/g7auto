@@ -8,10 +8,31 @@ export const getEmployeeApprovedColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
   { name: "username", label: "COMMON_LABEL_ACCOUNT", type: TBL_STRING },
   { name: "fullName", label: "COMMON_LABEL_FULL_NAME", type: TBL_STRING },
-  { name: "phone", label: "COMMON_LABEL_PHONE", type: TBL_STRING },
+  {
+    name: "phoneDisplay",
+    label: "COMMON_LABEL_PHONE",
+    type: TBL_STRING,
+    styleCell: { textAlign: "center" },
+  },
   { name: "showroomName", label: "COMMON_LABEL_SHOWROOM", type: TBL_STRING },
-  { name: "nationalId", label: "COMMON_LABEL_NATIONAL_ID", type: TBL_STRING },
-  { name: "employeeStatus", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
+  {
+    name: "nationalId",
+    label: "COMMON_LABEL_NATIONAL_ID",
+    type: TBL_STRING,
+    styleCell: { textAlign: "center" },
+  },
+  {
+    name: "actionDisplay",
+    label: "COMMON_LABEL_ACTION_TYPE",
+    type: TBL_STRING,
+    styleCell: { color: "blue" },
+  },
+  {
+    name: "statusApprovingDisplay",
+    label: "COMMON_LABEL_ACTION_TYPE",
+    type: TBL_STRING,
+    refColor: ["statusApproving"],
+  },
   {
     name: "createdAt",
     label: "COMMON_LABEL_CREATED_AT",
@@ -34,7 +55,12 @@ export const approvedInitialValues: EmployeeApprovedSearchForm = {
 
 export const getEmployeeApprovedSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "fullName", label: "CUSTOMERS_FIELD_FULL_NAME_SEARCH", size: 4 },
+    {
+      type: TEXT,
+      name: "fullName",
+      label: "CUSTOMERS_FIELD_FULL_NAME_SEARCH",
+      size: 4,
+    },
     {
       type: BUTTON,
       size: 8,

@@ -33,6 +33,8 @@ import com.g7auto.infrastructure.persistence.query.DepositQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -161,7 +163,7 @@ public class DepositServiceImpl implements DepositService {
 
   @Override
   @Transactional
-  public ContractResponse convertToContract(Long depositId, String contractNumber,
+  public ContractResponse convertToContract(Long depositId,
       LocalDate signDate, LocalDate expectedDeliveryDate, String notes) {
     Deposit deposit = getDeposit(depositId);
 
@@ -170,10 +172,8 @@ public class DepositServiceImpl implements DepositService {
       log.error("Phiếu đặt cọc phải ở trạng thái ĐANG GIỮ để chuyển thành hợp đồng: {}", status);
       throw new BadRequestException(SalesErrorCode.G7_AUTO_00613);
     }
-    if (contractRepository.existsByContractNumber(contractNumber)) {
-      log.error("Số hợp đồng đã tồn tại: {}", contractNumber);
-      throw new BadRequestException(SalesErrorCode.G7_AUTO_00603);
-    }
+    String contractNumber = "HD" + LocalDateTime.now()
+        .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "G7AUTO";
     Contract contract = new Contract();
     contract.setContractNumber(contractNumber);
     contract.setCustomer(deposit.getCustomer());

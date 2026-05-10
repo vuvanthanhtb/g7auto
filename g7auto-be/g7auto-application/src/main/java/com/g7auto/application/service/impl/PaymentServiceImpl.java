@@ -1,9 +1,13 @@
 package com.g7auto.application.service.impl;
 
 import com.g7auto.application.dto.request.PaymentRequest;
+import com.g7auto.application.dto.request.PaymentSearchRequest;
 import com.g7auto.application.dto.response.PaymentResponse;
 import com.g7auto.application.mapper.PaymentMapper;
 import com.g7auto.application.service.PaymentService;
+import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.utils.PageableUtils;
+import com.g7auto.infrastructure.persistence.query.PaymentQueryRepository;
 import com.g7auto.core.constant.codes.SalesErrorCode;
 import com.g7auto.core.entity.CarStatus;
 import com.g7auto.core.entity.ContractStatus;
@@ -37,6 +41,15 @@ public class PaymentServiceImpl implements PaymentService {
   private final EmployeeRepository employeeRepository;
   private final CarRepository carRepository;
   private final PaymentMapper paymentMapper;
+  private final PaymentQueryRepository paymentQueryRepository;
+
+  @Override
+  public PageResponse<PaymentResponse> search(PaymentSearchRequest request) {
+    return PageResponse.of(
+        paymentQueryRepository.search(request.getStatus(), request.getContractId(),
+            PageableUtils.from(request)),
+        paymentMapper::toResponse);
+  }
 
   @Override
   public List<PaymentResponse> findByContract(Long contractId) {

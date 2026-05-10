@@ -2,6 +2,7 @@ package com.g7auto.application.dto.request;
 
 import com.g7auto.core.search.BaseSearchRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,5 +23,5 @@ public class EmployeeApprovalSearchRequest extends BaseSearchRequest {
   String action;
 
   @Schema(description = "Trạng thái phê duyệt (AWAITING_APPROVAL, APPROVED, REJECTED)")
-  String statusApproving;
+  List<String> statusApproving;
 }

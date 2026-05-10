@@ -5,13 +5,29 @@ import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
 
+type PageState = {
+  content: CarTransferResponse[];
+  totalElements: number;
+  totalPages: number;
+  page: number;
+  size: number;
+};
+
+const emptyPage: PageState = {
+  content: [],
+  totalElements: 0,
+  totalPages: 0,
+  page: 1,
+  size: 10,
+};
+
 interface CarTransfersState {
-  carTransferTable: { content: CarTransferResponse[]; totalElements: number; totalPages: number; page: number; size: number };
+  carTransferTable: PageState;
   selected: CarTransferResponse | null;
 }
 
 const initialState: CarTransfersState = {
-  carTransferTable: { content: [], totalElements: 0, totalPages: 0, page: 1, size: 10 },
+  carTransferTable: emptyPage,
   selected: null,
 };
 
@@ -55,6 +71,48 @@ export const createCarTransfers = createAsyncThunk(
   },
 );
 
+export const confirmExportTransfer = createAsyncThunk(
+  "carTransfers/confirmExport",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await carTransfersService.confirmExport(id);
+      toastSuccess(SUCCESS_CODE.ACTION);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const confirmReceiveTransfer = createAsyncThunk(
+  "carTransfers/confirmReceive",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await carTransfersService.confirmReceive(id);
+      toastSuccess(SUCCESS_CODE.ACTION);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const cancelTransfer = createAsyncThunk(
+  "carTransfers/cancel",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await carTransfersService.cancel(id);
+      toastSuccess(SUCCESS_CODE.ACTION);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const carTransfersSlice = createSlice({
   name: "carTransfers",
   initialState,
@@ -63,8 +121,11 @@ const carTransfersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getCarTransfers.fulfilled, (state, action) => { state.carTransferTable = action.payload; })
-      .addCase(getCarTransfersById.fulfilled, (state, action) => { state.selected = action.payload; });
+      .addCase(getCarTransfers.fulfilled, (state, action) => { state.carTransferTable = action.payload as any; })
+      .addCase(getCarTransfersById.fulfilled, (state, action) => { state.selected = action.payload; })
+      .addCase(confirmExportTransfer.fulfilled, (state, action) => { state.selected = action.payload; })
+      .addCase(confirmReceiveTransfer.fulfilled, (state, action) => { state.selected = action.payload; })
+      .addCase(cancelTransfer.fulfilled, (state, action) => { state.selected = action.payload; });
   },
 });
 

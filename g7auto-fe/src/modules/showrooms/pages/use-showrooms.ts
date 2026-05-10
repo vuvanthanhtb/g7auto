@@ -7,12 +7,19 @@ import {
   deleteShowroom,
   getShowroomById,
   clearSelectedShowroom,
-  getAllShowrooms,
 } from "../shell/showrooms.slice";
+import { getAllEmployees } from "@/modules/employees/shell/employees.slice";
 import { showroomsService } from "../shell/showroom.service";
+import { parseShowroomExport } from "../shell/showrooms.utils";
 import { useConfirm } from "@/libs/components/ui/confirm-dialog";
-import type { ShowroomRequest } from "../shell/showroom.type";
-import { showroomInitialValues } from "./showrooms.config";
+import type {
+  ShowroomRequest,
+  ShowroomSearchForm,
+} from "../shell/showroom.type";
+import {
+  showroomInitialValues,
+  initShowroomSearchForm,
+} from "./showrooms.config";
 import {
   BTN_SEARCH,
   BTN_REFRESH,
@@ -21,7 +28,6 @@ import {
   BTN_DELETE,
   BTN_SUBMIT,
 } from "@/libs/constants/button.constant";
-import { normalizeFormValues } from "@/libs/utils";
 
 type TableRow = Record<string, unknown>;
 
@@ -29,18 +35,28 @@ export const useShowrooms = () => {
   const dispatch = useAppDispatch();
   const confirm = useConfirm();
   const { selected } = useAppSelector((s) => s.showrooms);
+  const employeeAll = useAppSelector((s) => s.employees.employeeAll);
+  const employeeOptions = employeeAll.map((e) => ({
+    label: e.fullName,
+    value: e.id,
+  }));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
   const [formValues, setFormValues] = useState<Record<string, unknown>>(
     showroomInitialValues,
   );
-  const [page, setPage] = useState(1);
-  const [searchParams, setSearchParams] = useState<Record<string, unknown>>({});
+  const [searchQuery, setSearchQuery] = useState<ShowroomSearchForm>(
+    initShowroomSearchForm,
+  );
 
   useEffect(() => {
     document.title = "Showroom — G7Auto";
-    dispatch(getShowrooms({ page, size: 10, ...searchParams }));
-  }, [dispatch, page, searchParams]);
+    dispatch(getAllEmployees());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getShowrooms(searchQuery));
+  }, [dispatch, searchQuery]);
 
   useEffect(() => {
     if (selected && editId)
@@ -65,54 +81,64 @@ export const useShowrooms = () => {
       setDrawerOpen(true);
     }
     if (key === BTN_DELETE) {
-      const ok = await confirm(`Xóa showroom "${row.name}"?`);
+      const ok = await confirm(`Bạn có chắc muốn xoá showroom "${row.name}"?`, {
+        danger: true,
+        confirmText: "Xoá",
+      });
       if (ok) {
         await dispatch(deleteShowroom(row.id as number));
-        dispatch(getShowrooms({ page, size: 10, ...searchParams }));
+        dispatch(getShowrooms(searchQuery));
       }
     }
   };
 
   const handleSubmit = async (data: Record<string, unknown>) => {
+    const payload = {
+      ...data,
+      managerId: data.managerId ? Number(data.managerId) : undefined,
+    } as ShowroomRequest;
     if (editId)
       await dispatch(
         updateShowroom({
           id: editId,
-          data: data as unknown as ShowroomRequest,
+          data: payload,
         }),
       );
-    else await dispatch(createShowroom(data as unknown as ShowroomRequest));
+    else await dispatch(createShowroom(payload));
     closeDrawer();
-    dispatch(getShowrooms({ page, size: 10, ...searchParams }));
+    dispatch(getShowrooms(searchQuery));
   };
 
   const searchHandlers = {
-    [BTN_SEARCH]: (values: Record<string, unknown>) => {
-      setSearchParams(normalizeFormValues(values));
-      setPage(1);
+    [BTN_SEARCH]: (values: ShowroomSearchForm) => {
+      setSearchQuery({ ...values, page: 1 });
     },
     [BTN_REFRESH]: () => {
-      dispatch(getShowrooms({ page, size: 10, ...searchParams }));
+      setSearchQuery(initShowroomSearchForm);
     },
     [BTN_EXPORT]: async () => {
-      await showroomsService.exportExcel();
+      await showroomsService.exportExcel(parseShowroomExport(searchQuery));
     },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };
 
+  const handlePageChange = (page: number) => {
+    setSearchQuery((prev) => ({ ...prev, page }));
+  };
+
   return {
     drawerOpen,
     editId,
     formValues,
-    page,
+    searchQuery,
+    employeeOptions,
     openCreate,
     closeDrawer,
     handleCellAction,
     searchHandlers,
     formHandlers,
     setFormValues,
-    setPage,
-    getAllShowrooms,
+    handlePageChange,
   };
 };

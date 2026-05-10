@@ -3,7 +3,8 @@ import SHOWROOM_ENDPOINT from "./showroom.endpoint";
 import type {
   ShowroomRequest,
   ShowroomResponse,
-  ShowroomQuery,
+  ShowroomExportPayload,
+  ShowroomPayload,
 } from "./showroom.type";
 
 class ShowroomRepository {
@@ -14,7 +15,7 @@ class ShowroomRepository {
       ShowroomRepository.instance = new ShowroomRepository();
     return ShowroomRepository.instance;
   }
-  getAll(params?: ShowroomQuery) {
+  search(params?: ShowroomPayload) {
     return http.call<{
       content: ShowroomResponse[];
       totalElements: number;
@@ -23,7 +24,7 @@ class ShowroomRepository {
       size: number;
     }>({ url: SHOWROOM_ENDPOINT.BASE, method: "GET", params });
   }
-  getList() {
+  getAll() {
     return http.call<ShowroomResponse[]>({
       url: SHOWROOM_ENDPOINT.LIST,
       method: "GET",
@@ -69,10 +70,11 @@ class ShowroomRepository {
       filename: "mau-import-showroom.xlsx",
     });
   }
-  exportExcel() {
+  exportExcel(params?: ShowroomExportPayload) {
     return http.download({
       url: `${SHOWROOM_ENDPOINT.BASE}/export`,
       filename: "danh-sach-showroom.xlsx",
+      params,
     });
   }
 }

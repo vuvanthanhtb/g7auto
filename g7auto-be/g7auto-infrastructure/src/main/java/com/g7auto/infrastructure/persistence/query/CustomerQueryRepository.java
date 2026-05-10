@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 @Repository
 @RequiredArgsConstructor
@@ -16,9 +17,11 @@ public class CustomerQueryRepository {
 
   private static final String BASE_SQL = """
       SELECT c.id, c.full_name, c.phone, c.email, c.address, c.birth_date,
-             c.national_id, c.source_type, c.car_interest, c.assigned_employee_id, c.notes,
-             c.created_at, c.updated_at, c.created_by, c.updated_by
+             c.national_id, c.source_type, c.car_interest, c.assigned_employee_id,
+             e.full_name AS assigned_employee_name,
+             c.notes, c.created_at, c.updated_at, c.created_by, c.updated_by
       FROM customers c
+      LEFT JOIN employees e ON c.assigned_employee_id = e.id
       WHERE 1=1
       """;
 
@@ -29,8 +32,7 @@ public class CustomerQueryRepository {
     c.setPhone(rs.getString("phone"));
     c.setEmail(rs.getString("email"));
     c.setAddress(rs.getString("address"));
-    c.setBirthDate(rs.getDate("birth_date") != null ? rs.getDate("birth_date")
-        .toLocalDate() : null);
+    c.setBirthDate(rs.getDate("birth_date") != null ? rs.getDate("birth_date").toLocalDate() : null);
     c.setNationalId(rs.getString("national_id"));
     c.setSourceType(rs.getString("source_type"));
     c.setCarInterest(rs.getString("car_interest"));
@@ -38,13 +40,12 @@ public class CustomerQueryRepository {
     if (!rs.wasNull()) {
       c.setAssignedEmployeeId(empId);
     }
+    c.setAssignedEmployeeName(rs.getString("assigned_employee_name"));
     c.setNotes(rs.getString("notes"));
     c.setCreatedAt(
-        rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at")
-            .toLocalDateTime() : null);
+        rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at").toLocalDateTime() : null);
     c.setUpdatedAt(
-        rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at")
-            .toLocalDateTime() : null);
+        rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null);
     c.setCreatedBy(rs.getString("created_by"));
     c.setUpdatedBy(rs.getString("updated_by"));
     return c;
@@ -52,13 +53,17 @@ public class CustomerQueryRepository {
 
   private final PagingJdbcExecutor pagingJdbcExecutor;
 
-  public Page<Customer> search(String fullName, String phone,
+  public Page<Customer> search(String fullName, String phone, String email, String nationalId,
       String fromDate, String toDate, Pageable pageable) {
     DynamicSqlBuilder builder = new DynamicSqlBuilder(BASE_SQL);
     builder.andLike("c.full_name", "fullName", fullName, true, true)
         .andLike("c.phone", "phone", phone, true, true)
-        .andGreaterOrEqual("c.updated_at", "fromDate", DateParserUtils.parseFrom(fromDate))
-        .andSmaller("c.updated_at", "toDate", DateParserUtils.parseTo(toDate));
+        .andLike("c.email", "email", email, true, true)
+        .andLike("c.national_id", "nationalId", nationalId, true, true)
+        .andGreaterOrEqual("c.updated_at", "fromDate",
+            StringUtils.hasText(fromDate) ? DateParserUtils.parseFrom(fromDate) : null)
+        .andSmaller("c.updated_at", "toDate",
+            StringUtils.hasText(toDate) ? DateParserUtils.parseTo(toDate) : null);
 
     return pagingJdbcExecutor.query(
         builder.getSql().toString(),

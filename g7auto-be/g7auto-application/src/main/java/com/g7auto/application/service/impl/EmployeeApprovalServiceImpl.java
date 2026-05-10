@@ -3,6 +3,7 @@ package com.g7auto.application.service.impl;
 import static com.g7auto.core.utils.RoleUtils.hasRole;
 import static com.g7auto.core.utils.RoleUtils.validateActionOnTarget;
 
+import com.g7auto.application.dto.request.BulkStatusRequest;
 import com.g7auto.application.dto.request.EmployeeApprovalSearchRequest;
 import com.g7auto.application.dto.request.EmployeeRequest;
 import com.g7auto.application.dto.request.StatusRequest;
@@ -26,15 +27,18 @@ import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Account;
 import com.g7auto.domain.entity.Employee;
 import com.g7auto.domain.entity.EmployeeApproval;
+import com.g7auto.domain.entity.Showroom;
 import com.g7auto.infrastructure.persistence.AccountRepository;
 import com.g7auto.infrastructure.persistence.EmployeeApprovalRepository;
 import com.g7auto.infrastructure.persistence.EmployeeRepository;
+import com.g7auto.infrastructure.persistence.ShowroomRepository;
 import com.g7auto.infrastructure.persistence.query.EmployeeApprovalQueryRepository;
-import java.util.Objects;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,8 +52,10 @@ public class EmployeeApprovalServiceImpl implements EmployeeApprovalService {
   EmployeeApprovalQueryRepository employeeApprovalQueryRepository;
   EmployeeRepository employeeRepository;
   AccountRepository accountRepository;
+  ShowroomRepository showroomRepository;
   EmployeeApprovalMapper employeeApprovalMapper;
   EmployeeMapper employeeMapper;
+  PasswordEncoder passwordEncoder;
 
   @Override
   public PageResponse<EmployeeResponse> search(EmployeeApprovalSearchRequest request) {
@@ -120,6 +126,12 @@ public class EmployeeApprovalServiceImpl implements EmployeeApprovalService {
   }
 
   @Override
+  @Transactional
+  public EmployeeResponse resign(Long id) {
+    return null;
+  }
+
+  @Override
   public String requestApproval(StatusRequest request) {
     String action = request.getAction();
     if (!action.equalsIgnoreCase("APPROVE") && !action.equalsIgnoreCase("REJECT")) {
@@ -138,49 +150,86 @@ public class EmployeeApprovalServiceImpl implements EmployeeApprovalService {
       throw new BadRequestException(AuthErrorCode.G7_AUTO_00202);
     }
 
-    Account account = accountRepository.findByUsername(username).orElse(null);
-    if (account == null) {
-      return AuthErrorCode.G7_AUTO_00210;
-    }
-
-    validateActionOnTarget(account.getRoles());
-
     boolean isApproved = action.equalsIgnoreCase("APPROVE");
 
     employeeApproval.setStatusApproving(
         isApproved ? ApprovingStatus.APPROVED : ApprovingStatus.REJECTED);
 
     if (isApproved) {
-      Employee employee = new Employee();
-      employeeMapper.mapEmployeeApprovalToEmployee(employeeApproval, employee);
-
-      Account accountApproval = accountRepository.findByUsername(employeeApproval.getUsername())
-          .orElse(null);
-      employeeApprovalMapper.mapEmployeeApprovalToAccount(employeeApproval, accountApproval);
-      Objects.requireNonNull(accountApproval).setStatus(AccountStatus.ACTIVE);
-
       EmployeeApprovalAction actionApprove = employeeApproval.getEmployeeApprovalAction();
+
+      Account account = accountRepository.findByUsername(username).orElse(null);
+
       if (actionApprove.equals(EmployeeApprovalAction.CREATE)) {
+        if (account == null) {
+          account = new Account();
+          account.setUsername(employeeApproval.getUsername());
+          account.setEmail(employeeApproval.getEmail());
+          account.setFullName(employeeApproval.getFullName());
+          account.setPassword(passwordEncoder.encode("123456"));
+          account.setRoles(List.of(Role.SALES));
+          account.setFailedLoginAttempts(0);
+        }
+        account.setStatus(AccountStatus.ACTIVE);
+        Employee employee = new Employee();
+        employeeMapper.mapEmployeeApprovalToEmployee(employeeApproval, employee);
+        if (employeeApproval.getShowroomId() != null) {
+          Showroom showroom = showroomRepository.findById(employeeApproval.getShowroomId())
+              .orElse(null);
+          employee.setShowroom(showroom);
+        }
         employee.setEmployeeStatus(EmployeeStatus.ACTIVE);
+        employeeRepository.save(employee);
+        accountRepository.save(account);
       } else if (actionApprove.equals(EmployeeApprovalAction.UPDATE)) {
-        Employee emp =
-            employeeRepository.findByUsername(username)
-                .orElseThrow(() -> NotFoundUtils.usernameNotFound(username));
+        if (account == null) {
+          throw new BadRequestException(AuthErrorCode.G7_AUTO_00210);
+        }
+        validateActionOnTarget(account.getRoles());
+        account.setStatus(AccountStatus.ACTIVE);
+        Employee emp = employeeRepository.findByUsername(username)
+            .orElseThrow(() -> NotFoundUtils.usernameNotFound(username));
+        Employee employee = new Employee();
+        employeeMapper.mapEmployeeApprovalToEmployee(employeeApproval, employee);
+        if (employeeApproval.getShowroomId() != null) {
+          Showroom showroom = showroomRepository.findById(employeeApproval.getShowroomId())
+              .orElse(null);
+          employee.setShowroom(showroom);
+        }
         employee.setId(emp.getId());
         employee.setEmployeeStatus(EmployeeStatus.ACTIVE);
+        employeeRepository.save(employee);
+        accountRepository.save(account);
       } else if (actionApprove.equals(EmployeeApprovalAction.DELETE)) {
-        employee.setEmployeeStatus(EmployeeStatus.LEAVED);
-        Objects.requireNonNull(accountApproval).setStatus(AccountStatus.INACTIVE);
+        if (account == null) {
+          throw new BadRequestException(AuthErrorCode.G7_AUTO_00210);
+        }
+        validateActionOnTarget(account.getRoles());
+        Employee emp = employeeRepository.findByUsername(username)
+            .orElseThrow(() -> NotFoundUtils.usernameNotFound(username));
+        emp.setEmployeeStatus(EmployeeStatus.LEAVED);
+        account.setStatus(AccountStatus.INACTIVE);
+        employeeRepository.save(emp);
+        accountRepository.save(account);
       } else {
         throw new RuntimeException("action status invalid");
       }
-
-      employeeRepository.save(employee);
-      accountRepository.save(Objects.requireNonNull(accountApproval));
     }
 
     employeeApprovalRepository.save(employeeApproval);
 
+    return SuccessCode.G7_AUTO_00002;
+  }
+
+  @Override
+  @Transactional
+  public String bulkRequestApproval(BulkStatusRequest request) {
+    for (String username : request.getUsernames()) {
+      StatusRequest single = new StatusRequest();
+      single.setUsername(username);
+      single.setAction(request.getAction());
+      requestApproval(single);
+    }
     return SuccessCode.G7_AUTO_00002;
   }
 }

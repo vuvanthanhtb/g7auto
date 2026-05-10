@@ -1,7 +1,9 @@
 package com.g7auto.application.service;
 
+import com.g7auto.application.dto.request.ChangePasswordRequest;
 import com.g7auto.application.dto.request.LoginRequest;
 import com.g7auto.application.dto.request.RefreshTokenRequest;
+import com.g7auto.application.dto.request.UpdateProfileRequest;
 import com.g7auto.application.dto.response.AccountResponse;
 import com.g7auto.application.dto.response.AuthResponse;
 import com.g7auto.domain.entity.Account;
@@ -13,6 +15,10 @@ public interface AuthService {
   AuthResponse refresh(RefreshTokenRequest request);
 
   AccountResponse getProfile(Account account);
+
+  AccountResponse updateProfile(Account account, UpdateProfileRequest request);
+
+  void changePassword(Account account, ChangePasswordRequest request);
 
   AccountResponse initSuperAdmin();
 }

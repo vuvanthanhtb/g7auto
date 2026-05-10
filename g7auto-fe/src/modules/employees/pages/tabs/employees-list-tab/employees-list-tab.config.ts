@@ -1,5 +1,6 @@
 import {
   BTN_RESIGN,
+  BTN_EDIT,
   BTN_SEARCH,
   BTN_REFRESH,
   BTN_EXPORT,
@@ -16,25 +17,49 @@ import {
 } from "@/libs/constants/options.constant";
 import type { BaseTableColumn, IBaseFormConfig } from "@/libs/types";
 import type { EmployeeListSearchForm } from "./employees-list-tab.type";
+import { LEAVED } from "@/libs/constants";
 
 export const getEmployeeListColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
   { name: "username", label: "COMMON_LABEL_ACCOUNT", type: TBL_STRING },
   { name: "fullName", label: "COMMON_LABEL_FULL_NAME", type: TBL_STRING },
   { name: "showroomName", label: "COMMON_LABEL_SHOWROOM", type: TBL_STRING },
-  { name: "phone", label: "COMMON_LABEL_PHONE", type: TBL_STRING },
+  {
+    name: "phoneDisplay",
+    label: "COMMON_LABEL_PHONE",
+    type: TBL_STRING,
+    styleCell: { textAlign: "center" },
+  },
   { name: "email", label: "COMMON_LABEL_EMAIL", type: TBL_STRING },
-  { name: "nationalId", label: "COMMON_LABEL_NATIONAL_ID", type: TBL_STRING },
-  { name: "employeeStatus", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
+  {
+    name: "nationalId",
+    label: "COMMON_LABEL_NATIONAL_ID",
+    type: TBL_STRING,
+    styleCell: { textAlign: "center" },
+  },
+  {
+    name: "employeeStatusDisplay",
+    label: "COMMON_LABEL_STATUS",
+    type: TBL_STRING,
+    refColor: ["employeeStatus"],
+  },
   {
     name: "action",
     label: "COMMON_LABEL_ACTION",
     type: TBL_BUTTON,
     btnGroup: [
       {
+        title: "COMMON_BTN_EDIT",
+        type: "button",
+        action: BTN_EDIT,
+        refShow: ["employeeStatus"],
+        style: { background: "#1976d2", color: "#fff" },
+      },
+      {
         title: "COMMON_BTN_RESIGN",
         type: "button",
         action: BTN_RESIGN,
+        refShow: ["employeeStatus"],
         style: { background: "#d32f2f", color: "#fff" },
       },
     ],
@@ -55,7 +80,12 @@ export const employeeListInitialValues: EmployeeListSearchForm = {
 
 export const getEmployeeListSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "fullName", label: "CUSTOMERS_FIELD_FULL_NAME_SEARCH", size: 3 },
+    {
+      type: TEXT,
+      name: "fullName",
+      label: "CUSTOMERS_FIELD_FULL_NAME_SEARCH",
+      size: 3,
+    },
     {
       type: SELECT,
       name: "employeeStatus",
@@ -90,3 +120,16 @@ export const getEmployeeListSearchConfig = (): IBaseFormConfig => ({
     },
   ],
 });
+
+export const showButtons = (
+  refShow: string[],
+  action: string,
+  row: Record<string, unknown>,
+) => {
+  const status = row[refShow[0]] as string;
+  if (status === LEAVED && [BTN_RESIGN, BTN_EDIT].includes(action)) {
+    return false;
+  }
+
+  return true;
+};

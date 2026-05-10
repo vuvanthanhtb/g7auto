@@ -12,6 +12,8 @@ export interface EmployeeResponse {
   showroomName: string;
   username: string;
   employeeStatus: string;
+  action?: string;
+  statusApproving?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -41,7 +43,7 @@ export interface EmployeeApprovingQuery {
   fullName?: string;
   showroomId?: number;
   action?: string;
-  statusApproving?: string;
+  statusApproving?: string | string[];
   page?: number;
   size?: number;
 }

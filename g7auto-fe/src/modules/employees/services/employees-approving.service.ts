@@ -22,7 +22,9 @@ interface IEmployeesApprovingRepository {
   getList(params?: EmployeeApprovingQuery): AR<EmployeePage>;
   create(data: EmployeeRequest): AR<void>;
   update(id: number, data: EmployeeRequest): AR<void>;
-  approve(id: number): AR<void>;
+  deleteApproval(id: number): AR<void>;
+  requestApproval(data: { username: string; action: string }): AR<void>;
+  bulkRequestApproval(data: { action: string; usernames: string[] }): AR<void>;
 }
 
 class EmployeesApprovingRepository implements IEmployeesApprovingRepository {
@@ -47,8 +49,16 @@ class EmployeesApprovingRepository implements IEmployeesApprovingRepository {
     return http.call<void>({ url: `${BASE}/${id}`, method: "PUT", data });
   }
 
-  approve(id: number): AR<void> {
+  deleteApproval(id: number): AR<void> {
     return http.call<void>({ url: `${BASE}/${id}`, method: "DELETE" });
+  }
+
+  requestApproval(data: { username: string; action: string }): AR<void> {
+    return http.call<void>({ url: `${BASE}/request-approval`, method: "POST", data });
+  }
+
+  bulkRequestApproval(data: { action: string; usernames: string[] }): AR<void> {
+    return http.call<void>({ url: `${BASE}/bulk-approval`, method: "POST", data });
   }
 }
 

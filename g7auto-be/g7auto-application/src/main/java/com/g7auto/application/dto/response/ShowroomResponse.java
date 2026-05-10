@@ -8,7 +8,8 @@ public record ShowroomResponse(
     @ExcelColumn(header = "Địa chỉ", order = 2) String address,
     @ExcelColumn(header = "Số điện thoại", order = 3) String phone,
     @ExcelColumn(header = "Email", order = 4) String email,
-    @ExcelColumn(header = "Quản lý", order = 5) String manager,
+    Long managerId,
+    @ExcelColumn(header = "Quản lý", order = 5) String managerName,
     @ExcelColumn(header = "Trạng thái", order = 6) String status,
     String createdAt,
     String updatedAt

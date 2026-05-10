@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import React, { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { Table } from "react-bootstrap";
 import { Pagination, Stack } from "@mui/material";
 import { useSelector } from "react-redux";
@@ -9,6 +10,7 @@ import styles from "./table.module.scss";
 import type { RootState } from "@/shell/redux/store";
 import type { ButtonProps } from "@/libs/types/button.type";
 import ButtonComponent from "../button";
+import TableTitleComponent from "../table-title";
 import type { BaseTableColumn } from "@/libs/types/table.type";
 import { BUTTON, CHECKBOX } from "@/libs/constants/form.constant";
 import {
@@ -34,6 +36,8 @@ interface BaseTableProps {
   btnGroupClassName?: string;
   onSelectionChange?: (ids: string[]) => void;
   isRowSelectable?: (row: TableRow) => boolean;
+  title?: string;
+  extra?: ReactNode;
 }
 
 const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
@@ -50,6 +54,8 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
     colorCell,
     onSelectionChange,
     isRowSelectable,
+    title,
+    extra,
   } = props;
 
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -110,6 +116,8 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
 
   return (
     <React.Fragment>
+      {title && <TableTitleComponent title={title} extra={extra} />}
+
       <div className={clsx(styles["table-btn-group"], btnGroupClassName)}>
         {btnGroup?.map((btn, index) => (
           <ButtonComponent
@@ -126,7 +134,7 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
       </div>
 
       <div className={styles["total-records"]}>
-        Tổng bản ghi: <span>{totalElements}</span>
+        {t("COMMON_LABEL_TOTAL_RECORDS")}:&nbsp;<span>{totalElements}</span>
       </div>
 
       <Table bordered responsive className={styles["table-container"]}>
@@ -153,7 +161,11 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
               return (
                 <th
                   key={`head-${index}`}
-                  style={{ textAlign: "center", ...col.style }}
+                  style={{
+                    textAlign: "center",
+                    fontWeight: "600",
+                    ...col.style,
+                  }}
                 >
                   {t(col.label ?? "")}
                 </th>

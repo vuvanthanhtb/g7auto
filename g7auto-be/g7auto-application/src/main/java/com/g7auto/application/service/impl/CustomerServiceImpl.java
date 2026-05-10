@@ -15,10 +15,13 @@ import com.g7auto.core.export.ExcelSupport;
 import com.g7auto.core.response.PageResponse;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Customer;
+import com.g7auto.domain.entity.Employee;
 import com.g7auto.infrastructure.persistence.CustomerRepository;
+import com.g7auto.infrastructure.persistence.EmployeeRepository;
 import com.g7auto.infrastructure.persistence.query.CustomerQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +44,7 @@ public class CustomerServiceImpl implements CustomerService {
 
   private final CustomerRepository customerRepository;
   private final CustomerQueryRepository customerQueryRepository;
+  private final EmployeeRepository employeeRepository;
   private final CustomerMapper customerMapper;
 
   @Override
@@ -48,6 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
     Pageable pageable = PageableUtils.from(request);
     return PageResponse.of(
         customerQueryRepository.search(request.getFullName(), request.getPhone(),
+            request.getEmail(), request.getNationalId(),
             request.getFromDate(), request.getToDate(), pageable),
         customerMapper::toResponse,
         request.getFromDate(), request.getToDate());
@@ -55,7 +60,14 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Override
   public CustomerResponse findById(Long id) {
-    return customerMapper.toResponse(get(id));
+    Customer customer = get(id);
+    if (customer.getAssignedEmployeeId() != null) {
+      Employee emp = employeeRepository.findById(customer.getAssignedEmployeeId()).orElse(null);
+      if (emp != null) {
+        customer.setAssignedEmployeeName(emp.getFullName());
+      }
+    }
+    return customerMapper.toResponse(customer);
   }
 
   @Override
@@ -102,8 +114,21 @@ public class CustomerServiceImpl implements CustomerService {
           req.setPhone(getCellString(row, 1));
           req.setEmail(getCellString(row, 2));
           req.setAddress(getCellString(row, 3));
-          req.setNationalId(getCellString(row, 4));
-          req.setNotes(getCellString(row, 5));
+          String birthDateStr = getCellString(row, 4);
+          if (!birthDateStr.isBlank()) {
+            req.setBirthDate(LocalDate.parse(birthDateStr));
+          }
+          req.setNationalId(getCellString(row, 5));
+          req.setSourceType(getCellString(row, 6));
+          req.setCarInterest(getCellString(row, 7));
+          String empIdStr = getCellString(row, 8);
+          if (!empIdStr.isBlank()) {
+            try {
+              req.setAssignedEmployeeId(Long.parseLong(empIdStr));
+            } catch (NumberFormatException ignored) {
+            }
+          }
+          req.setNotes(getCellString(row, 9));
           create(req);
           success++;
         } catch (Exception e) {
@@ -125,7 +150,7 @@ public class CustomerServiceImpl implements CustomerService {
     try (SXSSFWorkbook workbook = ExcelSupport.createWorkbook()) {
       Sheet sheet = workbook.createSheet("Customers");
       Row header = sheet.createRow(0);
-      String[] cols = {"fullName", "phone", "email", "address", "nationalId", "notes"};
+      String[] cols = {"fullName", "phone", "email", "address", "birthDate", "nationalId", "sourceType", "carInterest", "assignedEmployeeId", "notes"};
       for (int i = 0; i < cols.length; i++) {
         header.createCell(i).setCellValue(cols[i]);
       }

@@ -8,7 +8,6 @@ import {
   showButtons,
 } from "./account-list-tab.config";
 import { useAccountList } from "./use-account-list";
-import TableTitleComponent from "@/libs/components/ui/table-title";
 import type { AccountSearchForm } from "./account-list-tab.type";
 import { t } from "@/libs/i18n";
 
@@ -30,7 +29,6 @@ const AccountsListTab = () => {
         onChange={onchange}
         values={searchParams}
       />
-      <TableTitleComponent title={t("ACCOUNTS_TAB_LIST")} />
       <BaseTableComponent
         tableConfig={getAccountColumns()}
         reducer="accounts"
@@ -38,6 +36,7 @@ const AccountsListTab = () => {
         handleCellAction={handleCellAction}
         handlePageChange={handlePageChange}
         showButton={showButtons}
+        title={t("ACCOUNTS_TAB_LIST")}
       />
     </>
   );

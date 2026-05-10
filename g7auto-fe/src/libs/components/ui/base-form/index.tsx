@@ -125,7 +125,7 @@ const BaseFormComponent = <T extends Record<string, any>>(
                           onBlur={formik.handleBlur}
                         />
                         <Form.Control.Feedback type="invalid">
-                          {error}
+                          {t(error || "")}
                         </Form.Control.Feedback>
                       </Form.Group>
                     </Col>
@@ -213,7 +213,7 @@ const BaseFormComponent = <T extends Record<string, any>>(
                           type="invalid"
                           className="d-block"
                         >
-                          {touched && error}
+                          {touched && t(error || "")}
                         </Form.Control.Feedback>
                       </Form.Group>
                     </Col>

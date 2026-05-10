@@ -1,6 +1,6 @@
 import {
   BTN_SUBMIT,
-  BTN_EDIT,
+  BTN_DETAIL,
   BTN_REFRESH,
   BTN_EXPORT,
 } from "@/libs/constants/button.constant";
@@ -8,7 +8,8 @@ import {
   BUTTON,
   NUMBER_INPUT,
   TEXT,
-  DATE,
+  DATETIME,
+  SELECT,
 } from "@/libs/constants/form.constant";
 import {
   NUMERICAL_ORDER,
@@ -20,44 +21,45 @@ import type { BaseTableColumn } from "@/libs/types/table.type";
 
 export const getServiceHistoryColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
-  { name: "carName", label: "COMMON_LABEL_CAR", type: TBL_STRING },
-  { name: "serviceType", label: "COMMON_LABEL_SERVICE_TYPE", type: TBL_STRING },
-  { name: "showroomName", label: "COMMON_LABEL_SHOWROOM", type: TBL_STRING },
-  { name: "cost", label: "COMMON_LABEL_COST", type: TBL_STRING },
-  { name: "serviceDate", label: "COMMON_LABEL_SERVICE_DATE", type: TBL_STRING },
+  { name: "customerFullName", label: "COMMON_LABEL_CUSTOMER", type: TBL_STRING },
+  { name: "contactType", label: "SERVICE_HISTORY_FIELD_CONTACT_TYPE", type: TBL_STRING },
+  { name: "content", label: "SERVICE_HISTORY_FIELD_CONTENT", type: TBL_STRING },
+  { name: "serviceDate", label: "SERVICE_HISTORY_FIELD_DATE", type: TBL_STRING },
   {
     name: "action",
     label: "COMMON_LABEL_ACTION",
     type: TBL_BUTTON,
-    btnGroup: [{ title: "COMMON_BTN_EDIT", type: "button", action: BTN_EDIT }],
+    btnGroup: [{ title: "COMMON_BTN_DETAIL", type: "button", action: BTN_DETAIL }],
   },
 ];
 
 export const getServiceHistoryFormConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: NUMBER_INPUT, name: "carId", label: "CONTRACTS_FIELD_CAR_ID", required: true, size: 6 },
-    { type: NUMBER_INPUT, name: "showroomId", label: "CARS_FIELD_SHOWROOM_ID", required: true, size: 6 },
+    { type: NUMBER_INPUT, name: "customerId", label: "CONTRACTS_FIELD_CUSTOMER_ID", required: true, size: 6 },
     { type: NUMBER_INPUT, name: "employeeId", label: "CONTRACTS_FIELD_EMPLOYEE_ID", size: 6 },
-    { type: TEXT, name: "serviceType", label: "SERVICE_HISTORY_FIELD_TYPE", required: true, size: 6 },
-    { type: TEXT, name: "description", label: "CAR_MODELS_FIELD_DESCRIPTION", size: 12 },
-    { type: NUMBER_INPUT, name: "cost", label: "SERVICE_HISTORY_FIELD_COST", size: 6 },
-    { type: DATE, name: "serviceDate", label: "SERVICE_HISTORY_FIELD_DATE", size: 6 },
+    { type: SELECT, name: "contactType", label: "SERVICE_HISTORY_FIELD_CONTACT_TYPE", option: "contactTypeOptions", required: true, size: 6 },
+    { type: DATETIME, name: "serviceDate", label: "SERVICE_HISTORY_FIELD_DATE", required: true, size: 6 },
+    { type: TEXT, name: "content", label: "SERVICE_HISTORY_FIELD_CONTENT", size: 12 },
+    { type: TEXT, name: "result", label: "SERVICE_HISTORY_FIELD_RESULT", size: 12 },
+    { type: DATETIME, name: "nextReminderDate", label: "SERVICE_HISTORY_FIELD_NEXT_REMINDER", size: 12 },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "COMMON_BTN_SAVE", type: "submit", action: BTN_SUBMIT }],
+      childs: [{ title: "SERVICE_HISTORY_BTN_ADD", type: "submit", action: BTN_SUBMIT }],
     },
   ],
 });
 
+export const initServiceHistorySearchForm = { page: 1, size: 10 };
+
 export const serviceHistoryInitialValues = {
-  carId: "",
-  showroomId: "",
+  customerId: "",
   employeeId: "",
-  serviceType: "",
-  description: "",
-  cost: "",
+  contactType: "",
   serviceDate: "",
+  content: "",
+  result: "",
+  nextReminderDate: "",
 };
 
 export const getServiceHistorySearchConfig = (): IBaseFormConfig => ({

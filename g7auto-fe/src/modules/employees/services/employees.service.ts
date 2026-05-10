@@ -20,6 +20,7 @@ const BASE = EMPLOYEES_ENDPOINT.BASE;
 
 interface IEmployeesRepository {
   getList(params?: EmployeeQuery): AR<EmployeePage>;
+  getAll(): AR<EmployeeResponse[]>;
   getById(id: number): AR<EmployeeResponse>;
   create(data: EmployeeRequest): AR<EmployeeResponse>;
   update(id: number, data: EmployeeRequest): AR<EmployeeResponse>;
@@ -38,6 +39,9 @@ class EmployeesRepository implements IEmployeesRepository {
   }
   getList(params?: EmployeeQuery): AR<EmployeePage> {
     return http.call<EmployeePage>({ url: BASE, method: "GET", params });
+  }
+  getAll(): AR<EmployeeResponse[]> {
+    return http.call<EmployeeResponse[]>({ url: `${BASE}/list`, method: "GET" });
   }
   getById(id: number): AR<EmployeeResponse> {
     return http.call<EmployeeResponse>({ url: `${BASE}/${id}`, method: "GET" });

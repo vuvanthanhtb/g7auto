@@ -27,6 +27,6 @@ public class ShowroomRequest {
   @Email(message = ValidationErrorCode.G7_AUTO_00801)
   String email;
 
-  @Schema(description = "Tên người quản lý showroom")
-  String manager;
+  @Schema(description = "ID nhân viên quản lý showroom")
+  Long managerId;
 }

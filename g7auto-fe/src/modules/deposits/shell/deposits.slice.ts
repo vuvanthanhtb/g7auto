@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { depositsService } from "../services/deposits.service";
-import type { DepositQuery, DepositRequest, DepositResponse } from "./deposits.type";
+import { depositsService } from "./deposits.service";
+import type { DepositPayload, DepositRequest, DepositResponse } from "./deposits.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
@@ -17,7 +17,7 @@ const initialState: DepositsState = {
 
 export const getDeposits = createAsyncThunk(
   "deposits/getList",
-  async (params: DepositQuery, { rejectWithValue }) => {
+  async (params: DepositPayload, { rejectWithValue }) => {
     try {
       const res = await depositsService.getList(params);
       return res.data;
@@ -48,6 +48,47 @@ export const createDeposits = createAsyncThunk(
       const res = await depositsService.create(data);
       toastSuccess(SUCCESS_CODE.CREATE);
       return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const refundDeposit = createAsyncThunk(
+  "deposits/refund",
+  async ({ id, notes }: { id: number; notes?: string }, { rejectWithValue }) => {
+    try {
+      const res = await depositsService.refund(id, notes);
+      toastSuccess(SUCCESS_CODE.ACTION);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const cancelDeposit = createAsyncThunk(
+  "deposits/cancel",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await depositsService.cancel(id);
+      toastSuccess(SUCCESS_CODE.ACTION);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const convertDepositToContract = createAsyncThunk(
+  "deposits/convertToContract",
+  async ({ id, notes }: { id: number; notes?: string }, { rejectWithValue }) => {
+    try {
+      await depositsService.convertToContract(id, { notes });
+      toastSuccess(SUCCESS_CODE.ACTION);
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);

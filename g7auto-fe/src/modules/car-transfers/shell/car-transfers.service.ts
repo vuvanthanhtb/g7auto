@@ -10,7 +10,7 @@ class CarTransfersRepository {
     return CarTransfersRepository.instance;
   }
   getList(params?: CarTransferQuery) {
-    return http.call<{ content: CarTransferResponse[]; totalElements: number; totalPages: number; page: number; size: number }>({ url: CAR_TRANSFERS_ENDPOINT.LIST, method: "GET", params });
+    return http.call<{ content: CarTransferResponse[]; totalElements: number; totalPages: number; page: number; size: number }>({ url: CAR_TRANSFERS_ENDPOINT.BASE, method: "GET", params });
   }
   getById(id: number) {
     return http.call<CarTransferResponse>({ url: `${CAR_TRANSFERS_ENDPOINT.BASE}/${id}`, method: "GET" });
@@ -18,11 +18,11 @@ class CarTransfersRepository {
   create(data: CarTransferRequest) {
     return http.call<CarTransferResponse>({ url: CAR_TRANSFERS_ENDPOINT.BASE, method: "POST", data });
   }
-  export(id: number) {
-    return http.call<CarTransferResponse>({ url: `${CAR_TRANSFERS_ENDPOINT.BASE}/${id}/export`, method: "POST" });
+  confirmExport(id: number) {
+    return http.call<CarTransferResponse>({ url: `${CAR_TRANSFERS_ENDPOINT.BASE}/${id}/confirm-export`, method: "POST" });
   }
-  receive(id: number) {
-    return http.call<CarTransferResponse>({ url: `${CAR_TRANSFERS_ENDPOINT.BASE}/${id}/receive`, method: "POST" });
+  confirmReceive(id: number) {
+    return http.call<CarTransferResponse>({ url: `${CAR_TRANSFERS_ENDPOINT.BASE}/${id}/confirm-receive`, method: "POST" });
   }
   cancel(id: number) {
     return http.call<CarTransferResponse>({ url: `${CAR_TRANSFERS_ENDPOINT.BASE}/${id}/cancel`, method: "POST" });

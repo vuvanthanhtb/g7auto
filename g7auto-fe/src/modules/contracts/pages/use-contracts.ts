@@ -1,11 +1,25 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/shell/redux/hooks";
-import { getContracts, createContracts, getContractsById, clearSelectedContracts } from "../shell/contracts.slice";
+import {
+  getContracts,
+  createContracts,
+  updateContracts,
+  deleteContracts,
+  getContractsById,
+  clearSelectedContracts,
+} from "../shell/contracts.slice";
 import { contractsService } from "../shell/contracts.service";
-import type { ContractRequest } from "../shell/contracts.type";
-import { contractsInitialValues } from "./contracts.config";
-import { BTN_SEARCH, BTN_REFRESH, BTN_EXPORT, BTN_DETAIL, BTN_SUBMIT } from "@/libs/constants/button.constant";
-import { normalizeFormValues } from "@/libs/utils";
+import type { ContractRequest, ContractUpdateRequest, ContractSearchForm } from "../shell/contracts.type";
+import { contractsInitialValues, initContractSearchForm } from "./contracts.config";
+import {
+  BTN_SEARCH,
+  BTN_REFRESH,
+  BTN_EXPORT,
+  BTN_DETAIL,
+  BTN_DELETE,
+  BTN_SUBMIT,
+  BTN_UPDATE,
+} from "@/libs/constants/button.constant";
 
 type TableRow = Record<string, unknown>;
 
@@ -15,13 +29,15 @@ export const useContracts = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
   const [formValues, setFormValues] = useState<Record<string, unknown>>(contractsInitialValues);
-  const [page, setPage] = useState(1);
-  const [searchParams, setSearchParams] = useState<Record<string, unknown>>({});
+  const [searchQuery, setSearchQuery] = useState<ContractSearchForm>(initContractSearchForm);
 
   useEffect(() => {
     document.title = "Hợp đồng — G7Auto";
-    dispatch(getContracts({ page, size: 10, ...searchParams }));
-  }, [dispatch, page, searchParams]);
+  }, []);
+
+  useEffect(() => {
+    dispatch(getContracts(searchQuery));
+  }, [dispatch, searchQuery]);
 
   useEffect(() => {
     if (selected && editId) setFormValues(selected as unknown as Record<string, unknown>);
@@ -38,31 +54,53 @@ export const useContracts = () => {
     dispatch(clearSelectedContracts());
   };
 
-  const handleCellAction = (row: TableRow, key?: string) => {
+  const handleCellAction = async (row: TableRow, key?: string) => {
     if (key === BTN_DETAIL) {
       setEditId(row.id as number);
       dispatch(getContractsById(row.id as number));
       setDrawerOpen(true);
     }
+    if (key === BTN_DELETE) {
+      await dispatch(deleteContracts(row.id as number));
+      dispatch(getContracts(searchQuery));
+    }
   };
 
   const handleSubmit = async (data: Record<string, unknown>) => {
-    if (!editId) await dispatch(createContracts(data as unknown as ContractRequest));
+    await dispatch(createContracts(data as unknown as ContractRequest));
     closeDrawer();
-    dispatch(getContracts({ page, size: 10, ...searchParams }));
+    dispatch(getContracts(searchQuery));
+  };
+
+  const handleUpdate = async (data: Record<string, unknown>) => {
+    if (editId) {
+      await dispatch(updateContracts({ id: editId, data: data as unknown as ContractUpdateRequest }));
+      closeDrawer();
+      dispatch(getContracts(searchQuery));
+    }
   };
 
   const searchHandlers = {
-    [BTN_SEARCH]: (values: Record<string, unknown>) => { setSearchParams(normalizeFormValues(values)); setPage(1); },
-    [BTN_REFRESH]: () => { dispatch(getContracts({ page, size: 10, ...searchParams })); },
+    [BTN_SEARCH]: (values: ContractSearchForm) => {
+      setSearchQuery({ ...values, page: 1 });
+    },
+    [BTN_REFRESH]: () => {
+      setSearchQuery(initContractSearchForm);
+    },
     [BTN_EXPORT]: async () => { await contractsService.exportExcel(); },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };
+  const updateFormHandlers = { [BTN_UPDATE]: handleUpdate };
+
+  const handlePageChange = (page: number) => {
+    setSearchQuery((prev) => ({ ...prev, page }));
+  };
 
   return {
-    drawerOpen, editId, formValues, page,
-    openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers,
-    setFormValues, setPage,
+    drawerOpen, editId, formValues, searchQuery,
+    openCreate, closeDrawer, handleCellAction,
+    searchHandlers, formHandlers, updateFormHandlers,
+    setFormValues, handlePageChange,
   };
 };

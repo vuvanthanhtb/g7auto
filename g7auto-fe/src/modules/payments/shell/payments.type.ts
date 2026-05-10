@@ -1,31 +1,38 @@
 export interface PaymentResponse {
   id: number;
-  code: string;
   contractId: number;
-  contractCode: string;
-  customerId: number;
-  customerName: string;
+  contractNumber: string;
+  installmentNumber: number;
   amount: number;
-  paymentMethod: string;
-  status: string;
   paymentTime: string;
-  note: string;
+  method: string;
+  status: string;
+  collectorId: number;
+  collectorName: string;
+  transactionCode: string;
+  notes: string;
   createdAt: string;
-  updatedAt: string;
 }
 
 export interface PaymentRequest {
   contractId: number;
   amount: number;
-  paymentMethod: string;
+  method: string;
   paymentTime?: string;
-  note?: string;
+  collectorId?: number;
+  transactionCode?: string;
+  notes?: string;
 }
 
-export interface PaymentQuery {
-  page?: number;
-  size?: number;
+export interface PaymentSearchForm {
+  status: string;
+  page: number;
+  size: number;
+}
+
+export interface PaymentPayload {
   status?: string;
   contractId?: number;
-  customerId?: number;
+  page?: number;
+  size?: number;
 }

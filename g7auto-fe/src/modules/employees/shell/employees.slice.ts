@@ -10,6 +10,12 @@ import type {
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
+import { parseStatusApprovingDisplay } from "../pages/tabs/employees-approved-tab/employees-approved-tab.utils";
+import { formatPhoneNumber } from "@/libs/utils";
+import {
+  parseActionDisplay,
+  parseEmployeeStatusDisplay,
+} from "../pages/employee.utils";
 
 type PageState = {
   content: EmployeeResponse[];
@@ -23,6 +29,7 @@ interface EmployeesState {
   employeeTable: PageState;
   pendingTable: PageState;
   approvedTable: PageState;
+  employeeAll: EmployeeResponse[];
   selected: EmployeeResponse | null;
 }
 
@@ -38,15 +45,38 @@ const initialState: EmployeesState = {
   employeeTable: emptyPage,
   pendingTable: emptyPage,
   approvedTable: emptyPage,
+  employeeAll: [],
   selected: null,
 };
+
+export const getAllEmployees = createAsyncThunk(
+  "employees/getAll",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await employeesService.getAll();
+      return data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
 export const getEmployees = createAsyncThunk(
   "employees/getList",
   async (params: EmployeeQuery, { rejectWithValue }) => {
     try {
-      const res = await employeesService.getList(params);
-      return res.data;
+      const { data } = await employeesService.getList(params);
+      return {
+        ...data,
+        content: data.content.map((item) => ({
+          ...item,
+          phoneDisplay: formatPhoneNumber(item?.phone || ""),
+          employeeStatusDisplay: parseEmployeeStatusDisplay(
+            item?.employeeStatus || "",
+          ),
+        })),
+      };
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);
@@ -102,11 +132,18 @@ export const getPendingApprovals = createAsyncThunk(
   "employees/getPending",
   async (params: EmployeeApprovingQuery, { rejectWithValue }) => {
     try {
-      const res = await employeesApprovingService.getList({
+      const { data } = await employeesApprovingService.getList({
         ...params,
         statusApproving: "AWAITING_APPROVAL",
       });
-      return res.data;
+      return {
+        ...data,
+        content: data.content.map((item) => ({
+          ...item,
+          actionDisplay: parseActionDisplay(item?.action || ""),
+          phoneDisplay: formatPhoneNumber(item?.phone || ""),
+        })),
+      };
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);
@@ -118,11 +155,21 @@ export const getApprovedApprovals = createAsyncThunk(
   "employees/getApproved",
   async (params: EmployeeApprovingQuery, { rejectWithValue }) => {
     try {
-      const res = await employeesApprovingService.getList({
+      const { data } = await employeesApprovingService.getList({
         ...params,
-        statusApproving: "APPROVED",
+        statusApproving: ["APPROVED", "REJECTED"],
       });
-      return res.data;
+      return {
+        ...data,
+        content: data.content.map((item) => ({
+          ...item,
+          statusApprovingDisplay: parseStatusApprovingDisplay(
+            item?.statusApproving || "",
+          ),
+          actionDisplay: parseActionDisplay(item?.action || ""),
+          phoneDisplay: formatPhoneNumber(item?.phone || ""),
+        })),
+      };
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);
@@ -143,11 +190,46 @@ export const createEmployeeApproving = createAsyncThunk(
   },
 );
 
+export const updateEmployeeApproving = createAsyncThunk(
+  "employees/updateApproving",
+  async (
+    { id, data }: { id: number; data: EmployeeRequest },
+    { rejectWithValue },
+  ) => {
+    try {
+      await employeesApprovingService.update(id, data);
+      toastSuccess(SUCCESS_CODE.ACTION);
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const bulkApproveEmployeeApproving = createAsyncThunk(
+  "employees/bulkApprove",
+  async (
+    payload: { action: string; usernames: string[] },
+    { rejectWithValue },
+  ) => {
+    try {
+      await employeesApprovingService.bulkRequestApproval(payload);
+      toastSuccess(SUCCESS_CODE.ACTION);
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
 export const approveEmployeeApproving = createAsyncThunk(
   "employees/approve",
-  async (id: number, { rejectWithValue }) => {
+  async (
+    payload: { username: string; action: string },
+    { rejectWithValue },
+  ) => {
     try {
-      await employeesApprovingService.approve(id);
+      await employeesApprovingService.requestApproval(payload);
       toastSuccess(SUCCESS_CODE.ACTION);
     } catch (error) {
       toastError(getApiErrorMessage(error));
@@ -177,6 +259,9 @@ const employeesSlice = createSlice({
       })
       .addCase(getApprovedApprovals.fulfilled, (state, action) => {
         state.approvedTable = action.payload;
+      })
+      .addCase(getAllEmployees.fulfilled, (state, action) => {
+        state.employeeAll = action.payload;
       });
   },
 });

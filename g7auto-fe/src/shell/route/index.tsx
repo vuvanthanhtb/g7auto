@@ -8,7 +8,9 @@ import { AUTH_CONFIG } from "@/modules/auth/shell/auth.route";
 import { PATHS_CONFIG } from "./path.config";
 
 const wrap = (Component: React.LazyExoticComponent<React.ComponentType>) => (
-  <Suspense fallback={<LoadingPage />}><Component /></Suspense>
+  <Suspense fallback={<LoadingPage />}>
+    <Component />
+  </Suspense>
 );
 
 export const router = createBrowserRouter([
@@ -18,7 +20,10 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <MainLayout />,
-        children: PATHS_CONFIG.map((r) => ({ path: r.path, element: wrap(r.component) })),
+        children: PATHS_CONFIG.map((r) => ({
+          path: r.path,
+          element: wrap(r.component),
+        })),
       },
     ],
   },

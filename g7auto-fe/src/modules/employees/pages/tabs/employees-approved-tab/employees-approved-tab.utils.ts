@@ -1,3 +1,4 @@
+import { APPROVED, PENDING, REJECTED } from "@/libs/constants";
 import type {
   EmployeeApprovedSearchForm,
   EmployeeApprovedSearchQuery,
@@ -9,7 +10,7 @@ export const parseApprovedFormSearch = (
   const params: EmployeeApprovedSearchQuery = {
     page: data.page,
     size: data.size,
-    statusApproving: "APPROVED",
+    statusApproving: APPROVED,
   };
 
   if (data.fullName) {
@@ -17,4 +18,17 @@ export const parseApprovedFormSearch = (
   }
 
   return params;
+};
+
+export const parseStatusApprovingDisplay = (data: string) => {
+  switch (data) {
+    case APPROVED:
+      return "Đã duyệt";
+    case PENDING:
+      return "Đang chờ";
+    case REJECTED:
+      return "Đã từ chối";
+    default:
+      return "";
+  }
 };

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { serviceHistoryService } from "../services/service-history.service";
-import type { ServiceHistoryQuery, ServiceHistoryRequest, ServiceHistoryResponse } from "./service-history.type";
+import { serviceHistoryService } from "./service-history.service";
+import type { ServiceHistoryPayload, ServiceHistoryRequest, ServiceHistoryResponse } from "./service-history.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
@@ -17,7 +17,7 @@ const initialState: ServiceHistoryState = {
 
 export const getServiceHistory = createAsyncThunk(
   "serviceHistory/getList",
-  async (params: ServiceHistoryQuery, { rejectWithValue }) => {
+  async (params: ServiceHistoryPayload, { rejectWithValue }) => {
     try {
       const res = await serviceHistoryService.getList(params);
       return res.data;

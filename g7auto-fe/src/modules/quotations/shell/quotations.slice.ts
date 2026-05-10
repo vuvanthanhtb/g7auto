@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { quotationsService } from "../services/quotations.service";
-import type { QuotationQuery, QuotationRequest, QuotationResponse } from "./quotations.type";
+import { quotationsService } from "./quotations.service";
+import type { QuotationPayload, QuotationRequest, QuotationResponse } from "./quotations.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
@@ -17,7 +17,7 @@ const initialState: QuotationsState = {
 
 export const getQuotations = createAsyncThunk(
   "quotations/getList",
-  async (params: QuotationQuery, { rejectWithValue }) => {
+  async (params: QuotationPayload, { rejectWithValue }) => {
     try {
       const res = await quotationsService.getList(params);
       return res.data;
@@ -47,6 +47,48 @@ export const createQuotations = createAsyncThunk(
     try {
       const res = await quotationsService.create(data);
       toastSuccess(SUCCESS_CODE.CREATE);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const sendQuotation = createAsyncThunk(
+  "quotations/send",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await quotationsService.send(id);
+      toastSuccess(SUCCESS_CODE.ACTION);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const acceptQuotation = createAsyncThunk(
+  "quotations/accept",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await quotationsService.accept(id);
+      toastSuccess(SUCCESS_CODE.ACTION);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const cancelQuotation = createAsyncThunk(
+  "quotations/cancel",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await quotationsService.cancel(id);
+      toastSuccess(SUCCESS_CODE.ACTION);
       return res.data;
     } catch (error) {
       toastError(getApiErrorMessage(error));

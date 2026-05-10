@@ -15,4 +15,7 @@ public class ShowroomSearchRequest extends BaseSearchRequest {
   @Schema(description = "Tên showroom (tìm kiếm gần đúng)")
   String name;
 
+  @Schema(description = "Số điện thoại (tìm kiếm gần đúng)")
+  String phone;
+
 }

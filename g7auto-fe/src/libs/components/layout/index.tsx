@@ -129,7 +129,13 @@ const MainLayout = () => {
               </Box>
             </Box>
           </Box>
-          <Box sx={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
+          <Box
+            sx={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          >
             <ClockComponent />
           </Box>
           <HeaderComponent />
@@ -180,7 +186,9 @@ const MainLayout = () => {
           },
         }}
       >
-        <Outlet key={locale} />
+        <Box sx={{ p: { xs: 2, sm: 3 } }}>
+          <Outlet key={locale} />
+        </Box>
       </Box>
     </Box>
   );

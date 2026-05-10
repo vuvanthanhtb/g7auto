@@ -18,6 +18,10 @@ public interface EmployeeApprovalMapper {
 
   @Mapping(source = "createdAt", target = "createdAt", qualifiedByName = "formatDateTime")
   @Mapping(source = "updatedAt", target = "updatedAt", qualifiedByName = "formatDateTime")
+  @Mapping(source = "employeeApprovalAction", target = "action")
+  @Mapping(source = "statusApproving", target = "statusApproving")
+  @Mapping(source = "showroomName", target = "showroomName")
+  @Mapping(source = "showroomId", target = "showroomId")
   EmployeeResponse toResponse(EmployeeApproval employeeApproval);
 
   @Mapping(target = "id", ignore = true)
@@ -25,6 +29,7 @@ public interface EmployeeApprovalMapper {
   @Mapping(target = "updatedAt", ignore = true)
   @Mapping(target = "createdBy", ignore = true)
   @Mapping(target = "updatedBy", ignore = true)
+  @Mapping(target = "showroomName", ignore = true)
   EmployeeApproval toEntity(EmployeeRequest request);
 
   @AfterMapping
@@ -36,6 +41,8 @@ public interface EmployeeApprovalMapper {
 
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(target = "id", ignore = true)
+  @Mapping(source = "showroom.id", target = "showroomId")
+  @Mapping(target = "showroomName", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)
   @Mapping(target = "createdBy", ignore = true)

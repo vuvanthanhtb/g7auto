@@ -18,4 +18,10 @@ public class CustomerSearchRequest extends BaseSearchRequest {
   @Schema(description = "Số điện thoại (tìm kiếm gần đúng)")
   String phone;
 
+  @Schema(description = "Email (tìm kiếm gần đúng)")
+  String email;
+
+  @Schema(description = "CMND/CCCD (tìm kiếm gần đúng)")
+  String nationalId;
+
 }

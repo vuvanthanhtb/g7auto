@@ -34,6 +34,12 @@ public class DepositController {
     return ResponseEntity.ok(ApiResponse.ok(depositService.search(request)));
   }
 
+  @GetMapping("/list")
+  public ResponseEntity<ApiResponse<PageResponse<DepositResponse>>> list(
+      @ModelAttribute DepositSearchRequest request) {
+    return ResponseEntity.ok(ApiResponse.ok(depositService.search(request)));
+  }
+
   @GetMapping("/{id}")
   public ResponseEntity<ApiResponse<DepositResponse>> getById(@PathVariable Long id) {
     return ResponseEntity.ok(ApiResponse.ok(depositService.findById(id)));
@@ -59,12 +65,11 @@ public class DepositController {
 
   @PostMapping("/{id}/convert-to-contract")
   public ResponseEntity<ApiResponse<ContractResponse>> convertToContract(@PathVariable Long id,
-      @RequestParam String contractNumber,
       @RequestParam(required = false) String signDate,
       @RequestParam(required = false) String expectedDeliveryDate,
       @RequestParam(required = false) String notes) {
     return ResponseEntity.ok(ApiResponse.ok(depositService.convertToContract(
-        id, contractNumber,
+        id,
         signDate != null ? LocalDate.parse(signDate) : null,
         expectedDeliveryDate != null ? LocalDate.parse(expectedDeliveryDate) : null,
         notes)));

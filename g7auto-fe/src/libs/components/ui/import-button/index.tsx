@@ -3,6 +3,7 @@ import { Box, Button, CircularProgress, Tooltip } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import DownloadIcon from "@mui/icons-material/Download";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
+import { t } from "@/libs/i18n";
 
 type ImportResult = {
   total: number;
@@ -53,7 +54,7 @@ const ImportButton = ({ onImport, onDownloadTemplate, onSuccess }: Props) => {
           startIcon={<DownloadIcon />}
           onClick={onDownloadTemplate}
         >
-          Mẫu Excel
+          {t("COMMON_BTN_TEMPLATE")}
         </Button>
       </Tooltip>
       <input
@@ -73,7 +74,7 @@ const ImportButton = ({ onImport, onDownloadTemplate, onSuccess }: Props) => {
         onClick={() => inputRef.current?.click()}
         disabled={loading}
       >
-        Import Excel
+        {t("COMMON_BTN_IMPORT")}
       </Button>
     </Box>
   );

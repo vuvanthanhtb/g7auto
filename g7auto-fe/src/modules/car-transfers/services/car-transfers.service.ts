@@ -12,8 +12,8 @@ interface ICarTransfersRepository {
   getList(params?: CarTransferQuery): AR<CarTransferPage>;
   getById(id: number): AR<CarTransferResponse>;
   create(data: CarTransferRequest): AR<CarTransferResponse>;
-  export(id: number): AR<CarTransferResponse>;
-  receive(id: number): AR<CarTransferResponse>;
+  confirmExport(id: number): AR<CarTransferResponse>;
+  confirmReceive(id: number): AR<CarTransferResponse>;
   cancel(id: number): AR<CarTransferResponse>;
   exportExcel(): Promise<void>;
 }
@@ -25,11 +25,11 @@ class CarTransfersRepository implements ICarTransfersRepository {
     if (!CarTransfersRepository.instance) CarTransfersRepository.instance = new CarTransfersRepository();
     return CarTransfersRepository.instance;
   }
-  getList(params?: CarTransferQuery): AR<CarTransferPage> { return http.call<CarTransferPage>({ url: CAR_TRANSFERS_ENDPOINT.LIST, method: "GET", params }); }
+  getList(params?: CarTransferQuery): AR<CarTransferPage> { return http.call<CarTransferPage>({ url: BASE, method: "GET", params }); }
   getById(id: number): AR<CarTransferResponse> { return http.call<CarTransferResponse>({ url: `${BASE}/${id}`, method: "GET" }); }
   create(data: CarTransferRequest): AR<CarTransferResponse> { return http.call<CarTransferResponse>({ url: BASE, method: "POST", data }); }
-  export(id: number): AR<CarTransferResponse> { return http.call<CarTransferResponse>({ url: `${BASE}/${id}/export`, method: "POST" }); }
-  receive(id: number): AR<CarTransferResponse> { return http.call<CarTransferResponse>({ url: `${BASE}/${id}/receive`, method: "POST" }); }
+  confirmExport(id: number): AR<CarTransferResponse> { return http.call<CarTransferResponse>({ url: `${BASE}/${id}/confirm-export`, method: "POST" }); }
+  confirmReceive(id: number): AR<CarTransferResponse> { return http.call<CarTransferResponse>({ url: `${BASE}/${id}/confirm-receive`, method: "POST" }); }
   cancel(id: number): AR<CarTransferResponse> { return http.call<CarTransferResponse>({ url: `${BASE}/${id}/cancel`, method: "POST" }); }
   exportExcel(): Promise<void> { return http.download({ url: `${BASE}/export`, filename: "danh-sach-dieu-chuyen-xe.xlsx" }); }
 }

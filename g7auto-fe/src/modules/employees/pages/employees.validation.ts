@@ -1,8 +1,11 @@
 import * as yup from "yup";
 
 export const employeeValidation = yup.object({
-  fullName: yup.string().trim().required("Họ tên là bắt buộc"),
-  phone: yup.string().trim().required("Số điện thoại là bắt buộc"),
-  nationalId: yup.string().trim().required("CCCD/CMND là bắt buộc"),
-  showroomId: yup.number().typeError("Mã showroom không hợp lệ").required("Showroom là bắt buộc"),
+  fullName: yup.string().trim().required("COMMON_REQUIRED_FULL_NAME"),
+  phone: yup.string().trim().required("COMMON_REQUIRED_PHONE"),
+  nationalId: yup.string().trim().required("EMPLOYEES_FIELD_NATIONAL_ID"),
+  showroom: yup
+    .object({ value: yup.number() })
+    .nullable()
+    .required("COMMON_REQUIRED_SHOWROOM"),
 });

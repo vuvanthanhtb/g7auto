@@ -1,7 +1,9 @@
 package com.g7auto.api.controller;
 
+import com.g7auto.application.dto.request.ChangePasswordRequest;
 import com.g7auto.application.dto.request.LoginRequest;
 import com.g7auto.application.dto.request.RefreshTokenRequest;
+import com.g7auto.application.dto.request.UpdateProfileRequest;
 import com.g7auto.application.dto.response.AccountResponse;
 import com.g7auto.application.dto.response.AuthResponse;
 import com.g7auto.application.service.AuthService;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +44,21 @@ public class AuthController {
   public ResponseEntity<ApiResponse<AccountResponse>> me(
       @AuthenticationPrincipal Account account) {
     return ResponseEntity.ok(ApiResponse.ok(authService.getProfile(account)));
+  }
+
+  @PutMapping("/me")
+  public ResponseEntity<ApiResponse<AccountResponse>> updateProfile(
+      @AuthenticationPrincipal Account account,
+      @RequestBody UpdateProfileRequest request) {
+    return ResponseEntity.ok(ApiResponse.ok(authService.updateProfile(account, request)));
+  }
+
+  @PutMapping("/change-password")
+  public ResponseEntity<ApiResponse<Void>> changePassword(
+      @AuthenticationPrincipal Account account,
+      @RequestBody ChangePasswordRequest request) {
+    authService.changePassword(account, request);
+    return ResponseEntity.ok(ApiResponse.ok(null));
   }
 
   @PostMapping("/logout")

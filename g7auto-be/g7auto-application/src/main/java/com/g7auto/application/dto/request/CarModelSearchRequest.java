@@ -18,4 +18,7 @@ public class CarModelSearchRequest extends BaseSearchRequest {
   @Schema(description = "Hãng sản xuất (tìm kiếm gần đúng)")
   String manufacturer;
 
+  @Schema(description = "Năm sản xuất (khớp chính xác)")
+  String year;
+
 }

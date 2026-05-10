@@ -6,6 +6,7 @@ import com.g7auto.application.dto.response.ServiceHistoryResponse;
 import com.g7auto.application.mapper.ServiceHistoryMapper;
 import com.g7auto.application.service.ServiceHistoryService;
 import com.g7auto.core.exception.BadRequestException;
+import com.g7auto.core.exception.NotFoundException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
 import com.g7auto.core.response.PageResponse;
@@ -39,14 +40,20 @@ public class ServiceHistoryServiceImpl implements ServiceHistoryService {
   private final ServiceHistoryMapper serviceHistoryMapper;
 
   @Override
-  public PageResponse<ServiceHistoryResponse> findByCustomer(
-      ServiceHistorySearchRequest request) {
+  public PageResponse<ServiceHistoryResponse> search(ServiceHistorySearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
     return PageResponse.of(
         serviceHistoryQueryRepository.search(
             request.getCustomerId(), request.getFromDate(), request.getToDate(), pageable),
         serviceHistoryMapper::toResponse,
         request.getFromDate(), request.getToDate());
+  }
+
+  @Override
+  public ServiceHistoryResponse findById(Long id) {
+    return serviceHistoryMapper.toResponse(
+        serviceHistoryRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("ServiceHistory not found: " + id)));
   }
 
   @Override

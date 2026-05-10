@@ -28,3 +28,6 @@ export const LEAVED = "LEAVED";
 export const STOPPED = "STOPPED";
 export const APPROVED = "APPROVED";
 export const REJECTED = "REJECTED";
+export const CREATE = "CREATE";
+export const UPDATE = "UPDATE";
+export const DELETE = "DELETE";

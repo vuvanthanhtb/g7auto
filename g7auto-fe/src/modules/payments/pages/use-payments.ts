@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/shell/redux/hooks";
-import { getPayments, createPayments, getPaymentsById, clearSelectedPayments } from "../shell/payments.slice";
+import {
+  getPayments,
+  createPayments,
+  getPaymentsById,
+  clearSelectedPayments,
+  confirmPayment,
+  cancelPayment,
+} from "../shell/payments.slice";
 import { paymentsService } from "../shell/payments.service";
-import type { PaymentRequest } from "../shell/payments.type";
-import { paymentsInitialValues } from "./payments.config";
-import { BTN_REFRESH, BTN_EXPORT, BTN_DETAIL, BTN_SUBMIT } from "@/libs/constants/button.constant";
+import type { PaymentRequest, PaymentSearchForm } from "../shell/payments.type";
+import { paymentsInitialValues, initPaymentSearchForm } from "./payments.config";
+import { BTN_REFRESH, BTN_EXPORT, BTN_SEARCH, BTN_DETAIL, BTN_SUBMIT, BTN_CONFIRM, BTN_CANCEL } from "@/libs/constants/button.constant";
 
 type TableRow = Record<string, unknown>;
 
@@ -14,12 +21,15 @@ export const usePayments = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
   const [formValues, setFormValues] = useState<Record<string, unknown>>(paymentsInitialValues);
-  const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState<PaymentSearchForm>(initPaymentSearchForm);
 
   useEffect(() => {
     document.title = "Thanh toán — G7Auto";
-    dispatch(getPayments({ page, size: 10 }));
-  }, [dispatch, page]);
+  }, []);
+
+  useEffect(() => {
+    dispatch(getPayments(searchQuery));
+  }, [dispatch, searchQuery]);
 
   useEffect(() => {
     if (selected && editId) setFormValues(selected as unknown as Record<string, unknown>);
@@ -47,19 +57,45 @@ export const usePayments = () => {
   const handleSubmit = async (data: Record<string, unknown>) => {
     if (!editId) await dispatch(createPayments(data as unknown as PaymentRequest));
     closeDrawer();
-    dispatch(getPayments({ page, size: 10 }));
+    dispatch(getPayments(searchQuery));
+  };
+
+  const handleConfirm = async () => {
+    if (!editId) return;
+    await dispatch(confirmPayment(editId));
+    closeDrawer();
+    dispatch(getPayments(searchQuery));
+  };
+
+  const handleCancel = async () => {
+    if (!editId) return;
+    await dispatch(cancelPayment(editId));
+    closeDrawer();
+    dispatch(getPayments(searchQuery));
   };
 
   const searchHandlers = {
-    [BTN_REFRESH]: () => { dispatch(getPayments({ page, size: 10 })); },
+    [BTN_SEARCH]: (values: PaymentSearchForm) => {
+      setSearchQuery({ ...values, page: 1 });
+    },
+    [BTN_REFRESH]: () => { setSearchQuery(initPaymentSearchForm); },
     [BTN_EXPORT]: async () => { await paymentsService.exportExcel(); },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };
 
+  const detailHandlers = {
+    [BTN_CONFIRM]: handleConfirm,
+    [BTN_CANCEL]: handleCancel,
+  };
+
+  const handlePageChange = (page: number) => {
+    setSearchQuery((prev) => ({ ...prev, page }));
+  };
+
   return {
-    drawerOpen, editId, formValues, page,
-    openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers,
-    setFormValues, setPage,
+    drawerOpen, editId, formValues, searchQuery,
+    openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers, detailHandlers,
+    setFormValues, handlePageChange,
   };
 };

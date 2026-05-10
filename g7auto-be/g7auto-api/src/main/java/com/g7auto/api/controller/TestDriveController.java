@@ -32,6 +32,12 @@ public class TestDriveController {
     return ResponseEntity.ok(ApiResponse.ok(testDriveService.search(request)));
   }
 
+  @GetMapping("/list")
+  public ResponseEntity<ApiResponse<PageResponse<TestDriveResponse>>> list(
+      @ModelAttribute TestDriveSearchRequest request) {
+    return ResponseEntity.ok(ApiResponse.ok(testDriveService.search(request)));
+  }
+
   @GetMapping("/{id}")
   public ResponseEntity<ApiResponse<TestDriveResponse>> getById(@PathVariable Long id) {
     return ResponseEntity.ok(ApiResponse.ok(testDriveService.findById(id)));

@@ -25,8 +25,9 @@ const AppContent = () => {
 
 const App = () => (
   <Provider store={store}>
-    <PersistGate loading={<LoadingPage />} persistor={persistor}>
+    <PersistGate loading={null} persistor={persistor}>
       <AppContent />
+      <LoadingPage />
     </PersistGate>
   </Provider>
 );

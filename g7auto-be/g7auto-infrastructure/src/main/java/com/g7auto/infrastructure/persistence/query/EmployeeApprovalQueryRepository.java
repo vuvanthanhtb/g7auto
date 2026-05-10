@@ -7,23 +7,38 @@ import com.g7auto.core.sql.DynamicSqlBuilder;
 import com.g7auto.core.sql.PagingJdbcExecutor;
 import com.g7auto.core.utils.DateParserUtils;
 import com.g7auto.domain.entity.EmployeeApproval;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 @Repository
 @RequiredArgsConstructor
 public class EmployeeApprovalQueryRepository {
 
   private static final String BASE_SQL = """
-      SELECT ea.id, ea.full_name, ea.phone, ea.email, ea.address, ea.birth_date,
-             ea.gender, ea.national_id, ea.join_date, ea.employee_status,
-             ea.showroom_id, s.name AS showroom_name,
+      SELECT ea.id,
+             ea.full_name,
+             ea.phone,
+             ea.email,
+             ea.address,
+             ea.birth_date,
+             ea.gender,
+             ea.national_id,
+             ea.join_date,
+             ea.employee_status,
+             ea.showroom_id,
+             s.name AS showroom_name,
              ea.username,
-             ea.employee_approval_action, ea.status_approving,
-             ea.created_at, ea.updated_at, ea.created_by, ea.updated_by
+             ea.employee_approval_action,
+             ea.status_approving,
+             ea.created_at,
+             ea.updated_at,
+             ea.created_by,
+             ea.updated_by
       FROM employees_approving ea
       LEFT JOIN showrooms s ON ea.showroom_id = s.id
       WHERE 1=1
@@ -48,7 +63,8 @@ public class EmployeeApprovalQueryRepository {
 
     long showroomId = rs.getLong("showroom_id");
     if (!rs.wasNull()) {
-      ea.setShowroom_id(showroomId);
+      ea.setShowroomId(showroomId);
+      ea.setShowroomName(rs.getString("showroom_name"));
     }
 
     ea.setUsername(rs.getString("username"));
@@ -77,15 +93,17 @@ public class EmployeeApprovalQueryRepository {
   private final PagingJdbcExecutor pagingJdbcExecutor;
 
   public Page<EmployeeApproval> search(String fullName, Long showroomId, String action,
-      String statusApproving, String fromDate, String toDate, Pageable pageable) {
+      List<String> statusApproving, String fromDate, String toDate, Pageable pageable) {
     DynamicSqlBuilder builder = new DynamicSqlBuilder(BASE_SQL);
     builder
         .andLike("ea.full_name", "fullName", fullName, true, true)
         .andEqual("ea.showroom_id", "showroomId", showroomId)
         .andEqual("ea.employee_approval_action", "action", action)
-        .andEqual("ea.status_approving", "statusApproving", statusApproving)
-        .andGreaterOrEqual("ea.updated_at", "fromDate", DateParserUtils.parseFrom(fromDate))
-        .andSmaller("ea.updated_at", "toDate", DateParserUtils.parseTo(toDate));
+        .andGreaterOrEqual("ea.updated_at", "fromDate",
+            StringUtils.hasText(fromDate) ? DateParserUtils.parseFrom(fromDate) : null)
+        .andSmaller("ea.updated_at", "toDate",
+            StringUtils.hasText(toDate) ? DateParserUtils.parseTo(toDate) : null);
+    builder.andIn("ea.status_approving", "statusApproving", statusApproving);
 
     return pagingJdbcExecutor.query(builder.getSql().toString(), builder.getParams(), pageable,
         ROW_MAPPER);

@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/shell/redux/hooks";
 import { getCars, createCar, updateCar, getCarById, clearSelectedCar } from "../shell/cars.slice";
 import { carsService } from "../shell/cars.service";
-import type { CarRequest } from "../shell/cars.type";
-import { carInitialValues } from "./cars.config";
+import type { CarRequest, CarSearchForm, CarUpdateRequest } from "../shell/cars.type";
+import { carCreateInitialValues, initCarSearchForm } from "./cars.config";
 import { BTN_SEARCH, BTN_REFRESH, BTN_EXPORT, BTN_EDIT, BTN_SUBMIT } from "@/libs/constants/button.constant";
-import { normalizeFormValues } from "@/libs/utils";
 
 type TableRow = Record<string, unknown>;
 
@@ -14,22 +13,32 @@ export const useCars = () => {
   const { selected } = useAppSelector((s) => s.cars);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
-  const [formValues, setFormValues] = useState<Record<string, unknown>>(carInitialValues);
-  const [page, setPage] = useState(1);
-  const [searchParams, setSearchParams] = useState<Record<string, unknown>>({});
+  const [formValues, setFormValues] = useState<Record<string, unknown>>(carCreateInitialValues);
+  const [searchQuery, setSearchQuery] = useState<CarSearchForm>(initCarSearchForm);
 
   useEffect(() => {
     document.title = "Kho xe — G7Auto";
-    dispatch(getCars({ page, size: 10, ...searchParams }));
-  }, [dispatch, page, searchParams]);
+  }, []);
 
   useEffect(() => {
-    if (selected && editId) setFormValues(selected as unknown as Record<string, unknown>);
+    dispatch(getCars(searchQuery));
+  }, [dispatch, searchQuery]);
+
+  useEffect(() => {
+    if (selected && editId) {
+      setFormValues({
+        licensePlate: selected.licensePlate ?? "",
+        showroomId: selected.showroomId ?? "",
+        salePrice: selected.salePrice ?? "",
+        status: selected.status ?? "",
+        notes: selected.notes ?? "",
+      });
+    }
   }, [selected, editId]);
 
   const openCreate = () => {
     setEditId(null);
-    setFormValues(carInitialValues);
+    setFormValues(carCreateInitialValues);
     setDrawerOpen(true);
   };
 
@@ -47,23 +56,41 @@ export const useCars = () => {
   };
 
   const handleSubmit = async (data: Record<string, unknown>) => {
-    if (editId) await dispatch(updateCar({ id: editId, data: data as unknown as CarRequest }));
-    else await dispatch(createCar(data as unknown as CarRequest));
+    if (editId) {
+      const updateData: CarUpdateRequest = {
+        licensePlate: data.licensePlate as string,
+        showroomId: data.showroomId as number,
+        salePrice: data.salePrice as number,
+        status: data.status as string,
+        notes: data.notes as string,
+      };
+      await dispatch(updateCar({ id: editId, data: updateData }));
+    } else {
+      await dispatch(createCar(data as unknown as CarRequest));
+    }
     closeDrawer();
-    dispatch(getCars({ page, size: 10, ...searchParams }));
+    dispatch(getCars(searchQuery));
   };
 
   const searchHandlers = {
-    [BTN_SEARCH]: (values: Record<string, unknown>) => { setSearchParams(normalizeFormValues(values)); setPage(1); },
-    [BTN_REFRESH]: () => { dispatch(getCars({ page, size: 10, ...searchParams })); },
+    [BTN_SEARCH]: (values: CarSearchForm) => {
+      setSearchQuery({ ...values, page: 1 });
+    },
+    [BTN_REFRESH]: () => {
+      setSearchQuery(initCarSearchForm);
+    },
     [BTN_EXPORT]: async () => { await carsService.export(); },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };
 
+  const handlePageChange = (page: number) => {
+    setSearchQuery((prev) => ({ ...prev, page }));
+  };
+
   return {
-    drawerOpen, editId, formValues, page,
+    drawerOpen, editId, formValues, searchQuery,
     openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers,
-    setFormValues, setPage,
+    setFormValues, handlePageChange,
   };
 };

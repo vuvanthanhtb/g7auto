@@ -1,15 +1,26 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { persistReducer, persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
+import {
+  persistReducer,
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
 
 const storage = {
   getItem: (key: string) => Promise.resolve(localStorage.getItem(key)),
-  setItem: (key: string, value: string) => Promise.resolve(localStorage.setItem(key, value)),
+  setItem: (key: string, value: string) =>
+    Promise.resolve(localStorage.setItem(key, value)),
   removeItem: (key: string) => Promise.resolve(localStorage.removeItem(key)),
 };
 import { combineReducers } from "redux";
 import { loadingMiddleware } from "./middleware";
 import loadingReducer from "./loading.slice";
 import authReducer from "@/modules/auth/shell/auth.slice";
+import homeReducer from "@/modules/home/shell/home.slice";
 import showroomsReducer from "@/modules/showrooms/shell/showrooms.slice";
 import carModelsReducer from "@/modules/car-models/shell/car-models.slice";
 import carsReducer from "@/modules/cars/shell/cars.slice";
@@ -25,12 +36,23 @@ import testDrivesReducer from "@/modules/test-drives/shell/test-drives.slice";
 import accountsReducer from "@/modules/accounts/shell/accounts.slice";
 import localeReducer from "./locale.slice";
 
-const authPersistConfig = { key: "auth", storage, whitelist: ["isAuthenticated", "user", "roles", "accessToken", "refreshToken"] };
+const authPersistConfig = {
+  key: "auth",
+  storage,
+  whitelist: [
+    "isAuthenticated",
+    "user",
+    "roles",
+    "accessToken",
+    "refreshToken",
+  ],
+};
 
 const rootReducer = combineReducers({
   loading: loadingReducer,
   locale: localeReducer,
   auth: persistReducer(authPersistConfig, authReducer),
+  home: homeReducer,
   showrooms: showroomsReducer,
   carModels: carModelsReducer,
   cars: carsReducer,
@@ -50,7 +72,9 @@ export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: { ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER] },
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
     }).concat(loadingMiddleware),
 });
 

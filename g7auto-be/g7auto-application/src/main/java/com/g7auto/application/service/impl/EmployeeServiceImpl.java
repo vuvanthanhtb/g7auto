@@ -89,6 +89,12 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
+  public List<EmployeeResponse> findAllList() {
+    return employeeRepository.findAll().stream()
+        .map(employeeMapper::toResponse).toList();
+  }
+
+  @Override
   public void exportEmployees(HttpServletResponse response) {
     List<EmployeeResponse> data = employeeRepository.findAll().stream()
         .map(employeeMapper::toResponse).toList();

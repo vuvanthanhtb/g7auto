@@ -10,6 +10,7 @@ import {
   TEXT,
   NUMBER_INPUT,
   SELECT,
+  TEXTAREA,
 } from "@/libs/constants/form.constant";
 import {
   NUMERICAL_ORDER,
@@ -21,9 +22,9 @@ import type { BaseTableColumn } from "@/libs/types/table.type";
 
 export const getCarColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
+  { name: "chassisNumber", label: "CARS_FIELD_CHASSIS_NUMBER", type: TBL_STRING },
   { name: "licensePlate", label: "COMMON_LABEL_LICENSE_PLATE", type: TBL_STRING },
   { name: "carModelName", label: "COMMON_LABEL_CAR_MODEL", type: TBL_STRING },
-  { name: "color", label: "COMMON_LABEL_COLOR", type: TBL_STRING },
   { name: "showroomName", label: "COMMON_LABEL_SHOWROOM", type: TBL_STRING },
   { name: "status", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
   {
@@ -34,15 +35,15 @@ export const getCarColumns = (): BaseTableColumn[] => [
   },
 ];
 
-export const getCarFormConfig = (): IBaseFormConfig => ({
+export const getCarCreateFormConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "licensePlate", label: "CARS_FIELD_LICENSE_PLATE", required: true, size: 6 },
-    { type: TEXT, name: "color", label: "COMMON_LABEL_COLOR", size: 6 },
+    { type: TEXT, name: "chassisNumber", label: "CARS_FIELD_CHASSIS_NUMBER", required: true, size: 6 },
+    { type: TEXT, name: "engineNumber", label: "CARS_FIELD_ENGINE_NUMBER", required: true, size: 6 },
+    { type: TEXT, name: "licensePlate", label: "CARS_FIELD_LICENSE_PLATE", size: 6 },
+    { type: NUMBER_INPUT, name: "salePrice", label: "CARS_FIELD_SALE_PRICE", size: 6 },
     { type: NUMBER_INPUT, name: "carModelId", label: "CARS_FIELD_MODEL_ID", required: true, size: 6 },
     { type: NUMBER_INPUT, name: "showroomId", label: "CARS_FIELD_SHOWROOM_ID", required: true, size: 6 },
-    { type: NUMBER_INPUT, name: "salePrice", label: "CARS_FIELD_SALE_PRICE", size: 12 },
-    { type: SELECT, name: "status", label: "COMMON_LABEL_STATUS", option: "carStatusOptions", size: 12 },
-    { type: TEXT, name: "vin", label: "CARS_FIELD_VIN", size: 12 },
+    { type: TEXTAREA, name: "notes", label: "CARS_FIELD_NOTES", size: 12 },
     {
       type: BUTTON,
       size: 12,
@@ -51,14 +52,39 @@ export const getCarFormConfig = (): IBaseFormConfig => ({
   ],
 });
 
-export const carInitialValues = {
+export const getCarEditFormConfig = (): IBaseFormConfig => ({
+  fields: [
+    { type: TEXT, name: "licensePlate", label: "CARS_FIELD_LICENSE_PLATE", size: 6 },
+    { type: NUMBER_INPUT, name: "salePrice", label: "CARS_FIELD_SALE_PRICE", size: 6 },
+    { type: NUMBER_INPUT, name: "showroomId", label: "CARS_FIELD_SHOWROOM_ID", size: 6 },
+    { type: SELECT, name: "status", label: "COMMON_LABEL_STATUS", option: "carStatusOptions", size: 6 },
+    { type: TEXTAREA, name: "notes", label: "CARS_FIELD_NOTES", size: 12 },
+    {
+      type: BUTTON,
+      size: 12,
+      childs: [{ title: "COMMON_BTN_SAVE", type: "submit", action: BTN_SUBMIT }],
+    },
+  ],
+});
+
+export const initCarSearchForm = { status: "", page: 1, size: 10 };
+
+export const carCreateInitialValues = {
+  chassisNumber: "",
+  engineNumber: "",
   licensePlate: "",
-  color: "",
   carModelId: "",
   showroomId: "",
   salePrice: "",
+  notes: "",
+};
+
+export const carEditInitialValues = {
+  licensePlate: "",
+  showroomId: "",
+  salePrice: "",
   status: "",
-  vin: "",
+  notes: "",
 };
 
 export const getCarSearchConfig = (): IBaseFormConfig => ({

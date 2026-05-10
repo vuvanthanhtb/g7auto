@@ -1,6 +1,6 @@
 import BaseFormComponent from "@/libs/components/ui/base-form";
 import BaseTableComponent from "@/libs/components/ui/base-table";
-import { BTN_SEARCH, BTN_REFRESH, APPROVED, REJECTED } from "@/libs/constants";
+import { BTN_SEARCH, BTN_REFRESH } from "@/libs/constants";
 import { getApprovedUsers } from "@/modules/accounts/shell/accounts.slice";
 import { useAppDispatch } from "@/shell/redux/hooks";
 import { useState, useEffect } from "react";
@@ -11,7 +11,7 @@ import {
   approvedInitialValues,
 } from "./approved-users-tab.config";
 import type { AccountApprovedSearchForm } from "./approved-users-tab.type";
-import type { TableRow } from "../../account.utils";
+import { colorStatusCell } from "@/libs/utils";
 
 const AccountApprovedTab = () => {
   const dispatch = useAppDispatch();
@@ -43,17 +43,6 @@ const AccountApprovedTab = () => {
     },
   };
 
-  const colorCell = (refColor: string[], row: TableRow) => {
-    const status = row[refColor[0]] as string;
-    if (status === APPROVED) {
-      return "#0000ffb5";
-    }
-    if (status === REJECTED) {
-      return "#ff0000b3";
-    }
-    return "#000";
-  };
-
   return (
     <>
       <BaseFormComponent<AccountApprovedSearchForm>
@@ -68,7 +57,7 @@ const AccountApprovedTab = () => {
         reducer="accounts"
         state="approvedTable"
         handlePageChange={handlePageChange}
-        colorCell={colorCell}
+        colorCell={colorStatusCell}
       />
     </>
   );

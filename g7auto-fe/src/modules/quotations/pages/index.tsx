@@ -1,52 +1,64 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import BaseTableComponent from "@/libs/components/ui/base-table";
 import BaseDrawer from "@/libs/components/ui/base-drawer";
 import BaseFormComponent from "@/libs/components/ui/base-form";
-import { getQuotationColumns, getQuotationsFormConfig, getQuotationSearchConfig } from "./quotations.config";
-import { quotationsValidation } from "./quotations.validation";
-import { BTN_SUBMIT } from "@/libs/constants/button.constant";
+import {
+  getQuotationColumns,
+  getQuotationsFormConfig,
+  getQuotationsDetailFormConfig,
+  getQuotationSearchConfig,
+} from "./quotations.config";
+import { quotationsValidation, quotationsDetailValidation } from "./quotations.validation";
 import { quotationStatusOptions } from "@/libs/constants/options.constant";
 import { useQuotations } from "./use-quotations";
 import { t } from "@/libs/i18n";
 
 const QuotationsPage = () => {
   const {
-    drawerOpen, editId, formValues, page,
-    openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers,
-    setFormValues, setPage,
+    drawerOpen, editId, formValues, searchQuery,
+    openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers, detailHandlers,
+    setFormValues, handlePageChange,
   } = useQuotations();
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-        <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("QUOTATIONS_PAGE_HEADER")}
-        </Typography>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-          {t("QUOTATIONS_BTN_CREATE")}
-        </Button>
-      </Box>
-      <BaseFormComponent formConfig={getQuotationSearchConfig()} options={{ quotationStatusOptions }} handlers={searchHandlers} />
+      <BaseFormComponent formConfig={getQuotationSearchConfig()} options={{ quotationStatusOptions }} values={searchQuery} handlers={searchHandlers} />
       <BaseTableComponent
         tableConfig={getQuotationColumns()}
         reducer="quotations"
         state="quotationTable"
+        title={t("QUOTATIONS_PAGE_HEADER")}
+        extra={
+          <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
+            {t("QUOTATIONS_BTN_CREATE")}
+          </Button>
+        }
         handleCellAction={handleCellAction}
-        handlePageChange={(_, p) => setPage(p)}
+        handlePageChange={handlePageChange}
       />
       <BaseDrawer
         open={drawerOpen}
         title={editId ? t("QUOTATIONS_DRAWER_DETAIL") : t("QUOTATIONS_BTN_CREATE")}
         onClose={closeDrawer}
       >
-        <BaseFormComponent
-          formConfig={getQuotationsFormConfig()}
-          validationSchema={quotationsValidation}
-          values={formValues}
-          onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
-          handlers={formHandlers}
-        />
+        {editId ? (
+          <BaseFormComponent
+            formConfig={getQuotationsDetailFormConfig()}
+            validationSchema={quotationsDetailValidation}
+            values={formValues}
+            onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+            handlers={detailHandlers}
+          />
+        ) : (
+          <BaseFormComponent
+            formConfig={getQuotationsFormConfig()}
+            validationSchema={quotationsValidation}
+            values={formValues}
+            onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+            handlers={formHandlers}
+          />
+        )}
       </BaseDrawer>
     </Box>
   );

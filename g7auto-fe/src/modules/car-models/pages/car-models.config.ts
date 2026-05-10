@@ -6,7 +6,7 @@ import {
   BTN_REFRESH,
   BTN_EXPORT,
 } from "@/libs/constants/button.constant";
-import { BUTTON, TEXT, NUMBER_INPUT } from "@/libs/constants/form.constant";
+import { BUTTON, TEXT, NUMBER_INPUT, SELECT } from "@/libs/constants/form.constant";
 import {
   NUMERICAL_ORDER,
   TBL_BUTTON,
@@ -19,7 +19,11 @@ import type { BaseTableColumn } from "@/libs/types/table.type";
 export const getCarModelColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
   { name: "name", label: "COMMON_LABEL_CAR_MODEL_NAME", type: TBL_STRING },
-  { name: "manufacturer", label: "COMMON_LABEL_MANUFACTURER", type: TBL_STRING },
+  {
+    name: "manufacturer",
+    label: "COMMON_LABEL_MANUFACTURER",
+    type: TBL_STRING,
+  },
   {
     name: "year",
     label: "COMMON_LABEL_YEAR",
@@ -34,7 +38,12 @@ export const getCarModelColumns = (): BaseTableColumn[] => [
     styleCell: { justifyContent: "center" },
     btnGroup: [
       { title: "COMMON_BTN_EDIT", type: "button", action: BTN_EDIT },
-      { title: "COMMON_BTN_DELETE", type: "button", action: BTN_DELETE },
+      {
+        title: "COMMON_BTN_DELETE",
+        type: "button",
+        action: BTN_DELETE,
+        style: { background: "#d32f2f", color: "#fff" },
+      },
     ],
   },
 ];
@@ -55,7 +64,12 @@ export const getCarModelFormConfig = (): IBaseFormConfig => ({
       required: true,
       size: 6,
     },
-    { type: NUMBER_INPUT, name: "year", label: "CAR_MODELS_FIELD_YEAR", size: 6 },
+    {
+      type: NUMBER_INPUT,
+      name: "year",
+      label: "CAR_MODELS_FIELD_YEAR",
+      size: 6,
+    },
     {
       type: NUMBER_INPUT,
       name: "listedPrice",
@@ -71,10 +85,22 @@ export const getCarModelFormConfig = (): IBaseFormConfig => ({
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "COMMON_BTN_SAVE", type: "submit", action: BTN_SUBMIT }],
+      childs: [
+        { title: "COMMON_BTN_SAVE", type: "submit", action: BTN_SUBMIT },
+      ],
     },
   ],
 });
+
+export const yearOptions = Array.from(
+  { length: new Date().getFullYear() - 1944 },
+  (_, i) => {
+    const y = String(new Date().getFullYear() - i);
+    return { label: y, value: y };
+  },
+);
+
+export const initCarModelSearchForm = { name: "", manufacturer: "", year: "", page: 1, size: 10 };
 
 export const carModelInitialValues = {
   name: "",
@@ -94,8 +120,15 @@ export const getCarModelSearchConfig = (): IBaseFormConfig => ({
       size: 3,
     },
     {
+      type: SELECT,
+      name: "year",
+      label: "CAR_MODELS_FIELD_YEAR",
+      option: "yearOptions",
+      size: 3,
+    },
+    {
       type: BUTTON,
-      size: 6,
+      size: 3,
       childs: [
         {
           title: "COMMON_BTN_REFRESH",

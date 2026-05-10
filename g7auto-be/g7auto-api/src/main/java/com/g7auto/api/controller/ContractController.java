@@ -34,6 +34,12 @@ public class ContractController {
     return ResponseEntity.ok(ApiResponse.ok(contractService.search(request)));
   }
 
+  @GetMapping("/list")
+  public ResponseEntity<ApiResponse<PageResponse<ContractResponse>>> list(
+      @ModelAttribute ContractSearchRequest request) {
+    return ResponseEntity.ok(ApiResponse.ok(contractService.search(request)));
+  }
+
   @GetMapping("/{id}")
   public ResponseEntity<ApiResponse<ContractResponse>> getById(@PathVariable Long id) {
     return ResponseEntity.ok(ApiResponse.ok(contractService.findById(id)));

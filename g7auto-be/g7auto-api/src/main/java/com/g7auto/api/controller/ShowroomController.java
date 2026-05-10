@@ -37,6 +37,12 @@ public class ShowroomController {
     return ResponseEntity.ok(ApiResponse.ok(showroomService.search(request)));
   }
 
+  @GetMapping("/list")
+  public ResponseEntity<ApiResponse<PageResponse<ShowroomResponse>>> list(
+      @ModelAttribute ShowroomSearchRequest request) {
+    return ResponseEntity.ok(ApiResponse.ok(showroomService.search(request)));
+  }
+
   @GetMapping("/all")
   public ResponseEntity<ApiResponse<List<ShowroomResponse>>> getList() {
     return ResponseEntity.ok(ApiResponse.ok(showroomService.findAllList()));
@@ -74,5 +80,10 @@ public class ShowroomController {
   @GetMapping("/template")
   public void downloadTemplate(HttpServletResponse response) {
     showroomService.downloadShowroomTemplate(response);
+  }
+
+  @GetMapping("/export")
+  public void exportShowrooms(HttpServletResponse response) {
+    showroomService.exportShowrooms(response);
   }
 }

@@ -91,31 +91,28 @@ public class ContractServiceImpl implements ContractService {
   @Transactional
   public ContractResponse update(Long id, ContractUpdateRequest request) {
     Contract contract = get(id);
+    ContractStatus currentStatus = contract.getStatus();
 
-    ContractStatus status = contract.getStatus();
+    if (currentStatus == ContractStatus.COMPLETED || currentStatus == ContractStatus.CANCELLED) {
+      log.error("Không thể cập nhật hợp đồng đã hoàn thành/hủy: {}", currentStatus);
+      throw new BadRequestException(SalesErrorCode.G7_AUTO_00620);
+    }
 
-    // Basic validation for COMPLETED status
-    if (status.equals(ContractStatus.COMPLETED)) {
+    ContractStatus requestedStatus = request.getStatus();
+    if (requestedStatus == ContractStatus.COMPLETED) {
       BigDecimal remainingAmount = contract.getRemainingAmount();
-      if (remainingAmount.compareTo(BigDecimal.ZERO) > 0) {
+      if (remainingAmount != null && remainingAmount.compareTo(BigDecimal.ZERO) > 0) {
         log.error("Không thể hoàn thành hợp đồng khi còn nợ: {}", remainingAmount);
         throw new BadRequestException(SalesErrorCode.G7_AUTO_00621);
       }
-
-      if (contract.getActualDeliveryDate() == null) {
+      if (contract.getActualDeliveryDate() == null && request.getActualDeliveryDate() == null) {
         contract.setActualDeliveryDate(LocalDate.now());
       }
-    }
-
-    if (status.equals(ContractStatus.COMPLETED) || status.equals(ContractStatus.CANCELLED)) {
-      log.error("Không thể cập nhật hợp đồng đã hoàn thành/hủy: {}", status);
-      throw new BadRequestException(SalesErrorCode.G7_AUTO_00620);
     }
 
     contractMapper.updateEntity(request, contract);
 
     BigDecimal paidAmount = contract.getPaidAmount();
-    // Recalculate remaining amount
     if (contract.getContractValue() != null) {
       BigDecimal paid = paidAmount != null ? paidAmount : BigDecimal.ZERO;
       contract.setRemainingAmount(contract.getContractValue().subtract(paid));

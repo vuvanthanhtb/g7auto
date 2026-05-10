@@ -49,8 +49,8 @@ public class ShowroomServiceImpl implements ShowroomService {
   public PageResponse<ShowroomResponse> search(ShowroomSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
     return PageResponse.of(
-        showroomQueryRepository.search(request.getName(), request.getFromDate(),
-            request.getToDate(), pageable),
+        showroomQueryRepository.search(request.getName(), request.getPhone(),
+            request.getFromDate(), request.getToDate(), pageable),
         showroomMapper::toResponse,
         request.getFromDate(), request.getToDate());
   }
@@ -94,8 +94,8 @@ public class ShowroomServiceImpl implements ShowroomService {
 
   @Override
   public List<ShowroomResponse> findAllList() {
-    return showroomRepository.findAll().stream().map(showroomMapper::toResponse)
-        .toList();
+    return showroomRepository.findAllByStatus(ShowroomStatus.ACTIVE).stream()
+        .map(showroomMapper::toResponse).toList();
   }
 
   @Override
@@ -117,7 +117,11 @@ public class ShowroomServiceImpl implements ShowroomService {
           req.setAddress(getCellString(row, 1));
           req.setPhone(getCellString(row, 2));
           req.setEmail(getCellString(row, 3));
-          req.setManager(getCellString(row, 4));
+          String managerIdStr = getCellString(row, 4);
+          if (!managerIdStr.isBlank()) {
+            try { req.setManagerId(Long.parseLong(managerIdStr)); }
+            catch (NumberFormatException ignored) {}
+          }
           create(req);
           success++;
         } catch (Exception e) {
@@ -139,7 +143,7 @@ public class ShowroomServiceImpl implements ShowroomService {
     try (SXSSFWorkbook workbook = ExcelSupport.createWorkbook()) {
       Sheet sheet = workbook.createSheet("Showrooms");
       Row header = sheet.createRow(0);
-      String[] cols = {"name", "address", "phone", "email", "manager"};
+      String[] cols = {"name", "address", "phone", "email", "managerId"};
       for (int i = 0; i < cols.length; i++) {
         header.createCell(i).setCellValue(cols[i]);
       }

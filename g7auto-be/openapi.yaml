@@ -727,3 +727,69 @@ components:
           type: string
         updatedBy:
           type: string
+
+    CustomerRequest:
+      type: object
+      properties:
+        fullName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+          format: email
+        address:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        nationalId:
+          type: string
+        sourceType:
+          type: string
+        carInterest:
+          type: string
+        assignedEmployeeId:
+          type: integer
+          format: int64
+        notes:
+          type: string
+      required:
+        - fullName
+        - phone
+        - address
+
+    CustomerResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        fullName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        nationalId:
+          type: string
+        sourceType:
+          type: string
+        carInterest:
+          type: string
+        assignedEmployeeId:
+          type: integer
+          format: int64
+        assignedEmployeeName:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string

@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -58,4 +59,7 @@ public class Customer extends BaseEntity {
 
   @Column(columnDefinition = "TEXT", comment = "Ghi chú đặc điểm khách hàng")
   String notes;
+
+  @Transient
+  String assignedEmployeeName;
 }

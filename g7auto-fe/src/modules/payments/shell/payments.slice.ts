@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { paymentsService } from "../services/payments.service";
-import type { PaymentQuery, PaymentRequest, PaymentResponse } from "./payments.type";
+import { paymentsService } from "./payments.service";
+import type { PaymentPayload, PaymentRequest, PaymentResponse } from "./payments.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
@@ -17,7 +17,7 @@ const initialState: PaymentsState = {
 
 export const getPayments = createAsyncThunk(
   "payments/getList",
-  async (params: PaymentQuery, { rejectWithValue }) => {
+  async (params: PaymentPayload, { rejectWithValue }) => {
     try {
       const res = await paymentsService.getList(params);
       return res.data;
@@ -47,6 +47,34 @@ export const createPayments = createAsyncThunk(
     try {
       const res = await paymentsService.create(data);
       toastSuccess(SUCCESS_CODE.CREATE);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const confirmPayment = createAsyncThunk(
+  "payments/confirm",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await paymentsService.confirm(id);
+      toastSuccess(SUCCESS_CODE.ACTION);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const cancelPayment = createAsyncThunk(
+  "payments/cancel",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await paymentsService.cancel(id);
+      toastSuccess(SUCCESS_CODE.ACTION);
       return res.data;
     } catch (error) {
       toastError(getApiErrorMessage(error));

@@ -123,6 +123,12 @@ export const paymentMethodOptions = [
   { label: "Vay ngân hàng", value: "BANK_LOAN" },
 ];
 
+export const paymentStatusOptions = [
+  { label: "Chờ xác nhận", value: "PENDING" },
+  { label: "Đã xác nhận", value: "CONFIRMED" },
+  { label: "Thất bại", value: "FAILED" },
+];
+
 export const depositPaymentMethodOptions = [
   { label: "Tiền mặt", value: "CASH" },
   { label: "Chuyển khoản", value: "BANK_TRANSFER" },
@@ -131,8 +137,7 @@ export const depositPaymentMethodOptions = [
 export const contactTypeOptions = [
   { label: "Gọi điện", value: "CALL" },
   { label: "Email", value: "EMAIL" },
-  { label: "Gặp trực tiếp", value: "MEETING" },
-  { label: "Zalo/Message", value: "MESSAGE" },
+  { label: "Gặp trực tiếp", value: "VISIT" },
 ];
 
 export const userApproveActionOptions = [

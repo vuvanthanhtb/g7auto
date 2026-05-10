@@ -3,7 +3,6 @@ package com.g7auto.infrastructure.persistence.query;
 import com.g7auto.core.entity.CarModelStatus;
 import com.g7auto.core.sql.DynamicSqlBuilder;
 import com.g7auto.core.sql.PagingJdbcExecutor;
-import com.g7auto.core.utils.DateParserUtils;
 import com.g7auto.domain.entity.CarModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -66,13 +65,12 @@ public class CarModelQueryRepository {
 
   private final PagingJdbcExecutor pagingJdbcExecutor;
 
-  public Page<CarModel> search(String name, String manufacturer,
-      String fromDate, String toDate, Pageable pageable) {
+  public Page<CarModel> search(String name, String manufacturer, String year,
+      Pageable pageable) {
     DynamicSqlBuilder builder = new DynamicSqlBuilder(BASE_SQL);
     builder.andLike("m.name", "name", name, true, true)
         .andLike("m.manufacturer", "manufacturer", manufacturer, true, true)
-        .andGreaterOrEqual("m.updated_at", "fromDate", DateParserUtils.parseFrom(fromDate))
-        .andSmaller("m.updated_at", "toDate", DateParserUtils.parseTo(toDate));
+        .andEqual("m.year", "year", year);
 
     return pagingJdbcExecutor.query(
         builder.getSql().toString(),

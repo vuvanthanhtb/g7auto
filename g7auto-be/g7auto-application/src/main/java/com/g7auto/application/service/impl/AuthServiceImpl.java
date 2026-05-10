@@ -1,7 +1,9 @@
 package com.g7auto.application.service.impl;
 
+import com.g7auto.application.dto.request.ChangePasswordRequest;
 import com.g7auto.application.dto.request.LoginRequest;
 import com.g7auto.application.dto.request.RefreshTokenRequest;
+import com.g7auto.application.dto.request.UpdateProfileRequest;
 import com.g7auto.application.dto.response.AccountResponse;
 import com.g7auto.application.dto.response.AuthResponse;
 import com.g7auto.application.mapper.AccountMapper;
@@ -95,6 +97,24 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public AccountResponse getProfile(Account account) {
     return accountMapper.toResponse(account);
+  }
+
+  @Override
+  @Transactional
+  public AccountResponse updateProfile(Account account, UpdateProfileRequest request) {
+    if (request.getFullName() != null) account.setFullName(request.getFullName());
+    if (request.getEmail() != null) account.setEmail(request.getEmail());
+    return accountMapper.toResponse(accountRepository.save(account));
+  }
+
+  @Override
+  @Transactional
+  public void changePassword(Account account, ChangePasswordRequest request) {
+    if (!passwordEncoder.matches(request.getCurrentPassword(), account.getPassword())) {
+      throw new BadRequestException(AuthErrorCode.G7_AUTO_00207);
+    }
+    account.setPassword(passwordEncoder.encode(request.getNewPassword()));
+    accountRepository.save(account);
   }
 
   @Override

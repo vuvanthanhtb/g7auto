@@ -8,8 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public interface ServiceHistoryService {
 
-  PageResponse<ServiceHistoryResponse> findByCustomer(
-      ServiceHistorySearchRequest request);
+  PageResponse<ServiceHistoryResponse> search(ServiceHistorySearchRequest request);
+
+  ServiceHistoryResponse findById(Long id);
 
   ServiceHistoryResponse create(ServiceHistoryRequest request);
 

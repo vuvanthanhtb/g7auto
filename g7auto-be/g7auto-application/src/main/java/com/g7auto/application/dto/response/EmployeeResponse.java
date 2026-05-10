@@ -17,6 +17,8 @@ public record EmployeeResponse(
     Long showroomId,
     @ExcelColumn(header = "Chi nhánh", order = 9) String showroomName,
     String username,
+    String action,
+    String statusApproving,
     String createdAt,
     String updatedAt
 ) {

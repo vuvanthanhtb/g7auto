@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { contractsService } from "../services/contracts.service";
-import type { ContractQuery, ContractRequest, ContractResponse } from "./contracts.type";
+import { contractsService } from "./contracts.service";
+import type { ContractPayload, ContractRequest, ContractUpdateRequest, ContractResponse } from "./contracts.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
@@ -17,7 +17,7 @@ const initialState: ContractsState = {
 
 export const getContracts = createAsyncThunk(
   "contracts/getList",
-  async (params: ContractQuery, { rejectWithValue }) => {
+  async (params: ContractPayload, { rejectWithValue }) => {
     try {
       const res = await contractsService.getList(params);
       return res.data;
@@ -48,6 +48,33 @@ export const createContracts = createAsyncThunk(
       const res = await contractsService.create(data);
       toastSuccess(SUCCESS_CODE.CREATE);
       return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const updateContracts = createAsyncThunk(
+  "contracts/update",
+  async ({ id, data }: { id: number; data: ContractUpdateRequest }, { rejectWithValue }) => {
+    try {
+      const res = await contractsService.update(id, data);
+      toastSuccess(SUCCESS_CODE.UPDATE);
+      return res.data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const deleteContracts = createAsyncThunk(
+  "contracts/delete",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      await contractsService.delete(id);
+      toastSuccess(SUCCESS_CODE.DELETE);
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);

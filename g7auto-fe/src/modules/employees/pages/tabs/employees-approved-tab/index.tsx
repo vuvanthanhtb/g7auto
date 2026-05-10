@@ -11,6 +11,7 @@ import {
 } from "./employees-approved-tab.config";
 import { parseApprovedFormSearch } from "./employees-approved-tab.utils";
 import type { EmployeeApprovedSearchForm } from "./employees-approved-tab.type";
+import { colorStatusCell } from "@/libs/utils";
 
 const EmployeesApprovedTab = () => {
   const dispatch = useAppDispatch();
@@ -19,12 +20,16 @@ const EmployeesApprovedTab = () => {
   );
 
   useEffect(() => {
-    dispatch(getApprovedApprovals(parseApprovedFormSearch(approvedInitialValues)));
+    dispatch(
+      getApprovedApprovals(parseApprovedFormSearch(approvedInitialValues)),
+    );
   }, [dispatch]);
 
   const refresh = () => {
     setSearchParams(approvedInitialValues);
-    dispatch(getApprovedApprovals(parseApprovedFormSearch(approvedInitialValues)));
+    dispatch(
+      getApprovedApprovals(parseApprovedFormSearch(approvedInitialValues)),
+    );
   };
 
   const handlePageChange = (page: number) => {
@@ -36,7 +41,9 @@ const EmployeesApprovedTab = () => {
   const searchHandlers = {
     [BTN_SEARCH]: (values: EmployeeApprovedSearchForm) => {
       setSearchParams(values);
-      dispatch(getApprovedApprovals(parseApprovedFormSearch({ ...values, page: 1 })));
+      dispatch(
+        getApprovedApprovals(parseApprovedFormSearch({ ...values, page: 1 })),
+      );
     },
     [BTN_REFRESH]: () => refresh(),
   };
@@ -58,6 +65,7 @@ const EmployeesApprovedTab = () => {
         reducer="employees"
         state="approvedTable"
         handlePageChange={handlePageChange}
+        colorCell={colorStatusCell}
       />
     </>
   );

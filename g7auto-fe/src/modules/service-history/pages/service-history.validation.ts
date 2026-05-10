@@ -1,6 +1,6 @@
 import * as yup from "yup";
 export const serviceHistoryValidation = yup.object({
-  carId: yup.number().required("Xe là bắt buộc"),
-  showroomId: yup.number().required("Showroom là bắt buộc"),
-  serviceType: yup.string().trim().required("Loại dịch vụ là bắt buộc"),
+  customerId: yup.number().required("Khách hàng là bắt buộc"),
+  contactType: yup.string().required("Loại liên hệ là bắt buộc"),
+  serviceDate: yup.string().required("Ngày thực hiện là bắt buộc"),
 });

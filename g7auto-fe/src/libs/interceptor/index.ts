@@ -30,13 +30,31 @@ const upload = <
   config: UploadConfig<TParams, TExtraData>,
 ) => {
   const { url, method = "POST", file, params, data, headers } = config;
-  return call<TResponse>({
-    url,
-    method,
-    params,
-    data: buildFormData(file, data),
-    headers,
-  }).catch((err: unknown) => handleUploadError(err));
+  return axiosClient
+    .request<TResponse>({
+      url,
+      method,
+      params: removeEmpty(params),
+      data: buildFormData(file, data),
+      headers,
+      transformRequest: [
+        (reqData: unknown, reqHeaders: Record<string, unknown>) => {
+          // AxiosHeaders in v1.x is case-insensitive — use .delete() when available,
+          // otherwise fall back to removing both cases as plain keys.
+          const h = reqHeaders as Record<string, unknown> & {
+            delete?: (key: string) => void;
+          };
+          if (typeof h.delete === "function") {
+            h.delete("Content-Type");
+          } else {
+            delete h["Content-Type"];
+            delete h["content-type"];
+          }
+          return reqData;
+        },
+      ],
+    })
+    .catch((err: unknown) => handleUploadError(err));
 };
 
 const download = <TParams = unknown, TData = unknown>(

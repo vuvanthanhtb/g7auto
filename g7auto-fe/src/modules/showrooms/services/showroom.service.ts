@@ -1,9 +1,10 @@
 import http from "@/libs/interceptor";
 import { SHOWROOM_ENDPOINT } from "./showroom.endpoint";
 import type {
+  ShowroomExportPayload,
   ShowroomRequest,
   ShowroomResponse,
-  ShowroomQuery,
+  ShowroomPayload,
 } from "../shell/showroom.type";
 import type { AxiosResponse } from "axios";
 
@@ -25,15 +26,15 @@ type ImportResult = {
 const BASE = SHOWROOM_ENDPOINT.BASE;
 
 interface IShowroomRepository {
-  search(params?: ShowroomQuery): AR<ShowroomPage>;
+  search(params?: ShowroomPayload): AR<ShowroomPage>;
   getAll(): AR<ShowroomResponse[]>;
   getById(id: number): AR<ShowroomResponse>;
   create(data: ShowroomRequest): AR<ShowroomResponse>;
   update(id: number, data: ShowroomRequest): AR<ShowroomResponse>;
   delete(id: number): AR<void>;
   importFile(file: File): AR<ImportResult>;
-  downloadTemplate(): Promise<void>;
-  exportExcel(): Promise<void>;
+  downloadTemplate(): Promise<Blob>;
+  exportExcel(params?: ShowroomExportPayload): Promise<Blob>;
 }
 
 class ShowroomRepository implements IShowroomRepository {
@@ -44,7 +45,7 @@ class ShowroomRepository implements IShowroomRepository {
       ShowroomRepository.instance = new ShowroomRepository();
     return ShowroomRepository.instance;
   }
-  search(params?: ShowroomQuery): AR<ShowroomPage> {
+  search(params?: ShowroomPayload): AR<ShowroomPage> {
     return http.call<ShowroomPage>({ url: BASE, method: "GET", params });
   }
   getAll(): AR<ShowroomResponse[]> {
@@ -72,15 +73,16 @@ class ShowroomRepository implements IShowroomRepository {
   importFile(file: File): AR<ImportResult> {
     return http.upload<ImportResult>({ url: `${BASE}/import`, file });
   }
-  downloadTemplate(): Promise<void> {
+  downloadTemplate(): Promise<Blob> {
     return http.download({
       url: `${BASE}/template`,
       filename: "mau-import-showroom.xlsx",
     });
   }
-  exportExcel(): Promise<void> {
+  exportExcel(params?: ShowroomExportPayload): Promise<Blob> {
     return http.download({
       url: `${BASE}/export`,
+      params,
       filename: "danh-sach-showroom.xlsx",
     });
   }

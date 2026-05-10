@@ -1,21 +1,20 @@
 export interface ContractResponse {
   id: number;
-  code: string;
+  contractNumber: string;
   customerId: number;
-  customerName: string;
+  customerFullName: string;
   carId: number;
-  carName: string;
-  showroomId: number;
-  showroomName: string;
+  carChassisNumber: string;
   employeeId: number;
-  employeeName: string;
-  salePrice: number;
-  depositAmount: number;
+  employeeFullName: string;
+  signDate: string;
+  expectedDeliveryDate: string;
+  actualDeliveryDate: string;
+  contractValue: number;
+  paidAmount: number;
   remainingAmount: number;
   status: string;
-  signDate: string;
-  deliveryDate: string;
-  note: string;
+  notes: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -23,19 +22,28 @@ export interface ContractResponse {
 export interface ContractRequest {
   customerId: number;
   carId: number;
-  showroomId: number;
-  employeeId: number;
-  salePrice: number;
-  depositAmount?: number;
-  signDate?: string;
-  deliveryDate?: string;
-  note?: string;
+  employeeId?: number;
+  depositId?: number;
+  signDate: string;
+  expectedDeliveryDate?: string;
+  contractValue: number;
+  notes?: string;
 }
 
-export interface ContractQuery {
+export interface ContractUpdateRequest {
+  actualDeliveryDate?: string;
+  status?: string;
+  notes?: string;
+}
+
+export interface ContractSearchForm {
+  status: string;
+  page: number;
+  size: number;
+}
+
+export interface ContractPayload {
+  status?: string;
   page?: number;
   size?: number;
-  status?: string;
-  customerId?: number;
-  carId?: number;
 }

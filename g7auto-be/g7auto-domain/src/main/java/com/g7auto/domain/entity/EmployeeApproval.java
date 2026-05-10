@@ -8,14 +8,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -64,7 +61,11 @@ public class EmployeeApproval extends BaseEntity {
   @Enumerated(EnumType.STRING)
   EmployeeStatus employeeStatus;
 
-  Long showroom_id;
+  @Column(name = "showroom_id")
+  Long showroomId;
+
+  @Transient
+  String showroomName;
 
   @Column(length = 100, comment = "Tên đăng nhập đề xuất")
   String username;

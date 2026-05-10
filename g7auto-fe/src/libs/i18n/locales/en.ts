@@ -10,6 +10,10 @@ export const en: Record<string, string> = {
 
   // === COMMON LABELS ===
   COMMON_LABEL_STT: "#",
+  COMMON_LABEL_TOTAL_RECORDS: "Total records",
+  COMMON_REQUIRED_FULL_NAME: "Full name is required",
+  COMMON_REQUIRED_PHONE: "Phone number is required",
+  COMMON_REQUIRED_SHOWROOM: "Showroom is required",
   COMMON_LABEL_ACTION: "Actions",
   COMMON_LABEL_STATUS: "Status",
   COMMON_LABEL_CREATED_AT: "Created at",
@@ -42,6 +46,8 @@ export const en: Record<string, string> = {
   COMMON_LABEL_AMOUNT: "Amount",
   COMMON_LABEL_FROM_SHOWROOM: "From showroom",
   COMMON_LABEL_TO_SHOWROOM: "To showroom",
+  COMMON_LABEL_FROM_DATE: "From date",
+  COMMON_LABEL_TO_DATE: "To date",
   COMMON_LABEL_TRANSFER_DATE: "Transfer date",
   COMMON_LABEL_START_TIME: "Start time",
   COMMON_LABEL_MANUFACTURER: "Brand",
@@ -49,6 +55,7 @@ export const en: Record<string, string> = {
   COMMON_LABEL_LISTED_PRICE: "Listed price",
   COMMON_LABEL_CAR_MODEL_NAME: "Model name",
   COMMON_LABEL_ADDRESS: "Address",
+  COMMON_LABEL_MANAGER: "Manager",
   COMMON_LABEL_SHOWROOM_NAME: "Showroom name",
   COMMON_LABEL_SERVICE_TYPE: "Service type",
   COMMON_LABEL_COST: "Cost",
@@ -65,6 +72,8 @@ export const en: Record<string, string> = {
   COMMON_BTN_SEARCH: "Search",
   COMMON_BTN_REFRESH: "Refresh",
   COMMON_BTN_EXPORT: "Export Excel",
+  COMMON_BTN_IMPORT: "Import Excel",
+  COMMON_BTN_TEMPLATE: "Excel Template",
   COMMON_BTN_APPROVE: "Approve",
   COMMON_BTN_REJECT: "Reject",
   COMMON_BTN_ACTIVE: "Activate",
@@ -84,6 +93,9 @@ export const en: Record<string, string> = {
   COMMON_ROLE_ADMIN: "Administrator",
   COMMON_ROLE_DIRECTOR: "Director",
   COMMON_ROLE_SHOWROOM_MANAGER: "Showroom Manager",
+  COMMON_ROLE_SALES: "Sales Staff",
+  COMMON_ROLE_WAREHOUSE: "Warehouse Staff",
+  COMMON_ROLE_ACCOUNTANT: "Accountant",
   COMMON_TOOLTIP_ACCOUNT: "Account",
   COMMON_MENU_PROFILE: "Profile",
   COMMON_MENU_LOGOUT: "Logout",
@@ -118,6 +130,8 @@ export const en: Record<string, string> = {
   HOME_STAT_CUSTOMERS: "Customers",
   HOME_STAT_CONTRACTS: "Contracts",
   HOME_STAT_SHOWROOMS: "Showrooms",
+  HOME_STAT_DEPOSITS: "Deposits",
+  HOME_STAT_QUOTATIONS: "Quotations",
 
   // === LOGIN ===
   LOGIN_PAGE_TITLE: "Login — G7Auto",
@@ -136,10 +150,12 @@ export const en: Record<string, string> = {
   CARS_DRAWER_EDIT: "Edit car",
   CARS_DRAWER_ADD: "Add car",
   CARS_FIELD_LICENSE_PLATE: "License plate",
+  CARS_FIELD_CHASSIS_NUMBER: "Chassis number",
+  CARS_FIELD_ENGINE_NUMBER: "Engine number",
   CARS_FIELD_MODEL_ID: "Car model ID",
   CARS_FIELD_SHOWROOM_ID: "Showroom ID",
   CARS_FIELD_SALE_PRICE: "Sale price (VND)",
-  CARS_FIELD_VIN: "VIN number",
+  CARS_FIELD_NOTES: "Notes",
 
   // === CUSTOMERS ===
   CUSTOMERS_PAGE_HEADER: "Customer Management",
@@ -150,8 +166,15 @@ export const en: Record<string, string> = {
   CUSTOMERS_FIELD_PHONE: "Phone number",
   CUSTOMERS_FIELD_NATIONAL_ID: "National ID",
   CUSTOMERS_FIELD_ADDRESS: "Address",
+  CUSTOMERS_FIELD_BIRTH_DATE: "Date of birth",
+  CUSTOMERS_FIELD_SOURCE_TYPE: "Customer source",
+  CUSTOMERS_FIELD_CAR_INTEREST: "Car interest",
+  CUSTOMERS_FIELD_NOTES: "Notes",
+  CUSTOMERS_FIELD_ASSIGNED_EMPLOYEE: "Assigned employee",
+  CUSTOMERS_PAGE_TITLE: "Customers — G7Auto",
 
   // === EMPLOYEES ===
+  EMPLOYEES_PAGE_TITLE: "Employees — G7Auto",
   EMPLOYEES_PAGE_HEADER: "Employee Management",
   EMPLOYEES_BTN_ADD: "Add employee",
   EMPLOYEES_FIELD_GENDER: "Gender",
@@ -171,7 +194,11 @@ export const en: Record<string, string> = {
   CONTRACTS_FIELD_SALE_PRICE: "Sale price (VND)",
   CONTRACTS_FIELD_DEPOSIT_AMOUNT: "Deposit (VND)",
   CONTRACTS_FIELD_SIGN_DATE: "Sign date",
-  CONTRACTS_FIELD_DELIVERY_DATE: "Delivery date",
+  CONTRACTS_FIELD_DELIVERY_DATE: "Expected delivery date",
+  CONTRACTS_FIELD_ACTUAL_DELIVERY_DATE: "Actual delivery date",
+  CONTRACTS_FIELD_DEPOSIT_ID: "Deposit ID",
+  CONTRACTS_FIELD_NOTES: "Notes",
+  CONTRACTS_FIELD_CONTRACT_NUMBER: "Contract number",
 
   // === QUOTATIONS ===
   QUOTATIONS_PAGE_HEADER: "Quotation Management",
@@ -179,6 +206,14 @@ export const en: Record<string, string> = {
   QUOTATIONS_DRAWER_DETAIL: "Quotation detail",
   QUOTATIONS_FIELD_QUOTED_PRICE: "Quoted price (VND)",
   QUOTATIONS_FIELD_VALID_DATE: "Quotation expiry date",
+  QUOTATIONS_FIELD_TOTAL_AMOUNT: "Total value (VND)",
+  QUOTATIONS_FIELD_CAR_PRICE: "Car price (VND)",
+  QUOTATIONS_FIELD_ACCESSORIES: "Accessories (VND)",
+  QUOTATIONS_FIELD_PROMOTION: "Promotion (VND)",
+  QUOTATIONS_FIELD_OTHER_COSTS: "Other costs (VND)",
+  QUOTATIONS_BTN_SEND: "Send quotation",
+  QUOTATIONS_BTN_ACCEPT: "Accept",
+  QUOTATIONS_BTN_CANCEL: "Cancel quotation",
 
   // === DEPOSITS ===
   DEPOSITS_PAGE_HEADER: "Deposit Management",
@@ -187,7 +222,12 @@ export const en: Record<string, string> = {
   DEPOSITS_FIELD_AMOUNT: "Deposit amount (VND)",
   DEPOSITS_FIELD_DATE: "Deposit date",
   DEPOSITS_FIELD_EXPIRED_DATE: "Expiry date",
+  DEPOSITS_FIELD_PAYMENT_METHOD: "Payment method",
+  DEPOSITS_FIELD_QUOTATION_ID: "Quotation ID",
   DEPOSITS_BTN_CREATE_ORDER: "Create deposit order",
+  DEPOSITS_BTN_REFUND: "Refund",
+  DEPOSITS_BTN_CANCEL: "Cancel deposit",
+  DEPOSITS_BTN_CONVERT: "Convert to contract",
 
   // === PAYMENTS ===
   PAYMENTS_PAGE_HEADER: "Payment Management",
@@ -197,14 +237,29 @@ export const en: Record<string, string> = {
   PAYMENTS_FIELD_AMOUNT: "Amount (VND)",
   PAYMENTS_FIELD_METHOD: "Payment method",
   PAYMENTS_FIELD_TIME: "Payment time",
+  PAYMENTS_FIELD_INSTALLMENT: "Installment",
+  PAYMENTS_FIELD_COLLECTOR_ID: "Collector ID",
+  PAYMENTS_FIELD_TRANSACTION_CODE: "Transaction code",
+  PAYMENTS_BTN_CONFIRM: "Confirm payment",
+  PAYMENTS_BTN_CANCEL: "Cancel payment",
 
   // === CAR TRANSFERS ===
+  TRANSFERS_PAGE_TITLE: "Car Transfers — G7Auto",
   TRANSFERS_PAGE_HEADER: "Car Transfer Management",
+  TRANSFERS_TAB_PENDING: "Awaiting export",
+  TRANSFERS_TAB_PROCESSED: "Processed",
   TRANSFERS_BTN_CREATE: "Create order",
   TRANSFERS_DRAWER_DETAIL: "Transfer detail",
   TRANSFERS_DRAWER_CREATE: "Create transfer order",
   TRANSFERS_FIELD_FROM_SHOWROOM: "From showroom (ID)",
   TRANSFERS_FIELD_TO_SHOWROOM: "To showroom (ID)",
+  TRANSFERS_FIELD_REASON: "Transfer reason",
+  TRANSFERS_FIELD_EXPECTED_DATE: "Expected receive date",
+  TRANSFERS_FIELD_ACTUAL_DATE: "Actual receive date",
+  TRANSFERS_FIELD_NOTES: "Notes",
+  TRANSFERS_BTN_CONFIRM_EXPORT: "Confirm export",
+  TRANSFERS_BTN_CONFIRM_RECEIVE: "Confirm receive",
+  TRANSFERS_BTN_CANCEL: "Cancel transfer",
 
   // === TEST DRIVES ===
   TEST_DRIVES_PAGE_HEADER: "Test Drive Management",
@@ -212,6 +267,9 @@ export const en: Record<string, string> = {
   TEST_DRIVES_DRAWER_DETAIL: "Test drive detail",
   TEST_DRIVES_FIELD_START_TIME: "Start time",
   TEST_DRIVES_FIELD_END_TIME: "End time",
+  TEST_DRIVES_BTN_CONFIRM: "Confirm",
+  TEST_DRIVES_BTN_COMPLETE: "Complete",
+  TEST_DRIVES_BTN_CANCEL: "Cancel",
 
   // === CAR MODELS ===
   CAR_MODELS_PAGE_HEADER: "Car Model Management",
@@ -231,11 +289,14 @@ export const en: Record<string, string> = {
   SHOWROOMS_FIELD_NAME: "Showroom name",
 
   // === SERVICE HISTORY ===
-  SERVICE_HISTORY_PAGE_HEADER: "Service History Management",
-  SERVICE_HISTORY_BTN_ADD: "Add service",
+  SERVICE_HISTORY_PAGE_HEADER: "Customer Care History",
+  SERVICE_HISTORY_BTN_ADD: "Add history",
+  SERVICE_HISTORY_DRAWER_DETAIL: "History detail",
   SERVICE_HISTORY_DRAWER_EDIT: "Edit",
-  SERVICE_HISTORY_FIELD_TYPE: "Service type",
-  SERVICE_HISTORY_FIELD_COST: "Cost (VND)",
+  SERVICE_HISTORY_FIELD_CONTACT_TYPE: "Contact type",
+  SERVICE_HISTORY_FIELD_CONTENT: "Content",
+  SERVICE_HISTORY_FIELD_RESULT: "Result",
+  SERVICE_HISTORY_FIELD_NEXT_REMINDER: "Next reminder date",
   SERVICE_HISTORY_FIELD_DATE: "Service date",
 
   // === PROFILE ===

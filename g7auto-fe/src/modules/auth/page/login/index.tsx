@@ -38,9 +38,7 @@ const LoginPage = () => {
           <DirectionsCarIcon sx={{ color: "#1a73e8", fontSize: 36 }} />
           <span className={styles["form-login__title"]}>G7Auto</span>
         </div>
-        <p className={styles["form-login__subtitle"]}>
-          {t("LOGIN_SUBTITLE")}
-        </p>
+        <p className={styles["form-login__subtitle"]}>{t("LOGIN_SUBTITLE")}</p>
         <div className={styles["form-login__form"]}>
           <BaseFormComponent
             formConfig={getLoginConfig()}

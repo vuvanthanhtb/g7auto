@@ -11,7 +11,11 @@ public record CustomerResponse(
     @ExcelColumn(header = "Địa chỉ", order = 4) String address,
     @ExcelColumn(header = "Ngày sinh", order = 5) LocalDate birthDate,
     @ExcelColumn(header = "CCCD/CMND", order = 6) String nationalId,
-    @ExcelColumn(header = "Ghi chú", order = 7) String notes,
+    @ExcelColumn(header = "Nguồn KH", order = 7) String sourceType,
+    @ExcelColumn(header = "Xe quan tâm", order = 8) String carInterest,
+    Long assignedEmployeeId,
+    String assignedEmployeeName,
+    @ExcelColumn(header = "Ghi chú", order = 9) String notes,
     String createdAt,
     String updatedAt
 ) {

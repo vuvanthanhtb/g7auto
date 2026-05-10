@@ -1,9 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { showroomsService } from "../services/showroom.service";
-import type { ShowroomRequest, ShowroomResponse } from "./showroom.type";
+import { showroomsService } from "./showroom.service";
+import type {
+  ShowroomRequest,
+  ShowroomResponse,
+  ShowroomSearchForm,
+} from "./showroom.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
+import { parseShowroomSearch } from "./showrooms.utils";
+import { formatPhoneNumber } from "@/libs/utils";
 
 interface ShowroomsState {
   showroomTable: {
@@ -31,10 +37,18 @@ const initialState: ShowroomsState = {
 
 export const getShowrooms = createAsyncThunk(
   "showrooms/getList",
-  async (_, { rejectWithValue }) => {
+  async (params: ShowroomSearchForm, { rejectWithValue }) => {
     try {
-      const res = await showroomsService.search();
-      return res.data;
+      const { data } = await showroomsService.search(
+        parseShowroomSearch(params),
+      );
+      return {
+        ...data,
+        content: data.content.map((item) => ({
+          ...item,
+          phoneDisplay: formatPhoneNumber(item.phone),
+        })),
+      };
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);
@@ -123,6 +137,9 @@ const showroomsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getShowrooms.fulfilled, (state, action) => {
+        state.showroomTable = action.payload as any;
+      })
       .addCase(getAllShowrooms.fulfilled, (state, action) => {
         state.showroomAll = action.payload as any;
       })

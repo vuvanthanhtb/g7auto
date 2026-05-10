@@ -27,4 +27,10 @@ export interface CarUpdateRequest {
   status?: string;
   notes?: string;
 }
+export interface CarSearchForm {
+  status: string;
+  page: number;
+  size: number;
+}
+
 export interface CarQuery { status?: string; showroomId?: number; carModelId?: number; page?: number; size?: number; }

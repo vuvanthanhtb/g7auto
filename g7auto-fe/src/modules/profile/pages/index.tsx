@@ -12,6 +12,7 @@ import { updateProfile, changePassword } from "@/modules/auth/shell/auth.slice";
 import BaseFormComponent from "@/libs/components/ui/base-form";
 import { TEXT, BUTTON } from "@/libs/constants/form.constant";
 import { BTN_SUBMIT } from "@/libs/constants/button.constant";
+import { t } from "@/libs/i18n";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type {
   UpdateProfileRequest,
@@ -19,37 +20,49 @@ import type {
 } from "@/modules/auth/shell/auth.type";
 import * as Yup from "yup";
 
-const profileFormConfig: IBaseFormConfig = {
+const getProfileFormConfig = (): IBaseFormConfig => ({
   fields: [
     {
       type: TEXT,
       name: "fullName",
-      label: "Họ và tên",
+      label: "PROFILE_FIELD_FULL_NAME",
       required: true,
       size: 12,
     },
-    { type: TEXT, name: "email", label: "Email", required: true, size: 12 },
+    {
+      type: TEXT,
+      name: "email",
+      label: "COMMON_LABEL_EMAIL",
+      required: true,
+      size: 12,
+    },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "Lưu thông tin", type: "submit", action: BTN_SUBMIT }],
+      childs: [
+        {
+          title: "PROFILE_BTN_SAVE_INFO",
+          type: "submit",
+          action: BTN_SUBMIT,
+        },
+      ],
     },
   ],
-};
-
-const profileValidation = Yup.object({
-  fullName: Yup.string().required("Họ và tên không được để trống"),
-  email: Yup.string()
-    .email("Email không hợp lệ")
-    .required("Email không được để trống"),
 });
 
-const passwordFormConfig: IBaseFormConfig = {
+const profileValidation = Yup.object({
+  fullName: Yup.string().required(t("PROFILE_VALIDATION_FULL_NAME_REQUIRED")),
+  email: Yup.string()
+    .email(t("PROFILE_VALIDATION_EMAIL_INVALID"))
+    .required(t("PROFILE_VALIDATION_EMAIL_REQUIRED")),
+});
+
+const getPasswordFormConfig = (): IBaseFormConfig => ({
   fields: [
     {
       type: TEXT,
       name: "currentPassword",
-      label: "Mật khẩu hiện tại",
+      label: "PROFILE_FIELD_CURRENT_PASSWORD",
       required: true,
       size: 12,
       isPassword: true,
@@ -57,7 +70,7 @@ const passwordFormConfig: IBaseFormConfig = {
     {
       type: TEXT,
       name: "newPassword",
-      label: "Mật khẩu mới",
+      label: "PROFILE_FIELD_NEW_PASSWORD",
       required: true,
       size: 12,
       isPassword: true,
@@ -65,7 +78,7 @@ const passwordFormConfig: IBaseFormConfig = {
     {
       type: TEXT,
       name: "confirmPassword",
-      label: "Xác nhận mật khẩu",
+      label: "PROFILE_FIELD_CONFIRM_PASSWORD",
       required: true,
       size: 12,
       isPassword: true,
@@ -73,19 +86,27 @@ const passwordFormConfig: IBaseFormConfig = {
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "Đổi mật khẩu", type: "submit", action: BTN_SUBMIT }],
+      childs: [
+        {
+          title: "PROFILE_BTN_CHANGE_PASSWORD",
+          type: "submit",
+          action: BTN_SUBMIT,
+        },
+      ],
     },
   ],
-};
+});
 
 const passwordValidation = Yup.object({
-  currentPassword: Yup.string().required("Vui lòng nhập mật khẩu hiện tại"),
+  currentPassword: Yup.string().required(
+    t("PROFILE_VALIDATION_CURRENT_PASSWORD_REQUIRED"),
+  ),
   newPassword: Yup.string()
-    .min(6, "Mật khẩu tối thiểu 6 ký tự")
-    .required("Vui lòng nhập mật khẩu mới"),
+    .min(6, t("PROFILE_VALIDATION_NEW_PASSWORD_MIN"))
+    .required(t("PROFILE_VALIDATION_NEW_PASSWORD_REQUIRED")),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("newPassword")], "Mật khẩu xác nhận không khớp")
-    .required("Vui lòng xác nhận mật khẩu"),
+    .oneOf([Yup.ref("newPassword")], t("PROFILE_VALIDATION_CONFIRM_PASSWORD_MATCH"))
+    .required(t("PROFILE_VALIDATION_CONFIRM_PASSWORD_REQUIRED")),
 });
 
 const ProfilePage = () => {
@@ -117,7 +138,7 @@ const ProfilePage = () => {
     if (changePassword.rejected.match(result)) return false;
   };
 
-  const displayName = user?.fullName ?? user?.username ?? "User";
+  const displayName = user?.fullName ?? user?.username ?? t("HOME_DEFAULT_NAME");
 
   return (
     <Box sx={{ p: 3, maxWidth: 720, mx: "auto" }}>
@@ -127,7 +148,7 @@ const ProfilePage = () => {
         className="page-title"
         sx={{ mb: 3 }}
       >
-        Hồ sơ cá nhân
+        {t("PROFILE_TITLE")}
       </Typography>
 
       <Box
@@ -153,8 +174,11 @@ const ProfilePage = () => {
               </Box>
             </Box>
             <Divider sx={{ mb: 2 }} />
+            <Typography fontWeight={600} sx={{ mb: 2 }}>
+              {t("PROFILE_PERSONAL_INFO")}
+            </Typography>
             <BaseFormComponent
-              formConfig={profileFormConfig}
+              formConfig={getProfileFormConfig()}
               validationSchema={profileValidation}
               values={profileValues}
               onChange={(d) =>
@@ -170,11 +194,11 @@ const ProfilePage = () => {
         <Card sx={{ flex: 1 }}>
           <CardContent>
             <Typography fontWeight={600} sx={{ mb: 2 }}>
-              Đổi mật khẩu
+              {t("PROFILE_CHANGE_PASSWORD")}
             </Typography>
             <Divider sx={{ mb: 2 }} />
             <BaseFormComponent
-              formConfig={passwordFormConfig}
+              formConfig={getPasswordFormConfig()}
               validationSchema={passwordValidation}
               values={passwordValues}
               handlers={{ [BTN_SUBMIT]: handleChangePassword }}

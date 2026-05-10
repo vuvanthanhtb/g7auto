@@ -1,68 +1,116 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/shell/redux/hooks";
-import { getCarTransfers, createCarTransfers, getCarTransfersById, clearSelectedCarTransfers } from "../shell/car-transfers.slice";
-import { carTransfersService } from "../shell/car-transfers.service";
-import type { CarTransferRequest } from "../shell/car-transfers.type";
-import { carTransfersInitialValues } from "./car-transfers.config";
+import {
+  getCarTransfers,
+  getCarTransfersById,
+  createCarTransfers,
+  confirmExportTransfer,
+  confirmReceiveTransfer,
+  cancelTransfer,
+  clearSelectedCarTransfers,
+} from "@/modules/car-transfers/shell/car-transfers.slice";
+import { carTransfersService } from "@/modules/car-transfers/shell/car-transfers.service";
+import { useConfirm } from "@/libs/components/ui/confirm-dialog";
+import type { CarTransferRequest } from "@/modules/car-transfers/shell/car-transfers.type";
 import { BTN_SEARCH, BTN_REFRESH, BTN_EXPORT, BTN_DETAIL, BTN_SUBMIT } from "@/libs/constants/button.constant";
-import { normalizeFormValues } from "@/libs/utils";
+import { searchInitialValues, createInitialValues } from "./car-transfers.config";
+import { parseFormSearch } from "./car-transfers.utils";
+import type { CarTransferSearchForm } from "./car-transfers.type";
 
 type TableRow = Record<string, unknown>;
 
 export const useCarTransfers = () => {
   const dispatch = useAppDispatch();
+  const confirm = useConfirm();
   const { selected } = useAppSelector((s) => s.carTransfers);
+  const [searchParams, setSearchParams] = useState<CarTransferSearchForm>(searchInitialValues);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [editId, setEditId] = useState<number | null>(null);
-  const [formValues, setFormValues] = useState<Record<string, unknown>>(carTransfersInitialValues);
-  const [page, setPage] = useState(1);
-  const [searchParams, setSearchParams] = useState<Record<string, unknown>>({});
+  const [detailId, setDetailId] = useState<number | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [createValues, setCreateValues] = useState<Record<string, unknown>>(createInitialValues);
 
   useEffect(() => {
-    document.title = "Điều chuyển xe — G7Auto";
-    dispatch(getCarTransfers({ page, size: 10, ...searchParams }));
-  }, [dispatch, page, searchParams]);
+    dispatch(getCarTransfers(parseFormSearch(searchInitialValues)));
+  }, [dispatch]);
 
-  useEffect(() => {
-    if (selected && editId) setFormValues(selected as unknown as Record<string, unknown>);
-  }, [selected, editId]);
-
-  const openCreate = () => {
-    setEditId(null);
-    setFormValues(carTransfersInitialValues);
-    setDrawerOpen(true);
+  const refresh = (params = searchParams) => {
+    dispatch(getCarTransfers(parseFormSearch(params)));
   };
 
-  const closeDrawer = () => {
-    setDrawerOpen(false);
-    dispatch(clearSelectedCarTransfers());
+  const handlePageChange = (page: number) => {
+    const updated = { ...searchParams, page };
+    setSearchParams(updated);
+    dispatch(getCarTransfers(parseFormSearch(updated)));
   };
 
   const handleCellAction = (row: TableRow, key?: string) => {
     if (key === BTN_DETAIL) {
-      setEditId(row.id as number);
+      setDetailId(row.id as number);
       dispatch(getCarTransfersById(row.id as number));
       setDrawerOpen(true);
     }
   };
 
-  const handleSubmit = async (data: Record<string, unknown>) => {
-    if (!editId) await dispatch(createCarTransfers(data as unknown as CarTransferRequest));
-    closeDrawer();
-    dispatch(getCarTransfers({ page, size: 10, ...searchParams }));
+  const closeDetail = () => {
+    setDrawerOpen(false);
+    setDetailId(null);
+    dispatch(clearSelectedCarTransfers());
+  };
+
+  const handleConfirmExport = async () => {
+    if (!detailId) return;
+    const ok = await confirm("Xác nhận xuất kho phiếu điều chuyển này?");
+    if (ok) {
+      await dispatch(confirmExportTransfer(detailId));
+      refresh();
+    }
+  };
+
+  const handleConfirmReceive = async () => {
+    if (!detailId) return;
+    const ok = await confirm("Xác nhận nhận xe cho phiếu điều chuyển này?");
+    if (ok) {
+      await dispatch(confirmReceiveTransfer(detailId));
+      refresh();
+    }
+  };
+
+  const handleCancel = async () => {
+    if (!detailId) return;
+    const ok = await confirm("Hủy phiếu điều chuyển này?");
+    if (ok) {
+      await dispatch(cancelTransfer(detailId));
+      refresh();
+    }
+  };
+
+  const handleCreate = async (data: Record<string, unknown>) => {
+    await dispatch(createCarTransfers(data as unknown as CarTransferRequest));
+    setCreateOpen(false);
+    refresh();
   };
 
   const searchHandlers = {
-    [BTN_SEARCH]: (values: Record<string, unknown>) => { setSearchParams(normalizeFormValues(values)); setPage(1); },
-    [BTN_REFRESH]: () => { dispatch(getCarTransfers({ page, size: 10, ...searchParams })); },
-    [BTN_EXPORT]: async () => { await carTransfersService.exportExcel(); },
+    [BTN_SEARCH]: (values: CarTransferSearchForm) => {
+      setSearchParams(values);
+      dispatch(getCarTransfers(parseFormSearch({ ...values, page: 1 })));
+    },
+    [BTN_REFRESH]: () => {
+      setSearchParams(searchInitialValues);
+      refresh(searchInitialValues);
+    },
+    [BTN_EXPORT]: async () => {
+      await carTransfersService.exportExcel();
+    },
   };
 
-  const formHandlers = { [BTN_SUBMIT]: handleSubmit };
+  const createHandlers = { [BTN_SUBMIT]: handleCreate };
 
   return {
-    drawerOpen, editId, formValues, page,
-    openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers,
-    setFormValues, setPage,
+    searchParams, drawerOpen, detailId, selected, createOpen,
+    createValues, searchHandlers, createHandlers,
+    handlePageChange, handleCellAction, closeDetail,
+    handleConfirmExport, handleConfirmReceive, handleCancel,
+    setCreateOpen, setCreateValues, onchange: setSearchParams,
   };
 };

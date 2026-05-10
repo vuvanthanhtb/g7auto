@@ -1,5 +1,6 @@
 package com.g7auto.api.controller;
 
+import com.g7auto.application.dto.request.BulkStatusRequest;
 import com.g7auto.application.dto.request.EmployeeApprovalSearchRequest;
 import com.g7auto.application.dto.request.EmployeeRequest;
 import com.g7auto.application.dto.request.StatusRequest;
@@ -52,5 +53,11 @@ public class EmployeeApprovalController {
   public ResponseEntity<ApiResponse<Void>> requestApproval(@RequestBody StatusRequest request) {
     return ResponseEntity.ok(
         ApiResponse.ok(employeeApprovalService.requestApproval(request)));
+  }
+
+  @PostMapping("/bulk-approval")
+  public ResponseEntity<ApiResponse<Void>> bulkApproval(@RequestBody BulkStatusRequest request) {
+    return ResponseEntity.ok(
+        ApiResponse.ok(employeeApprovalService.bulkRequestApproval(request)));
   }
 }

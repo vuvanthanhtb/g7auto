@@ -18,10 +18,14 @@ export const getApprovedColumns = (): BaseTableColumn[] => [
   { name: "username", label: "COMMON_LABEL_ACCOUNT", type: TBL_STRING },
   { name: "fullName", label: "COMMON_LABEL_FULL_NAME", type: TBL_STRING },
   { name: "email", label: "COMMON_LABEL_EMAIL", type: TBL_STRING },
-  { name: "actionDisplay", label: "COMMON_LABEL_CHANGE_REQUEST", type: TBL_STRING },
+  {
+    name: "actionDisplay",
+    label: "COMMON_LABEL_CHANGE_REQUEST",
+    type: TBL_STRING,
+  },
   {
     name: "statusDisplay",
-    label: "COMMON_LABEL_STATUS",
+    label: "COMMON_LABEL_ACTION_TYPE",
     type: TBL_STRING,
     refColor: ["statusApproving"],
   },

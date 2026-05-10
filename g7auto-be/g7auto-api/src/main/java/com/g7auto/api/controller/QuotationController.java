@@ -31,6 +31,12 @@ public class QuotationController {
     return ResponseEntity.ok(ApiResponse.ok(quotationService.search(request)));
   }
 
+  @GetMapping("/list")
+  public ResponseEntity<ApiResponse<PageResponse<QuotationResponse>>> list(
+      @ModelAttribute QuotationSearchRequest request) {
+    return ResponseEntity.ok(ApiResponse.ok(quotationService.search(request)));
+  }
+
   @GetMapping("/{id}")
   public ResponseEntity<ApiResponse<QuotationResponse>> getById(@PathVariable Long id) {
     return ResponseEntity.ok(ApiResponse.ok(quotationService.findById(id)));

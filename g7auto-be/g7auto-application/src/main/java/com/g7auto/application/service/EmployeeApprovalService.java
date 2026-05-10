@@ -1,5 +1,6 @@
 package com.g7auto.application.service;
 
+import com.g7auto.application.dto.request.BulkStatusRequest;
 import com.g7auto.application.dto.request.EmployeeApprovalSearchRequest;
 import com.g7auto.application.dto.request.EmployeeRequest;
 import com.g7auto.application.dto.request.StatusRequest;
@@ -16,5 +17,9 @@ public interface EmployeeApprovalService {
 
   String delete(Long id);
 
+  EmployeeResponse resign(Long id);
+
   String requestApproval(StatusRequest request);
+
+  String bulkRequestApproval(BulkStatusRequest request);
 }

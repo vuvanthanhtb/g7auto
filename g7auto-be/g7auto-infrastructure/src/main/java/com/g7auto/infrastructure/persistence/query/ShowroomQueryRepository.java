@@ -4,6 +4,7 @@ import com.g7auto.core.entity.ShowroomStatus;
 import com.g7auto.core.sql.DynamicSqlBuilder;
 import com.g7auto.core.sql.PagingJdbcExecutor;
 import com.g7auto.core.utils.DateParserUtils;
+import org.springframework.util.StringUtils;
 import com.g7auto.domain.entity.Showroom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,10 +17,12 @@ import org.springframework.stereotype.Repository;
 public class ShowroomQueryRepository {
 
   private static final String BASE_SQL = """
-      SELECT s.id, s.name, s.address, s.phone, s.email, s.manager, s.status,
+      SELECT s.id, s.name, s.address, s.phone, s.email, s.manager_id, s.status,
+             e.full_name AS manager_name,
              s.created_at, s.updated_at, s.created_by, s.updated_by
       FROM showrooms s
-      WHERE 1=1
+      LEFT JOIN employees e ON s.manager_id = e.id
+      WHERE s.status = 'ACTIVE'
       """;
 
   private static final RowMapper<Showroom> ROW_MAPPER = (rs, rowNum) -> {
@@ -29,7 +32,9 @@ public class ShowroomQueryRepository {
     s.setAddress(rs.getString("address"));
     s.setPhone(rs.getString("phone"));
     s.setEmail(rs.getString("email"));
-    s.setManager(rs.getString("manager"));
+    long managerId = rs.getLong("manager_id");
+    if (!rs.wasNull()) s.setManagerId(managerId);
+    s.setManagerName(rs.getString("manager_name"));
     String status = rs.getString("status");
     if (status != null) {
       s.setStatus(ShowroomStatus.valueOf(status));
@@ -47,11 +52,15 @@ public class ShowroomQueryRepository {
 
   private final PagingJdbcExecutor pagingJdbcExecutor;
 
-  public Page<Showroom> search(String name, String fromDate, String toDate, Pageable pageable) {
+  public Page<Showroom> search(String name, String phone,
+      String fromDate, String toDate, Pageable pageable) {
     DynamicSqlBuilder builder = new DynamicSqlBuilder(BASE_SQL);
     builder.andLike("s.name", "name", name, true, true)
-        .andGreaterOrEqual("s.updated_at", "fromDate", DateParserUtils.parseFrom(fromDate))
-        .andSmaller("s.updated_at", "toDate", DateParserUtils.parseTo(toDate));
+        .andLike("s.phone", "phone", phone, true, true)
+        .andGreaterOrEqual("s.updated_at", "fromDate",
+            StringUtils.hasText(fromDate) ? DateParserUtils.parseFrom(fromDate) : null)
+        .andSmaller("s.updated_at", "toDate",
+            StringUtils.hasText(toDate) ? DateParserUtils.parseTo(toDate) : null);
 
     return pagingJdbcExecutor.query(
         builder.getSql().toString(),

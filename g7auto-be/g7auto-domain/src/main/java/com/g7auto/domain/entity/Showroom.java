@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,8 +44,11 @@ public class Showroom extends BaseEntity {
   @Column(length = 50, comment = "Email của showroom")
   String email;
 
-  @Column(length = 100, comment = "Tên người quản lý showroom")
-  String manager;
+  @Column(name = "manager_id", comment = "ID nhân viên quản lý showroom")
+  Long managerId;
+
+  @Transient
+  String managerName;
 
   @Column(nullable = false, comment = "Trạng thái hoạt động (ACTIVE, INACTIVE)")
   @Enumerated(EnumType.STRING)

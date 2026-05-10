@@ -1,18 +1,18 @@
 export interface QuotationResponse {
   id: number;
-  code: string;
   customerId: number;
-  customerName: string;
+  customerFullName: string;
   carId: number;
-  carName: string;
-  showroomId: number;
-  showroomName: string;
+  carChassisNumber: string;
   employeeId: number;
-  employeeName: string;
-  quotedPrice: number;
+  employeeFullName: string;
+  carPrice: number;
+  accessories: number;
+  promotion: number;
+  otherCosts: number;
+  totalAmount: number;
   status: string;
-  validDate: string;
-  note: string;
+  notes: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -20,16 +20,23 @@ export interface QuotationResponse {
 export interface QuotationRequest {
   customerId: number;
   carId: number;
-  showroomId: number;
-  employeeId: number;
-  quotedPrice: number;
-  validDate?: string;
-  note?: string;
+  employeeId?: number;
+  carPrice?: number;
+  accessories?: number;
+  promotion?: number;
+  otherCosts?: number;
+  notes?: string;
 }
 
-export interface QuotationQuery {
-  page?: number;
-  size?: number;
+export interface QuotationSearchForm {
+  status: string;
+  page: number;
+  size: number;
+}
+
+export interface QuotationPayload {
   status?: string;
   customerId?: number;
+  page?: number;
+  size?: number;
 }

@@ -69,4 +69,9 @@ public class CustomerController {
   public void downloadTemplate(HttpServletResponse response) {
     customerService.downloadCustomerTemplate(response);
   }
+
+  @GetMapping("/export")
+  public void exportCustomers(HttpServletResponse response) {
+    customerService.exportCustomers(response);
+  }
 }

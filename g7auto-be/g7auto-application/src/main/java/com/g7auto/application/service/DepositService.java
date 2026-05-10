@@ -20,7 +20,7 @@ public interface DepositService {
 
   DepositResponse cancel(Long id, String reason);
 
-  ContractResponse convertToContract(Long depositId, String contractNumber,
+  ContractResponse convertToContract(Long depositId,
       LocalDate signDate, LocalDate expectedDeliveryDate, String notes);
 
   void exportDeposits(HttpServletResponse response);

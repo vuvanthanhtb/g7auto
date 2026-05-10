@@ -117,6 +117,7 @@ public class AccountApprovingServiceImpl implements AccountApprovingService {
     AccountApproving approving = new AccountApproving();
     accountApprovingMapper.mapAccountToEntity(account, approving);
     approving.setStatusApproving(ApprovingStatus.AWAITING_APPROVAL);
+    approving.setId(null);
 
     if (action.equalsIgnoreCase("LOCK")) {
       approving.setAction(AccountApprovingAction.LOCK);

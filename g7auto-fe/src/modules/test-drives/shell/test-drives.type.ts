@@ -1,35 +1,40 @@
 export interface TestDriveResponse {
   id: number;
   customerId: number;
-  customerName: string;
+  customerFullName: string;
   carId: number;
-  carName: string;
+  carChassisNumber: string;
+  employeeId: number;
+  employeeFullName: string;
   showroomId: number;
   showroomName: string;
-  employeeId: number;
-  employeeName: string;
-  status: string;
   startTime: string;
   endTime: string;
-  note: string;
+  status: string;
+  notes: string;
   createdAt: string;
-  updatedAt: string;
 }
 
 export interface TestDriveRequest {
   customerId: number;
   carId: number;
-  showroomId: number;
-  employeeId: number;
+  employeeId?: number;
+  showroomId?: number;
   startTime: string;
-  endTime?: string;
-  note?: string;
+  endTime: string;
+  notes?: string;
 }
 
-export interface TestDriveQuery {
-  page?: number;
-  size?: number;
+export interface TestDriveSearchForm {
+  status: string;
+  page: number;
+  size: number;
+}
+
+export interface TestDrivePayload {
   status?: string;
   customerId?: number;
   showroomId?: number;
+  page?: number;
+  size?: number;
 }

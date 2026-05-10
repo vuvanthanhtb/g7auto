@@ -10,6 +10,10 @@ export const vi: Record<string, string> = {
 
   // === COMMON LABELS ===
   COMMON_LABEL_STT: "STT",
+  COMMON_LABEL_TOTAL_RECORDS: "Tổng bản ghi",
+  COMMON_REQUIRED_FULL_NAME: "Họ tên là bắt buộc",
+  COMMON_REQUIRED_PHONE: "Số điện thoại là bắt buộc",
+  COMMON_REQUIRED_SHOWROOM: "Showroom là bắt buộc",
   COMMON_LABEL_ACTION: "Thao tác",
   COMMON_LABEL_STATUS: "Trạng thái",
   COMMON_LABEL_CREATED_AT: "Ngày tạo",
@@ -42,6 +46,8 @@ export const vi: Record<string, string> = {
   COMMON_LABEL_AMOUNT: "Số tiền",
   COMMON_LABEL_FROM_SHOWROOM: "Từ showroom",
   COMMON_LABEL_TO_SHOWROOM: "Đến showroom",
+  COMMON_LABEL_FROM_DATE: "Từ ngày",
+  COMMON_LABEL_TO_DATE: "Đến ngày",
   COMMON_LABEL_TRANSFER_DATE: "Ngày chuyển",
   COMMON_LABEL_START_TIME: "Thời gian bắt đầu",
   COMMON_LABEL_MANUFACTURER: "Hãng",
@@ -49,6 +55,7 @@ export const vi: Record<string, string> = {
   COMMON_LABEL_LISTED_PRICE: "Giá niêm yết",
   COMMON_LABEL_CAR_MODEL_NAME: "Tên dòng xe",
   COMMON_LABEL_ADDRESS: "Địa chỉ",
+  COMMON_LABEL_MANAGER: "Quản lý",
   COMMON_LABEL_SHOWROOM_NAME: "Tên showroom",
   COMMON_LABEL_SERVICE_TYPE: "Loại dịch vụ",
   COMMON_LABEL_COST: "Chi phí",
@@ -58,13 +65,15 @@ export const vi: Record<string, string> = {
 
   // === COMMON BUTTONS ===
   COMMON_BTN_SAVE: "Lưu",
-  COMMON_BTN_EDIT: "Sửa",
+  COMMON_BTN_EDIT: "Cập nhật",
   COMMON_BTN_DELETE: "Xóa",
   COMMON_BTN_DETAIL: "Chi tiết",
   COMMON_BTN_ADD_NEW: "Thêm mới",
   COMMON_BTN_SEARCH: "Tìm kiếm",
   COMMON_BTN_REFRESH: "Làm mới",
   COMMON_BTN_EXPORT: "Xuất Excel",
+  COMMON_BTN_IMPORT: "Nhập Excel",
+  COMMON_BTN_TEMPLATE: "Mẫu Excel",
   COMMON_BTN_APPROVE: "Duyệt",
   COMMON_BTN_REJECT: "Từ chối",
   COMMON_BTN_ACTIVE: "Hoạt động",
@@ -84,6 +93,9 @@ export const vi: Record<string, string> = {
   COMMON_ROLE_ADMIN: "Quản trị viên",
   COMMON_ROLE_DIRECTOR: "Giám đốc",
   COMMON_ROLE_SHOWROOM_MANAGER: "Quản lý showroom",
+  COMMON_ROLE_SALES: "Nhân viên kinh doanh",
+  COMMON_ROLE_WAREHOUSE: "Thủ kho",
+  COMMON_ROLE_ACCOUNTANT: "Kế toán",
   COMMON_TOOLTIP_ACCOUNT: "Tài khoản",
   COMMON_MENU_PROFILE: "Hồ sơ",
   COMMON_MENU_LOGOUT: "Đăng xuất",
@@ -118,6 +130,8 @@ export const vi: Record<string, string> = {
   HOME_STAT_CUSTOMERS: "Khách hàng",
   HOME_STAT_CONTRACTS: "Hợp đồng",
   HOME_STAT_SHOWROOMS: "Showroom",
+  HOME_STAT_DEPOSITS: "Đặt cọc",
+  HOME_STAT_QUOTATIONS: "Báo giá",
 
   // === LOGIN ===
   LOGIN_PAGE_TITLE: "Đăng nhập — G7Auto",
@@ -133,25 +147,34 @@ export const vi: Record<string, string> = {
   // === CARS ===
   CARS_PAGE_HEADER: "Quản lý Kho xe",
   CARS_BTN_ADD: "Thêm xe",
-  CARS_DRAWER_EDIT: "Chỉnh sửa xe",
+  CARS_DRAWER_EDIT: "Cập nhật xe",
   CARS_DRAWER_ADD: "Thêm xe",
   CARS_FIELD_LICENSE_PLATE: "Biển số xe",
+  CARS_FIELD_CHASSIS_NUMBER: "Số khung xe",
+  CARS_FIELD_ENGINE_NUMBER: "Số máy",
   CARS_FIELD_MODEL_ID: "Mã dòng xe",
   CARS_FIELD_SHOWROOM_ID: "Mã showroom",
   CARS_FIELD_SALE_PRICE: "Giá bán (VND)",
-  CARS_FIELD_VIN: "Số VIN",
+  CARS_FIELD_NOTES: "Ghi chú",
 
   // === CUSTOMERS ===
   CUSTOMERS_PAGE_HEADER: "Quản lý Khách hàng",
   CUSTOMERS_BTN_ADD: "Thêm khách hàng",
-  CUSTOMERS_DRAWER_EDIT: "Chỉnh sửa khách hàng",
+  CUSTOMERS_DRAWER_EDIT: "Cập nhật khách hàng",
   CUSTOMERS_FIELD_FULL_NAME: "Họ tên",
   CUSTOMERS_FIELD_FULL_NAME_SEARCH: "Họ và tên",
   CUSTOMERS_FIELD_PHONE: "Số điện thoại",
   CUSTOMERS_FIELD_NATIONAL_ID: "CMND/CCCD",
   CUSTOMERS_FIELD_ADDRESS: "Địa chỉ",
+  CUSTOMERS_FIELD_BIRTH_DATE: "Ngày sinh",
+  CUSTOMERS_FIELD_SOURCE_TYPE: "Nguồn khách hàng",
+  CUSTOMERS_FIELD_CAR_INTEREST: "Xe quan tâm",
+  CUSTOMERS_FIELD_NOTES: "Ghi chú",
+  CUSTOMERS_FIELD_ASSIGNED_EMPLOYEE: "Nhân viên phụ trách",
+  CUSTOMERS_PAGE_TITLE: "Khách hàng — G7Auto",
 
   // === EMPLOYEES ===
+  EMPLOYEES_PAGE_TITLE: "Nhân viên — G7Auto",
   EMPLOYEES_PAGE_HEADER: "Quản lý Nhân viên",
   EMPLOYEES_BTN_ADD: "Thêm nhân viên",
   EMPLOYEES_FIELD_GENDER: "Giới tính",
@@ -171,7 +194,11 @@ export const vi: Record<string, string> = {
   CONTRACTS_FIELD_SALE_PRICE: "Giá bán (VND)",
   CONTRACTS_FIELD_DEPOSIT_AMOUNT: "Tiền cọc (VND)",
   CONTRACTS_FIELD_SIGN_DATE: "Ngày ký",
-  CONTRACTS_FIELD_DELIVERY_DATE: "Ngày giao xe",
+  CONTRACTS_FIELD_DELIVERY_DATE: "Ngày giao dự kiến",
+  CONTRACTS_FIELD_ACTUAL_DELIVERY_DATE: "Ngày giao thực tế",
+  CONTRACTS_FIELD_DEPOSIT_ID: "Mã phiếu cọc",
+  CONTRACTS_FIELD_NOTES: "Ghi chú",
+  CONTRACTS_FIELD_CONTRACT_NUMBER: "Số hợp đồng",
 
   // === QUOTATIONS ===
   QUOTATIONS_PAGE_HEADER: "Quản lý Báo giá",
@@ -179,6 +206,14 @@ export const vi: Record<string, string> = {
   QUOTATIONS_DRAWER_DETAIL: "Chi tiết báo giá",
   QUOTATIONS_FIELD_QUOTED_PRICE: "Giá báo (VND)",
   QUOTATIONS_FIELD_VALID_DATE: "Ngày hết hạn báo giá",
+  QUOTATIONS_FIELD_TOTAL_AMOUNT: "Tổng giá trị (VND)",
+  QUOTATIONS_FIELD_CAR_PRICE: "Giá xe (VND)",
+  QUOTATIONS_FIELD_ACCESSORIES: "Phụ kiện (VND)",
+  QUOTATIONS_FIELD_PROMOTION: "Khuyến mãi (VND)",
+  QUOTATIONS_FIELD_OTHER_COSTS: "Chi phí khác (VND)",
+  QUOTATIONS_BTN_SEND: "Gửi báo giá",
+  QUOTATIONS_BTN_ACCEPT: "Chấp nhận",
+  QUOTATIONS_BTN_CANCEL: "Hủy báo giá",
 
   // === DEPOSITS ===
   DEPOSITS_PAGE_HEADER: "Quản lý Đặt cọc",
@@ -187,7 +222,12 @@ export const vi: Record<string, string> = {
   DEPOSITS_FIELD_AMOUNT: "Số tiền cọc (VND)",
   DEPOSITS_FIELD_DATE: "Ngày đặt cọc",
   DEPOSITS_FIELD_EXPIRED_DATE: "Ngày hết hạn",
+  DEPOSITS_FIELD_PAYMENT_METHOD: "Phương thức thanh toán",
+  DEPOSITS_FIELD_QUOTATION_ID: "Mã báo giá",
   DEPOSITS_BTN_CREATE_ORDER: "Tạo phiếu đặt cọc",
+  DEPOSITS_BTN_REFUND: "Hoàn cọc",
+  DEPOSITS_BTN_CANCEL: "Hủy cọc",
+  DEPOSITS_BTN_CONVERT: "Chuyển hợp đồng",
 
   // === PAYMENTS ===
   PAYMENTS_PAGE_HEADER: "Quản lý Thanh toán",
@@ -197,14 +237,29 @@ export const vi: Record<string, string> = {
   PAYMENTS_FIELD_AMOUNT: "Số tiền (VND)",
   PAYMENTS_FIELD_METHOD: "Phương thức TT",
   PAYMENTS_FIELD_TIME: "Thời gian thanh toán",
+  PAYMENTS_FIELD_INSTALLMENT: "Đợt TT",
+  PAYMENTS_FIELD_COLLECTOR_ID: "Mã thu ngân",
+  PAYMENTS_FIELD_TRANSACTION_CODE: "Mã giao dịch",
+  PAYMENTS_BTN_CONFIRM: "Xác nhận TT",
+  PAYMENTS_BTN_CANCEL: "Hủy thanh toán",
 
   // === CAR TRANSFERS ===
+  TRANSFERS_PAGE_TITLE: "Điều chuyển xe — G7Auto",
   TRANSFERS_PAGE_HEADER: "Quản lý Điều chuyển xe",
+  TRANSFERS_TAB_PENDING: "Chờ xuất kho",
+  TRANSFERS_TAB_PROCESSED: "Đã xử lý",
   TRANSFERS_BTN_CREATE: "Tạo phiếu",
   TRANSFERS_DRAWER_DETAIL: "Chi tiết điều chuyển",
   TRANSFERS_DRAWER_CREATE: "Tạo phiếu điều chuyển",
   TRANSFERS_FIELD_FROM_SHOWROOM: "Từ showroom (ID)",
   TRANSFERS_FIELD_TO_SHOWROOM: "Đến showroom (ID)",
+  TRANSFERS_FIELD_REASON: "Lý do điều chuyển",
+  TRANSFERS_FIELD_EXPECTED_DATE: "Ngày nhận dự kiến",
+  TRANSFERS_FIELD_ACTUAL_DATE: "Ngày nhận thực tế",
+  TRANSFERS_FIELD_NOTES: "Ghi chú",
+  TRANSFERS_BTN_CONFIRM_EXPORT: "Xác nhận xuất kho",
+  TRANSFERS_BTN_CONFIRM_RECEIVE: "Xác nhận nhận xe",
+  TRANSFERS_BTN_CANCEL: "Hủy điều chuyển",
 
   // === TEST DRIVES ===
   TEST_DRIVES_PAGE_HEADER: "Quản lý Lái thử",
@@ -212,10 +267,13 @@ export const vi: Record<string, string> = {
   TEST_DRIVES_DRAWER_DETAIL: "Chi tiết lái thử",
   TEST_DRIVES_FIELD_START_TIME: "Thời gian bắt đầu",
   TEST_DRIVES_FIELD_END_TIME: "Thời gian kết thúc",
+  TEST_DRIVES_BTN_CONFIRM: "Xác nhận lịch",
+  TEST_DRIVES_BTN_COMPLETE: "Hoàn thành",
+  TEST_DRIVES_BTN_CANCEL: "Hủy lịch",
 
   // === CAR MODELS ===
   CAR_MODELS_PAGE_HEADER: "Quản lý Dòng xe",
-  CAR_MODELS_DRAWER_EDIT: "Chỉnh sửa dòng xe",
+  CAR_MODELS_DRAWER_EDIT: "Cập nhật dòng xe",
   CAR_MODELS_DRAWER_ADD: "Thêm dòng xe",
   CAR_MODELS_FIELD_NAME: "Tên dòng xe",
   CAR_MODELS_FIELD_MANUFACTURER: "Hãng sản xuất",
@@ -226,16 +284,19 @@ export const vi: Record<string, string> = {
 
   // === SHOWROOMS ===
   SHOWROOMS_PAGE_HEADER: "Quản lý Showroom",
-  SHOWROOMS_DRAWER_EDIT: "Chỉnh sửa showroom",
+  SHOWROOMS_DRAWER_EDIT: "Cập nhật showroom",
   SHOWROOMS_DRAWER_ADD: "Thêm showroom",
   SHOWROOMS_FIELD_NAME: "Tên showroom",
 
   // === SERVICE HISTORY ===
-  SERVICE_HISTORY_PAGE_HEADER: "Quản lý Lịch sử dịch vụ",
-  SERVICE_HISTORY_BTN_ADD: "Thêm dịch vụ",
-  SERVICE_HISTORY_DRAWER_EDIT: "Chỉnh sửa",
-  SERVICE_HISTORY_FIELD_TYPE: "Loại dịch vụ",
-  SERVICE_HISTORY_FIELD_COST: "Chi phí (VND)",
+  SERVICE_HISTORY_PAGE_HEADER: "Quản lý Lịch sử chăm sóc",
+  SERVICE_HISTORY_BTN_ADD: "Thêm lịch sử",
+  SERVICE_HISTORY_DRAWER_DETAIL: "Chi tiết lịch sử",
+  SERVICE_HISTORY_DRAWER_EDIT: "Cập nhật",
+  SERVICE_HISTORY_FIELD_CONTACT_TYPE: "Loại liên hệ",
+  SERVICE_HISTORY_FIELD_CONTENT: "Nội dung",
+  SERVICE_HISTORY_FIELD_RESULT: "Kết quả",
+  SERVICE_HISTORY_FIELD_NEXT_REMINDER: "Ngày nhắc lại",
   SERVICE_HISTORY_FIELD_DATE: "Ngày thực hiện",
 
   // === PROFILE ===
@@ -252,7 +313,8 @@ export const vi: Record<string, string> = {
   PROFILE_VALIDATION_FULL_NAME_REQUIRED: "Họ và tên không được để trống",
   PROFILE_VALIDATION_EMAIL_INVALID: "Email không hợp lệ",
   PROFILE_VALIDATION_EMAIL_REQUIRED: "Email không được để trống",
-  PROFILE_VALIDATION_CURRENT_PASSWORD_REQUIRED: "Vui lòng nhập mật khẩu hiện tại",
+  PROFILE_VALIDATION_CURRENT_PASSWORD_REQUIRED:
+    "Vui lòng nhập mật khẩu hiện tại",
   PROFILE_VALIDATION_NEW_PASSWORD_MIN: "Mật khẩu tối thiểu 6 ký tự",
   PROFILE_VALIDATION_NEW_PASSWORD_REQUIRED: "Vui lòng nhập mật khẩu mới",
   PROFILE_VALIDATION_CONFIRM_PASSWORD_MATCH: "Mật khẩu xác nhận không khớp",
@@ -319,7 +381,8 @@ export const vi: Record<string, string> = {
   G7_AUTO_00405: "Không tìm thấy yêu cầu điều chuyển.",
   G7_AUTO_00422: "Không thể hủy lệnh điều chuyển đã hoàn thành.",
   G7_AUTO_00423: "Lệnh điều chuyển phải ở trạng thái CHỜ để xác nhận xuất kho.",
-  G7_AUTO_00424: "Lệnh điều chuyển phải ở trạng thái ĐÃ XUẤT để xác nhận nhập kho.",
+  G7_AUTO_00424:
+    "Lệnh điều chuyển phải ở trạng thái ĐÃ XUẤT để xác nhận nhập kho.",
 
   // 6. Khách hàng (00500 - 00599)
   G7_AUTO_00500: "Số điện thoại khách hàng đã tồn tại.",

@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import BaseTableComponent from "@/libs/components/ui/base-table";
 import BaseDrawer from "@/libs/components/ui/base-drawer";
@@ -6,7 +6,7 @@ import BaseFormComponent from "@/libs/components/ui/base-form";
 import ImportButton from "@/libs/components/ui/import-button";
 import { showroomsService } from "../shell/showroom.service";
 import { useAppDispatch } from "@/shell/redux/hooks";
-import { getAllShowrooms } from "../shell/showrooms.slice";
+import { getShowrooms } from "../shell/showrooms.slice";
 import {
   getShowroomColumns,
   getShowroomFormConfig,
@@ -15,6 +15,7 @@ import {
 import { showroomValidation } from "./showrooms.validation";
 import { useShowrooms } from "./use-showrooms";
 import { t } from "@/libs/i18n";
+import type { ShowroomSearchForm } from "../shell/showroom.type";
 
 const ShowroomsPage = () => {
   const dispatch = useAppDispatch();
@@ -22,41 +23,45 @@ const ShowroomsPage = () => {
     drawerOpen,
     editId,
     formValues,
+    searchQuery,
+    employeeOptions,
     openCreate,
     closeDrawer,
     handleCellAction,
     searchHandlers,
     formHandlers,
     setFormValues,
-    setPage,
+    handlePageChange,
   } = useShowrooms();
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-        <Typography variant="h6" fontWeight={700} className="page-title">
-          {t("SHOWROOMS_PAGE_HEADER")}
-        </Typography>
-        <Box sx={{ display: "flex", gap: 1 }}>
-          <ImportButton
-            onImport={(file) =>
-              showroomsService.importFile(file).then((r) => r?.data)
-            }
-            onDownloadTemplate={() => showroomsService.downloadTemplate()}
-            onSuccess={() => dispatch(getAllShowrooms())}
-          />
-          <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
-            {t("COMMON_BTN_ADD_NEW")}
-          </Button>
-        </Box>
-      </Box>
-      <BaseFormComponent formConfig={getShowroomSearchConfig()} handlers={searchHandlers} />
+    <>
+      <BaseFormComponent<ShowroomSearchForm>
+        formConfig={getShowroomSearchConfig()}
+        values={searchQuery}
+        handlers={searchHandlers}
+      />
       <BaseTableComponent
         tableConfig={getShowroomColumns()}
         reducer="showrooms"
         state="showroomTable"
+        title={t("SHOWROOMS_PAGE_HEADER")}
+        extra={
+          <div style={{ display: "flex", gap: 8 }}>
+            <ImportButton
+              onImport={(file) =>
+                showroomsService.importFile(file).then((r) => r?.data)
+              }
+              onDownloadTemplate={() => showroomsService.downloadTemplate()}
+              onSuccess={() => dispatch(getShowrooms(searchQuery))}
+            />
+            <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
+              {t("COMMON_BTN_ADD_NEW")}
+            </Button>
+          </div>
+        }
         handleCellAction={handleCellAction}
-        handlePageChange={(_, p) => setPage(p)}
+        handlePageChange={handlePageChange}
       />
       <BaseDrawer
         open={drawerOpen}
@@ -67,11 +72,12 @@ const ShowroomsPage = () => {
           formConfig={getShowroomFormConfig()}
           validationSchema={showroomValidation}
           values={formValues}
+          options={{ employeeOptions }}
           onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
           handlers={formHandlers}
         />
       </BaseDrawer>
-    </Box>
+    </>
   );
 };
 

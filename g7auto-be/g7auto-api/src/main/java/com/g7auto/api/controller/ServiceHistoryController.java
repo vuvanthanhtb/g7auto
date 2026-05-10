@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,12 +25,21 @@ public class ServiceHistoryController {
 
   private final ServiceHistoryService serviceHistoryService;
 
-  @GetMapping("/customer/{customerId}")
-  public ResponseEntity<ApiResponse<PageResponse<ServiceHistoryResponse>>> getByCustomer(
-      @ModelAttribute
-      ServiceHistorySearchRequest request) {
-    return ResponseEntity.ok(
-        ApiResponse.ok(serviceHistoryService.findByCustomer(request)));
+  @GetMapping
+  public ResponseEntity<ApiResponse<PageResponse<ServiceHistoryResponse>>> search(
+      @ModelAttribute ServiceHistorySearchRequest request) {
+    return ResponseEntity.ok(ApiResponse.ok(serviceHistoryService.search(request)));
+  }
+
+  @GetMapping("/list")
+  public ResponseEntity<ApiResponse<PageResponse<ServiceHistoryResponse>>> list(
+      @ModelAttribute ServiceHistorySearchRequest request) {
+    return ResponseEntity.ok(ApiResponse.ok(serviceHistoryService.search(request)));
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<ApiResponse<ServiceHistoryResponse>> getById(@PathVariable Long id) {
+    return ResponseEntity.ok(ApiResponse.ok(serviceHistoryService.findById(id)));
   }
 
   @PostMapping
