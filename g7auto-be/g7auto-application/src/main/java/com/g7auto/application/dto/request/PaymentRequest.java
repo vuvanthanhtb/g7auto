@@ -24,7 +24,6 @@ public class PaymentRequest {
   BigDecimal amount;
 
   @Schema(description = "Thời điểm thực hiện thanh toán")
-  @NotNull(message = ValidationErrorCode.G7_AUTO_00852)
   LocalDateTime paymentTime;
 
   @Schema(description = "Hình thức thanh toán")

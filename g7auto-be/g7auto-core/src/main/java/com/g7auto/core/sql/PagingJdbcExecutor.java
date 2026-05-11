@@ -109,7 +109,7 @@ public class PagingJdbcExecutor {
     if (!orderBy.isEmpty()) {
       sql.append(" ORDER BY ").append(orderBy);
     } else {
-      sql.append(" ORDER BY updated_at DESC"); // default
+      sql.append(" ORDER BY id DESC"); // default — id is unambiguous across JOIN queries
     }
 
     sql.append(" LIMIT :limit OFFSET :offset");

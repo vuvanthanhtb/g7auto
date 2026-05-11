@@ -13,6 +13,7 @@ public interface PaymentMapper {
   @Mapping(source = "contract.contractNumber", target = "contractNumber")
   @Mapping(source = "collector.id", target = "collectorId")
   @Mapping(source = "collector.fullName", target = "collectorName")
+  @Mapping(source = "paymentTime", target = "paymentTime", qualifiedByName = "formatDateTime")
   @Mapping(source = "createdAt", target = "createdAt", qualifiedByName = "formatDateTime")
   PaymentResponse toResponse(Payment payment);
 

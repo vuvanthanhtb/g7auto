@@ -19,11 +19,21 @@ public class PaymentQueryRepository {
 
   private static final String BASE_SQL = """
       SELECT p.id,
-             p.contract_id, c.contract_number,
-             p.installment_number, p.amount, p.payment_time,
-             p.method, p.status,
-             p.collector_id, e.full_name AS collector_name,
-             p.transaction_code, p.notes, p.created_at
+             p.contract_id,
+             c.contract_number,
+             p.installment_number,
+             p.amount,
+             p.payment_time,
+             p.method,
+             p.status,
+             p.collector_id,
+             e.full_name AS collector_name,
+             p.transaction_code,
+             p.notes,
+             p.created_at,
+             p.updated_at,
+             p.created_by,
+             p.updated_by
       FROM payments p
       LEFT JOIN contracts c ON p.contract_id = c.id
       LEFT JOIN employees e ON p.collector_id = e.id
