@@ -1,16 +1,16 @@
 import * as yup from "yup";
 
 export const showroomValidation = yup.object({
-  name: yup.string().trim().required("Tên showroom là bắt buộc"),
-  address: yup.string().trim().required("Địa chỉ là bắt buộc"),
+  name: yup.string().trim().required("VALIDATION_REQUIRED_SHOWROOM"),
+  address: yup.string().trim().required("VALIDATION_REQUIRED_ADDRESS"),
   phone: yup
     .string()
     .nullable()
     .transform((v) => v || null)
-    .matches(/^[0-9]{9,11}$/, "Số điện thoại không hợp lệ"),
+    .matches(/^[0-9]{9,11}$/, "VALIDATION_INVALID_PHONE"),
   email: yup
     .string()
     .nullable()
     .transform((v) => v || null)
-    .email("Email không hợp lệ"),
+    .email("VALIDATION_INVALID_EMAIL"),
 });

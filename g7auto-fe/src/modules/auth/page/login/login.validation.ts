@@ -4,7 +4,7 @@ export const loginValidation = yup.object({
   username: yup
     .string()
     .trim()
-    .required("Tên đăng nhập là bắt buộc")
-    .min(3, "Tối thiểu 3 ký tự"),
-  password: yup.string().required("Mật khẩu là bắt buộc"),
+    .required("VALIDATION_REQUIRED_USERNAME")
+    .min(3, "VALIDATION_MIN_3_CHAR"),
+  password: yup.string().required("VALIDATION_REQUIRED_PASSWORD"),
 });

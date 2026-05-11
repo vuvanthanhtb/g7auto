@@ -1,8 +1,8 @@
 import * as yup from "yup";
 
 export const depositsValidation = yup.object({
-  customerId: yup.number().required("Khách hàng là bắt buộc"),
-  carId: yup.number().required("Xe là bắt buộc"),
-  amount: yup.number().required("Số tiền cọc là bắt buộc"),
-  depositPaymentMethod: yup.string().required("Phương thức thanh toán là bắt buộc"),
+  customerId: yup.number().required("VALIDATION_REQUIRED_CUSTOMER"),
+  carId: yup.number().required("VALIDATION_REQUIRED_CAR"),
+  amount: yup.number().required("VALIDATION_REQUIRED_DEPOSIT_AMOUNT"),
+  depositPaymentMethod: yup.string().required("VALIDATION_REQUIRED_PAYMENT_METHOD"),
 });

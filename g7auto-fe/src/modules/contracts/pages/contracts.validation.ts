@@ -1,10 +1,10 @@
 import * as yup from "yup";
 
 export const contractsValidation = yup.object({
-  customerId: yup.number().required("Khách hàng là bắt buộc"),
-  carId: yup.number().required("Xe là bắt buộc"),
-  signDate: yup.string().required("Ngày ký là bắt buộc"),
-  contractValue: yup.number().required("Giá trị hợp đồng là bắt buộc"),
+  customerId: yup.number().required("VALIDATION_REQUIRED_CUSTOMER"),
+  carId: yup.number().required("VALIDATION_REQUIRED_CAR"),
+  signDate: yup.string().required("VALIDATION_REQUIRED_SIGN_DATE"),
+  contractValue: yup.number().required("VALIDATION_REQUIRED_CONTRACT_VALUE"),
 });
 
 export const contractsUpdateValidation = yup.object({});

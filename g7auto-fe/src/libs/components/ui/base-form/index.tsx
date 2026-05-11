@@ -167,7 +167,7 @@ const BaseFormComponent = <T extends Record<string, any>>(
                           }}
                         />
                         <Form.Control.Feedback type="invalid">
-                          {error}
+                          {t(error || "")}
                         </Form.Control.Feedback>
                       </Form.Group>
                     </Col>
@@ -252,7 +252,7 @@ const BaseFormComponent = <T extends Record<string, any>>(
                               fullWidth: true,
                               size: "small",
                               error: touched && !!error,
-                              helperText: touched && error,
+                              helperText: touched && t(error || ""),
                             },
                           }}
                         />
@@ -295,7 +295,7 @@ const BaseFormComponent = <T extends Record<string, any>>(
                               fullWidth: true,
                               size: "small",
                               error: touched && !!error,
-                              helperText: touched && error,
+                              helperText: touched && t(error || ""),
                             },
                           }}
                         />

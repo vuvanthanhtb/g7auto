@@ -1,8 +1,8 @@
 import * as yup from "yup";
 
 export const carTransfersValidation = yup.object({
-  carId: yup.number().required("Xe là bắt buộc"),
-  fromShowroomId: yup.number().required("Showroom nguồn là bắt buộc"),
-  toShowroomId: yup.number().required("Showroom đích là bắt buộc"),
-  reason: yup.string().trim().required("Lý do điều chuyển là bắt buộc"),
+  carId: yup.number().required("VALIDATION_REQUIRED_CAR"),
+  fromShowroomId: yup.number().required("VALIDATION_REQUIRED_FROM_SHOWROOM"),
+  toShowroomId: yup.number().required("VALIDATION_REQUIRED_TO_SHOWROOM"),
+  reason: yup.string().trim().required("VALIDATION_REQUIRED_REASON"),
 });
