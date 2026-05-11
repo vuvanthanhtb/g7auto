@@ -147,6 +147,8 @@ export const vi: Record<string, string> = {
   // === CARS ===
   CARS_PAGE_HEADER: "Quản lý Kho xe",
   CARS_BTN_ADD: "Thêm xe",
+  CARS_BTN_IMPORT: "Import Excel",
+  CARS_BTN_TEMPLATE: "Tải file mẫu",
   CARS_DRAWER_EDIT: "Cập nhật xe",
   CARS_DRAWER_ADD: "Thêm xe",
   CARS_FIELD_LICENSE_PLATE: "Biển số xe",
@@ -240,6 +242,9 @@ export const vi: Record<string, string> = {
   PAYMENTS_FIELD_INSTALLMENT: "Đợt TT",
   PAYMENTS_FIELD_COLLECTOR_ID: "Mã thu ngân",
   PAYMENTS_FIELD_TRANSACTION_CODE: "Mã giao dịch",
+  PAYMENTS_FIELD_BANK: "Ngân hàng",
+  PAYMENTS_FIELD_BANK_ACCOUNT_NO: "Số tài khoản",
+  PAYMENTS_FIELD_BANK_CONTENT: "Nội dung chuyển khoản",
   PAYMENTS_BTN_CONFIRM: "Xác nhận TT",
   PAYMENTS_BTN_CANCEL: "Hủy thanh toán",
 

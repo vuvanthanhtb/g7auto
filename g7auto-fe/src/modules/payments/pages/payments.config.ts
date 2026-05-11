@@ -38,11 +38,17 @@ export const getPaymentColumns = (): BaseTableColumn[] => [
   },
 ];
 
+const isBankTransfer = (values: Record<string, unknown>) =>
+  (values.method as { value?: string } | null)?.value === "BANK_TRANSFER";
+
 export const getPaymentsFormConfig = (): IBaseFormConfig => ({
   fields: [
     { type: NUMBER_INPUT, name: "contractId", label: "PAYMENTS_FIELD_CONTRACT_ID", required: true, size: 12 },
     { type: NUMBER_INPUT, name: "amount", label: "PAYMENTS_FIELD_AMOUNT", required: true, size: 6 },
     { type: SELECT, name: "method", label: "PAYMENTS_FIELD_METHOD", option: "paymentMethodOptions", required: true, size: 6 },
+    { type: SELECT, name: "bankId", label: "PAYMENTS_FIELD_BANK", option: "vietnameseBankOptions", required: true, size: 12, visibleWhen: isBankTransfer },
+    { type: TEXT, name: "bankAccountNo", label: "PAYMENTS_FIELD_BANK_ACCOUNT_NO", required: true, size: 6, visibleWhen: isBankTransfer },
+    { type: TEXT, name: "bankContent", label: "PAYMENTS_FIELD_BANK_CONTENT", size: 6, visibleWhen: isBankTransfer },
     { type: DATETIME, name: "paymentTime", label: "PAYMENTS_FIELD_TIME", size: 6 },
     { type: NUMBER_INPUT, name: "collectorId", label: "PAYMENTS_FIELD_COLLECTOR_ID", size: 6 },
     { type: TEXT, name: "transactionCode", label: "PAYMENTS_FIELD_TRANSACTION_CODE", size: 12 },
@@ -75,6 +81,9 @@ export const paymentsInitialValues = {
   contractId: "",
   amount: "",
   method: "",
+  bankId: "",
+  bankAccountNo: "",
+  bankContent: "",
   paymentTime: "",
   collectorId: "",
   transactionCode: "",

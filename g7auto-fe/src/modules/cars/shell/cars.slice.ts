@@ -1,12 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { carsService } from "../services/cars.service";
-import type { CarQuery, CarRequest, CarUpdateRequest, CarResponse } from "./cars.type";
+import type {
+  CarQuery,
+  CarRequest,
+  CarUpdateRequest,
+  CarResponse,
+} from "./cars.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
 
 interface CarsState {
-  carTable: { content: CarResponse[]; totalElements: number; totalPages: number; page: number; size: number };
+  carTable: {
+    content: CarResponse[];
+    totalElements: number;
+    totalPages: number;
+    page: number;
+    size: number;
+  };
   selected: CarResponse | null;
 }
 
@@ -57,7 +68,10 @@ export const createCar = createAsyncThunk(
 
 export const updateCar = createAsyncThunk(
   "cars/update",
-  async ({ id, data }: { id: number; data: CarUpdateRequest }, { rejectWithValue }) => {
+  async (
+    { id, data }: { id: number; data: CarUpdateRequest },
+    { rejectWithValue },
+  ) => {
     try {
       const res = await carsService.update(id, data);
       toastSuccess(SUCCESS_CODE.UPDATE);
@@ -73,12 +87,18 @@ const carsSlice = createSlice({
   name: "cars",
   initialState,
   reducers: {
-    clearSelected: (state) => { state.selected = null; },
+    clearSelected: (state) => {
+      state.selected = null;
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getCars.fulfilled, (state, action) => { state.carTable = action.payload; })
-      .addCase(getCarById.fulfilled, (state, action) => { state.selected = action.payload; });
+      .addCase(getCars.fulfilled, (state, action) => {
+        state.carTable = action.payload;
+      })
+      .addCase(getCarById.fulfilled, (state, action) => {
+        state.selected = action.payload;
+      });
   },
 });
 

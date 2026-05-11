@@ -147,6 +147,8 @@ export const en: Record<string, string> = {
   // === CARS ===
   CARS_PAGE_HEADER: "Car Inventory",
   CARS_BTN_ADD: "Add car",
+  CARS_BTN_IMPORT: "Import Excel",
+  CARS_BTN_TEMPLATE: "Download template",
   CARS_DRAWER_EDIT: "Edit car",
   CARS_DRAWER_ADD: "Add car",
   CARS_FIELD_LICENSE_PLATE: "License plate",
@@ -240,6 +242,9 @@ export const en: Record<string, string> = {
   PAYMENTS_FIELD_INSTALLMENT: "Installment",
   PAYMENTS_FIELD_COLLECTOR_ID: "Collector ID",
   PAYMENTS_FIELD_TRANSACTION_CODE: "Transaction code",
+  PAYMENTS_FIELD_BANK: "Bank",
+  PAYMENTS_FIELD_BANK_ACCOUNT_NO: "Account number",
+  PAYMENTS_FIELD_BANK_CONTENT: "Transfer content",
   PAYMENTS_BTN_CONFIRM: "Confirm payment",
   PAYMENTS_BTN_CANCEL: "Cancel payment",
 

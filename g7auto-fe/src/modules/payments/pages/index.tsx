@@ -10,9 +10,10 @@ import {
   getPaymentSearchConfig,
 } from "./payments.config";
 import { paymentsValidation, paymentsDetailValidation } from "./payments.validation";
-import { paymentMethodOptions, paymentStatusOptions } from "@/libs/constants/options.constant";
+import { paymentMethodOptions, paymentStatusOptions, vietnameseBankOptions } from "@/libs/constants/options.constant";
 import { usePayments } from "./use-payments";
 import { t } from "@/libs/i18n";
+import BankTransferQR from "../components/BankTransferQR";
 
 const PaymentsPage = () => {
   const {
@@ -51,14 +52,24 @@ const PaymentsPage = () => {
             handlers={detailHandlers}
           />
         ) : (
-          <BaseFormComponent
-            formConfig={getPaymentsFormConfig()}
-            validationSchema={paymentsValidation}
-            options={{ paymentMethodOptions }}
-            values={formValues}
-            onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
-            handlers={formHandlers}
-          />
+          <>
+            <BaseFormComponent
+              formConfig={getPaymentsFormConfig()}
+              validationSchema={paymentsValidation}
+              options={{ paymentMethodOptions, vietnameseBankOptions }}
+              values={formValues}
+              onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+              handlers={formHandlers}
+            />
+            {(formValues.method as { value?: string } | null)?.value === "BANK_TRANSFER" && (
+              <BankTransferQR
+                bankId={formValues.bankId as { label: string; value: string } | null}
+                bankAccountNo={formValues.bankAccountNo as string}
+                bankContent={formValues.bankContent as string}
+                amount={formValues.amount as number | undefined}
+              />
+            )}
+          </>
         )}
       </BaseDrawer>
     </Box>

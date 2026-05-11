@@ -4,6 +4,8 @@ import {
   BTN_SEARCH,
   BTN_REFRESH,
   BTN_EXPORT,
+  BTN_IMPORT,
+  BTN_TEMPLATE,
 } from "@/libs/constants/button.constant";
 import {
   BUTTON,
@@ -22,8 +24,16 @@ import type { BaseTableColumn } from "@/libs/types/table.type";
 
 export const getCarColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
-  { name: "chassisNumber", label: "CARS_FIELD_CHASSIS_NUMBER", type: TBL_STRING },
-  { name: "licensePlate", label: "COMMON_LABEL_LICENSE_PLATE", type: TBL_STRING },
+  {
+    name: "chassisNumber",
+    label: "CARS_FIELD_CHASSIS_NUMBER",
+    type: TBL_STRING,
+  },
+  {
+    name: "licensePlate",
+    label: "COMMON_LABEL_LICENSE_PLATE",
+    type: TBL_STRING,
+  },
   { name: "carModelName", label: "COMMON_LABEL_CAR_MODEL", type: TBL_STRING },
   { name: "showroomName", label: "COMMON_LABEL_SHOWROOM", type: TBL_STRING },
   { name: "status", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
@@ -37,32 +47,91 @@ export const getCarColumns = (): BaseTableColumn[] => [
 
 export const getCarCreateFormConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "chassisNumber", label: "CARS_FIELD_CHASSIS_NUMBER", required: true, size: 6 },
-    { type: TEXT, name: "engineNumber", label: "CARS_FIELD_ENGINE_NUMBER", required: true, size: 6 },
-    { type: TEXT, name: "licensePlate", label: "CARS_FIELD_LICENSE_PLATE", size: 6 },
-    { type: NUMBER_INPUT, name: "salePrice", label: "CARS_FIELD_SALE_PRICE", size: 6 },
-    { type: NUMBER_INPUT, name: "carModelId", label: "CARS_FIELD_MODEL_ID", required: true, size: 6 },
-    { type: NUMBER_INPUT, name: "showroomId", label: "CARS_FIELD_SHOWROOM_ID", required: true, size: 6 },
+    {
+      type: TEXT,
+      name: "chassisNumber",
+      label: "CARS_FIELD_CHASSIS_NUMBER",
+      required: true,
+      size: 6,
+    },
+    {
+      type: TEXT,
+      name: "engineNumber",
+      label: "CARS_FIELD_ENGINE_NUMBER",
+      required: true,
+      size: 6,
+    },
+    {
+      type: TEXT,
+      name: "licensePlate",
+      label: "CARS_FIELD_LICENSE_PLATE",
+      size: 6,
+    },
+    {
+      type: NUMBER_INPUT,
+      name: "salePrice",
+      label: "CARS_FIELD_SALE_PRICE",
+      size: 6,
+    },
+    {
+      type: NUMBER_INPUT,
+      name: "carModelId",
+      label: "CARS_FIELD_MODEL_ID",
+      required: true,
+      size: 6,
+    },
+    {
+      type: NUMBER_INPUT,
+      name: "showroomId",
+      label: "CARS_FIELD_SHOWROOM_ID",
+      required: true,
+      size: 6,
+    },
     { type: TEXTAREA, name: "notes", label: "CARS_FIELD_NOTES", size: 12 },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "COMMON_BTN_SAVE", type: "submit", action: BTN_SUBMIT }],
+      childs: [
+        { title: "COMMON_BTN_SAVE", type: "submit", action: BTN_SUBMIT },
+      ],
     },
   ],
 });
 
 export const getCarEditFormConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: TEXT, name: "licensePlate", label: "CARS_FIELD_LICENSE_PLATE", size: 6 },
-    { type: NUMBER_INPUT, name: "salePrice", label: "CARS_FIELD_SALE_PRICE", size: 6 },
-    { type: NUMBER_INPUT, name: "showroomId", label: "CARS_FIELD_SHOWROOM_ID", size: 6 },
-    { type: SELECT, name: "status", label: "COMMON_LABEL_STATUS", option: "carStatusOptions", size: 6 },
+    {
+      type: TEXT,
+      name: "licensePlate",
+      label: "CARS_FIELD_LICENSE_PLATE",
+      size: 6,
+    },
+    {
+      type: NUMBER_INPUT,
+      name: "salePrice",
+      label: "CARS_FIELD_SALE_PRICE",
+      size: 6,
+    },
+    {
+      type: NUMBER_INPUT,
+      name: "showroomId",
+      label: "CARS_FIELD_SHOWROOM_ID",
+      size: 6,
+    },
+    {
+      type: SELECT,
+      name: "status",
+      label: "COMMON_LABEL_STATUS",
+      option: "carStatusOptions",
+      size: 6,
+    },
     { type: TEXTAREA, name: "notes", label: "CARS_FIELD_NOTES", size: 12 },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "COMMON_BTN_SAVE", type: "submit", action: BTN_SUBMIT }],
+      childs: [
+        { title: "COMMON_BTN_SAVE", type: "submit", action: BTN_SUBMIT },
+      ],
     },
   ],
 });
@@ -89,14 +158,47 @@ export const carEditInitialValues = {
 
 export const getCarSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: SELECT, name: "status", label: "COMMON_LABEL_STATUS", option: "carStatusOptions", size: 3 },
+    {
+      type: SELECT,
+      name: "status",
+      label: "COMMON_LABEL_STATUS",
+      option: "carStatusOptions",
+      size: 3,
+    },
     {
       type: BUTTON,
       size: 9,
       childs: [
-        { title: "COMMON_BTN_REFRESH", type: "button", action: BTN_REFRESH, style: { background: "#757575", color: "#fff" } },
-        { title: "COMMON_BTN_SEARCH", type: "button", action: BTN_SEARCH, style: { background: "#1976d2", color: "#fff" } },
-        { title: "COMMON_BTN_EXPORT", type: "button", action: BTN_EXPORT, style: { background: "#2e7d32", color: "#fff" } },
+        {
+          title: "COMMON_BTN_REFRESH",
+          type: "button",
+          action: BTN_REFRESH,
+          style: { background: "#757575", color: "#fff" },
+        },
+        {
+          title: "COMMON_BTN_SEARCH",
+          type: "button",
+          action: BTN_SEARCH,
+          style: { background: "#1976d2", color: "#fff" },
+        },
+        {
+          title: "COMMON_BTN_EXPORT",
+          type: "button",
+          action: BTN_EXPORT,
+          style: { background: "#2e7d32", color: "#fff" },
+        },
+        {
+          title: "CARS_BTN_TEMPLATE",
+          type: "button",
+          action: BTN_TEMPLATE,
+          style: { background: "#0288d1", color: "#fff" },
+        },
+        {
+          title: "CARS_BTN_IMPORT",
+          type: "button",
+          action: BTN_IMPORT,
+          style: { background: "#e65100", color: "#fff" },
+        },
       ],
     },
   ],

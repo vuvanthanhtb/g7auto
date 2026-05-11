@@ -27,10 +27,19 @@ const CarsPage = () => {
     formHandlers,
     setFormValues,
     handlePageChange,
+    importInputRef,
+    handleImportFile,
   } = useCars();
 
   return (
     <Box sx={{ p: 3 }}>
+      <input
+        ref={importInputRef}
+        type="file"
+        accept=".xlsx,.xls"
+        style={{ display: "none" }}
+        onChange={handleImportFile}
+      />
       <BaseFormComponent
         formConfig={getCarSearchConfig()}
         options={{ carStatusOptions }}
@@ -43,7 +52,11 @@ const CarsPage = () => {
         state="carTable"
         title={t("CARS_PAGE_HEADER")}
         extra={
-          <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={openCreate}
+          >
             {t("CARS_BTN_ADD")}
           </Button>
         }

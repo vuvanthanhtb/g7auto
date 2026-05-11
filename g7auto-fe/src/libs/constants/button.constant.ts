@@ -29,3 +29,5 @@ export const BTN_PAYMENT = "payment";
 export const BTN_ACTIVE = "active";
 export const BTN_INACTIVE = "inactive";
 export const BTN_RECEIVE = "receive";
+export const BTN_IMPORT = "import";
+export const BTN_TEMPLATE = "template";

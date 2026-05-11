@@ -116,6 +116,37 @@ export const carModelStatusOptions = [
   { label: "Ngừng bán", value: STOPPED },
 ];
 
+export const vietnameseBankOptions = [
+  { label: "Vietcombank (VCB)", value: "VCB" },
+  { label: "Vietinbank (ICB)", value: "ICB" },
+  { label: "BIDV", value: "BIDV" },
+  { label: "Agribank", value: "VBA" },
+  { label: "Techcombank (TCB)", value: "TCB" },
+  { label: "MB Bank", value: "MB" },
+  { label: "VPBank", value: "VPB" },
+  { label: "ACB", value: "ACB" },
+  { label: "Sacombank (STB)", value: "STB" },
+  { label: "TPBank", value: "TPB" },
+  { label: "SHB", value: "SHB" },
+  { label: "HDBank", value: "HDB" },
+  { label: "VIB", value: "VIB" },
+  { label: "OCB", value: "OCB" },
+  { label: "MSB", value: "MSB" },
+  { label: "Eximbank (EIB)", value: "EIB" },
+  { label: "SeABank", value: "SEAB" },
+  { label: "LienVietPostBank (LPB)", value: "LPB" },
+  { label: "ABBank", value: "ABB" },
+  { label: "NamABank", value: "NAB" },
+  { label: "PGBank", value: "PGB" },
+  { label: "VietABank", value: "VAB" },
+  { label: "KienLongBank", value: "KLB" },
+  { label: "BaoVietBank", value: "BVB" },
+  { label: "BacABank", value: "BAB" },
+  { label: "NCB", value: "NVB" },
+  { label: "PVcomBank", value: "PVC" },
+  { label: "GPBank", value: "GPB" },
+];
+
 export const paymentMethodOptions = [
   { label: "Tiền mặt", value: "CASH" },
   { label: "Chuyển khoản", value: "BANK_TRANSFER" },

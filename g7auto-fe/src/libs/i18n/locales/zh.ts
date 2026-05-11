@@ -147,6 +147,8 @@ export const zh: Record<string, string> = {
   // === CARS ===
   CARS_PAGE_HEADER: "車輛庫存",
   CARS_BTN_ADD: "新增車輛",
+  CARS_BTN_IMPORT: "匯入 Excel",
+  CARS_BTN_TEMPLATE: "下載範本",
   CARS_DRAWER_EDIT: "編輯車輛",
   CARS_DRAWER_ADD: "新增車輛",
   CARS_FIELD_LICENSE_PLATE: "車牌號",
@@ -240,6 +242,9 @@ export const zh: Record<string, string> = {
   PAYMENTS_FIELD_INSTALLMENT: "分期",
   PAYMENTS_FIELD_COLLECTOR_ID: "收款人ID",
   PAYMENTS_FIELD_TRANSACTION_CODE: "交易碼",
+  PAYMENTS_FIELD_BANK: "銀行",
+  PAYMENTS_FIELD_BANK_ACCOUNT_NO: "帳號",
+  PAYMENTS_FIELD_BANK_CONTENT: "轉帳內容",
   PAYMENTS_BTN_CONFIRM: "確認付款",
   PAYMENTS_BTN_CANCEL: "取消付款",
 
