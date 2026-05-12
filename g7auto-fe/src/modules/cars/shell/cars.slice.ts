@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { carsService } from "../services/cars.service";
+import { carsService } from "./cars.service";
 import type {
   CarQuery,
   CarRequest,
   CarUpdateRequest,
   CarResponse,
+  CarImportResult,
 } from "./cars.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
@@ -18,13 +19,28 @@ interface CarsState {
     page: number;
     size: number;
   };
+  carAll: CarResponse[];
   selected: CarResponse | null;
 }
 
 const initialState: CarsState = {
   carTable: { content: [], totalElements: 0, totalPages: 0, page: 1, size: 10 },
+  carAll: [],
   selected: null,
 };
+
+export const getAllCars = createAsyncThunk(
+  "cars/getAll",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await carsService.getAll();
+      return data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
 export const getCars = createAsyncThunk(
   "cars/getList",
@@ -83,6 +99,43 @@ export const updateCar = createAsyncThunk(
   },
 );
 
+export const importCars = createAsyncThunk(
+  "cars/import",
+  async (file: File, { rejectWithValue }) => {
+    try {
+      const { data } = await carsService.importExcel(file);
+      return data as CarImportResult;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const exportCars = createAsyncThunk(
+  "cars/export",
+  async (_, { rejectWithValue }) => {
+    try {
+      await carsService.export();
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const downloadCarTemplate = createAsyncThunk(
+  "cars/downloadTemplate",
+  async (_, { rejectWithValue }) => {
+    try {
+      await carsService.downloadTemplate();
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const carsSlice = createSlice({
   name: "cars",
   initialState,
@@ -93,6 +146,9 @@ const carsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getAllCars.fulfilled, (state, action) => {
+        state.carAll = action.payload as CarResponse[];
+      })
       .addCase(getCars.fulfilled, (state, action) => {
         state.carTable = action.payload;
       })

@@ -238,6 +238,18 @@ export const approveEmployeeApproving = createAsyncThunk(
   },
 );
 
+export const exportEmployees = createAsyncThunk(
+  "employees/export",
+  async (_, { rejectWithValue }) => {
+    try {
+      await employeesService.export();
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const employeesSlice = createSlice({
   name: "employees",
   initialState,

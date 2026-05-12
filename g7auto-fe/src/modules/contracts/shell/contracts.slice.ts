@@ -82,6 +82,18 @@ export const deleteContracts = createAsyncThunk(
   },
 );
 
+export const exportContracts = createAsyncThunk(
+  "contracts/export",
+  async (_, { rejectWithValue }) => {
+    try {
+      await contractsService.exportExcel();
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const contractsSlice = createSlice({
   name: "contracts",
   initialState,

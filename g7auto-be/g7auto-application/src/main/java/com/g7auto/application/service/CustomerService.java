@@ -6,9 +6,12 @@ import com.g7auto.application.dto.response.CustomerResponse;
 import com.g7auto.application.dto.response.ImportResult;
 import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CustomerService {
+
+  List<CustomerResponse> getAll();
 
   Page<CustomerResponse> search(CustomerSearchRequest request);
 

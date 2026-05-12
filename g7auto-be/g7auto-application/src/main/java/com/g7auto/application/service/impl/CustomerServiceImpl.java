@@ -48,6 +48,12 @@ public class CustomerServiceImpl implements CustomerService {
   private final CustomerMapper customerMapper;
 
   @Override
+  @Transactional(readOnly = true)
+  public List<CustomerResponse> getAll() {
+    return customerRepository.findAll().stream().map(customerMapper::toResponse).toList();
+  }
+
+  @Override
   public Page<CustomerResponse> search(CustomerSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
     return Page.of(

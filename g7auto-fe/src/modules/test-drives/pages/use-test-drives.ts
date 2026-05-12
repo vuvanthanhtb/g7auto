@@ -8,8 +8,8 @@ import {
   confirmTestDrive,
   completeTestDrive,
   cancelTestDrive,
+  exportTestDrives,
 } from "../shell/test-drives.slice";
-import { testDrivesService } from "../shell/test-drives.service";
 import type { TestDriveRequest, TestDriveSearchForm } from "../shell/test-drives.type";
 import { testDrivesInitialValues, initTestDriveSearchForm } from "./test-drives.config";
 import { BTN_SEARCH, BTN_REFRESH, BTN_EXPORT, BTN_DETAIL, BTN_SUBMIT, BTN_CONFIRM, BTN_COMPLETE, BTN_CANCEL } from "@/libs/constants/button.constant";
@@ -89,7 +89,7 @@ export const useTestDrives = () => {
     [BTN_REFRESH]: () => {
       setSearchQuery(initTestDriveSearchForm);
     },
-    [BTN_EXPORT]: async () => { await testDrivesService.exportExcel(); },
+    [BTN_EXPORT]: async () => { await dispatch(exportTestDrives()); },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };

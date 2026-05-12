@@ -19,6 +19,4 @@ public interface AuthService {
   AccountResponse updateProfile(Account account, UpdateProfileRequest request);
 
   void changePassword(Account account, ChangePasswordRequest request);
-
-  AccountResponse initSuperAdmin();
 }

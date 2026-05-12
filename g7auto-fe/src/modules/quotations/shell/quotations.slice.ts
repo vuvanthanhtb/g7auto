@@ -97,6 +97,18 @@ export const cancelQuotation = createAsyncThunk(
   },
 );
 
+export const exportQuotations = createAsyncThunk(
+  "quotations/export",
+  async (_, { rejectWithValue }) => {
+    try {
+      await quotationsService.exportExcel();
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const quotationsSlice = createSlice({
   name: "quotations",
   initialState,

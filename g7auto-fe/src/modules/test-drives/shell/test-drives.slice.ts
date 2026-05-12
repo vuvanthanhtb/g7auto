@@ -97,6 +97,18 @@ export const cancelTestDrive = createAsyncThunk(
   },
 );
 
+export const exportTestDrives = createAsyncThunk(
+  "testDrives/export",
+  async (_, { rejectWithValue }) => {
+    try {
+      await testDrivesService.exportExcel();
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const testDrivesSlice = createSlice({
   name: "testDrives",
   initialState,

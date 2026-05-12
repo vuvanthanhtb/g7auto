@@ -1,84 +1,88 @@
-# G7Auto Frontend
+# G7 Auto Frontend - Hệ thống Quản lý Showroom Ô tô
 
-Dự án quản lý hệ thống G7Auto được xây dựng với React, TypeScript và Vite.
+Ứng dụng Frontend của hệ thống G7 Auto được xây dựng bằng **React**, **TypeScript** và **Vite**. Hệ thống cung cấp giao diện quản lý hiện đại, mượt mà cho các nghiệp vụ tại showroom ô tô.
 
-## 🛠 Công nghệ sử dụng (Tech Stack)
+## 🚀 Công nghệ sử dụng
 
-- **Framework**: React 18
+- **Core**: React 18
 - **Build Tool**: Vite
 - **Language**: TypeScript
-- **State Management**: Redux Toolkit, Redux Persist
-- **UI Library**: Material UI (MUI) v7, Bootstrap 5, Lucide Icons, React Icons
+- **State Management**: Redux Toolkit & Redux Persist
+- **UI Framework**: Material UI (MUI) v7 & React Bootstrap 5
+- **Styling**: SCSS (Sass)
 - **Form Management**: Formik & Yup
-- **Routing**: React Router Dom v7
-- **Networking**: Axios
-- **Styling**: SASS (SCSS)
-- **Utilities**: Dayjs, File-saver, React Toastify
+- **API Client**: Axios
+- **Routing**: React Router DOM v7
 
-## 📂 Cấu trúc dự án (Project Structure)
+## 📋 Yêu cầu hệ thống
 
-Dự án được tổ chức theo hướng module hóa (Modular Architecture), tách biệt giữa logic nghiệp vụ và giao diện.
+- **Node.js**: Phiên bản 18.x trở lên
+- **npm**: Phiên bản 9.x trở lên (hoặc yarn/pnpm tương đương)
 
-```text
-src/
-├── assets/             # Hình ảnh, font và các tài liệu tĩnh
-├── libs/               # Các tài nguyên dùng chung cho toàn dự án
-│   ├── components/     # UI components dùng chung (layout, ui kit)
-│   │   ├── layout/     # Header, Sidebar, Footer...
-│   │   └── ui/         # Base components (Table, Form, Modal, Button...)
-│   ├── constants/      # Các hằng số định nghĩa (status, roles, options...)
-│   ├── interceptor/    # Cấu hình Axios, Auth Interceptor, Token Service
-│   ├── pages/          # Các trang hệ thống cơ bản (404, Loading)
-│   ├── types/          # Định nghĩa kiểu dữ liệu TypeScript dùng chung
-│   └── utils/          # Các hàm tiện ích (date, format...)
-├── modules/            # Chứa các module nghiệp vụ của hệ thống
-│   ├── auth/           # Quản lý đăng nhập, xác thực
-│   ├── accounts/       # Quản lý tài khoản
-│   ├── cars/           # Quản lý xe
-│   ├── customers/      # Quản lý khách hàng
-│   ├── ...             # Các module khác (contracts, employees, showrooms...)
-│   │   ├── pages/      # Các component giao diện của module
-│   │   └── shell/      # Logic nghiệp vụ (services, slices, routes, types)
-├── shell/              # Cấu hình chính của ứng dụng
-│   ├── redux/          # Cấu hình Redux store, middleware
-│   ├── route/          # Cấu hình Routing tập trung (private, public routes)
-│   └── app.tsx         # Entry point component (Providers setup)
-├── styles/             # Cấu hình SCSS toàn cục (variables, mixins, base styles)
-└── main.tsx            # File khởi tạo ứng dụng
-```
+## 🛠 Hướng dẫn cài đặt và sử dụng
 
-### Chi tiết cấu trúc một Module
+### 1. Cài đặt Dependencies
 
-Mỗi module trong `src/modules` thường bao gồm:
-- **pages/**: Chứa các màn hình (Index, Detail, Form) và cấu hình validation/config cho trang đó.
-- **shell/**:
-    - `*.service.ts`: Xử lý gọi API và logic nghiệp vụ.
-    - `*.slice.ts`: Quản lý state của module bằng Redux Toolkit.
-    - `*.route.tsx`: Định nghĩa các route thuộc module.
-    - `*.type.ts`: Định nghĩa interface/type cho dữ liệu của module.
-    - `*.endpoint.ts`: Danh sách các API endpoints.
+Mở terminal tại thư mục `g7auto-fe` và chạy lệnh:
 
-## 🚀 Hướng dẫn phát triển
-
-### Cài đặt
 ```bash
 npm install
 ```
 
-### Chạy ở chế độ Development
+### 2. Cấu hình Biến môi trường
+
+Tạo file `.env` tại thư mục gốc của frontend (tham khảo `.env.example` nếu có):
+
+```env
+VITE_API_URL=http://localhost:8080/api
+```
+
+### 3. Chạy ứng dụng ở chế độ Phát triển (Development)
+
 ```bash
 npm run dev
 ```
 
-### Build Production
+Ứng dụng sẽ chạy tại địa chỉ mặc định: [http://localhost:5173](http://localhost:5173)
+
+### 4. Kiểm tra lỗi (Linting)
+
+```bash
+npm run lint
+```
+
+### 5. Xây dựng bản sản phẩm (Build for Production)
+
 ```bash
 npm run build
 ```
 
-## 📝 Đánh giá Code (Code Review)
+Kết quả sẽ nằm trong thư mục `dist/`.
 
-- **Kiến trúc**: Cấu trúc module rõ ràng, giúp dễ dàng mở rộng và bảo trì. Việc tách biệt `shell` (logic) và `pages` (view) tuân thủ tốt nguyên lý Separation of Concerns.
-- **UI/UX**: Sử dụng các component cơ sở (`base-table`, `base-form`) giúp đồng bộ hóa giao diện và giảm thiểu code lặp.
-- **State Management**: Sử dụng Redux Toolkit là lựa chọn hiện đại, kết hợp với Redux Persist giúp duy trì trạng thái khi refresh trang.
-- **Networking**: Hệ thống Interceptor xử lý tốt việc tự động đính kèm Token và cơ chế Refresh Token khi hết hạn (401 error).
-- **Type Safety**: Sử dụng TypeScript triệt để giúp giảm thiểu lỗi runtime và tăng tốc độ phát triển.
+## 📂 Cấu trúc thư mục
+
+```text
+src/
+├── libs/           # Các thành phần dùng chung (UI components, utils, constants, i18n)
+├── modules/        # Các module nghiệp vụ (auth, cars, customers, contracts...)
+│   ├── [module]/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── shell/  # Route config cho module
+├── shell/          # Cấu hình lõi (Redux store, main router, middleware)
+├── styles/         # Global styles, variables, mixins
+└── main.tsx        # Entry point của ứng dụng
+```
+
+## 🔐 Tài khoản dùng thử (Dữ liệu mặc định)
+
+Bạn có thể đăng nhập bằng các tài khoản sau (Mật khẩu mặc định: `password`):
+
+- **Admin**: `admin` (Toàn quyền hệ thống)
+- **Sales**: `saleshn` (Quản lý khách hàng, báo giá, hợp đồng)
+- **Kho**: `khohn` (Quản lý xe, điều chuyển kho)
+- **Kế toán**: `ketoanhn` (Xác nhận thanh toán, theo dõi công nợ)
+
+---
+*Phát triển bởi Vũ Văn Thanh - Dự án G7 Auto.*

@@ -79,11 +79,12 @@ public class CarQueryRepository {
   private final PagingJdbcExecutor pagingJdbcExecutor;
 
   public Page<Car> search(String status, Long showroomId, Long carModelId,
-      String fromDate, String toDate, Pageable pageable) {
+      String licensePlate, String fromDate, String toDate, Pageable pageable) {
     DynamicSqlBuilder builder = new DynamicSqlBuilder(BASE_SQL);
     builder.andEqual("c.status", "status", status)
         .andEqual("c.showroom_id", "showroomId", showroomId)
         .andEqual("c.car_model_id", "carModelId", carModelId)
+        .andLike("c.license_plate", "licensePlate", licensePlate, false, true)
         .andGreaterOrEqual("c.updated_at", "fromDate", DateParserUtils.parseFrom(fromDate))
         .andSmaller("c.updated_at", "toDate", DateParserUtils.parseTo(toDate));
 

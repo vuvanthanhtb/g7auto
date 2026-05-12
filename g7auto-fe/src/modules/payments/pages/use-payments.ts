@@ -7,8 +7,8 @@ import {
   clearSelectedPayments,
   confirmPayment,
   cancelPayment,
+  exportPayments,
 } from "../shell/payments.slice";
-import { paymentsService } from "../shell/payments.service";
 import type { PaymentRequest, PaymentSearchForm } from "../shell/payments.type";
 import { paymentsInitialValues, initPaymentSearchForm } from "./payments.config";
 import { BTN_REFRESH, BTN_EXPORT, BTN_SEARCH, BTN_DETAIL, BTN_SUBMIT, BTN_CONFIRM, BTN_CANCEL } from "@/libs/constants/button.constant";
@@ -79,7 +79,7 @@ export const usePayments = () => {
       setSearchQuery({ ...values, page: 1 });
     },
     [BTN_REFRESH]: () => { setSearchQuery(initPaymentSearchForm); },
-    [BTN_EXPORT]: async () => { await paymentsService.exportExcel(); },
+    [BTN_EXPORT]: async () => { await dispatch(exportPayments()); },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };

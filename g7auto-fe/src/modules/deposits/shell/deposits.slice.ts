@@ -96,6 +96,18 @@ export const convertDepositToContract = createAsyncThunk(
   },
 );
 
+export const exportDeposits = createAsyncThunk(
+  "deposits/export",
+  async (_, { rejectWithValue }) => {
+    try {
+      await depositsService.exportExcel();
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const depositsSlice = createSlice({
   name: "deposits",
   initialState,

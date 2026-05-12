@@ -36,6 +36,7 @@ export const vi: Record<string, string> = {
   COMMON_LABEL_CAR_MODEL: "Dòng xe",
   COMMON_LABEL_COLOR: "Màu sắc",
   COMMON_LABEL_CUSTOMER: "Khách hàng",
+  COMMON_LABEL_EMPLOYEE: "Nhân viên",
   COMMON_LABEL_CAR: "Xe",
   COMMON_LABEL_SALE_PRICE: "Giá bán",
   COMMON_LABEL_CONTRACT_CODE: "Mã HĐ",
@@ -147,8 +148,8 @@ export const vi: Record<string, string> = {
   // === CARS ===
   CARS_PAGE_HEADER: "Quản lý Kho xe",
   CARS_BTN_ADD: "Thêm xe",
-  CARS_BTN_IMPORT: "Import Excel",
-  CARS_BTN_TEMPLATE: "Tải file mẫu",
+  CARS_BTN_IMPORT: "Nhập Excel",
+  CARS_BTN_TEMPLATE: "Mẫu Excel",
   CARS_DRAWER_EDIT: "Cập nhật xe",
   CARS_DRAWER_ADD: "Thêm xe",
   CARS_FIELD_LICENSE_PLATE: "Biển số xe",

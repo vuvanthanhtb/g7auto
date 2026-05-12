@@ -129,6 +129,18 @@ export const requestApproval = createAsyncThunk(
   },
 );
 
+export const exportAccounts = createAsyncThunk(
+  "accounts/export",
+  async (_, { rejectWithValue }) => {
+    try {
+      await accountsService.exportExcel();
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const accountsSlice = createSlice({
   name: "accounts",
   initialState,

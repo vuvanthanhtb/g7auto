@@ -16,6 +16,9 @@ class CarsRepository {
       CarsRepository.instance = new CarsRepository();
     return CarsRepository.instance;
   }
+  getAll() {
+    return http.call<CarResponse[]>({ url: CARS_ENDPOINT.LIST, method: "GET" });
+  }
   getList(params?: CarQuery) {
     return http.call<{
       content: CarResponse[];
@@ -52,7 +55,7 @@ class CarsRepository {
     });
   }
   importExcel(file: File) {
-    return http.upload<{ data: CarImportResult }>({
+    return http.upload<CarImportResult>({
       url: CARS_ENDPOINT.IMPORT,
       file,
     });

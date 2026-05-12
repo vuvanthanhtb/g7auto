@@ -4,6 +4,7 @@ import type {
   ShowroomRequest,
   ShowroomResponse,
   ShowroomSearchForm,
+  ShowroomExportPayload,
 } from "./showroom.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
@@ -120,6 +121,43 @@ export const deleteShowroom = createAsyncThunk(
       await showroomsService.delete(id);
       toastSuccess(SUCCESS_CODE.DELETE);
       return id;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const exportShowrooms = createAsyncThunk(
+  "showrooms/export",
+  async (params: ShowroomExportPayload, { rejectWithValue }) => {
+    try {
+      await showroomsService.exportExcel(params);
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const importShowrooms = createAsyncThunk(
+  "showrooms/import",
+  async (file: File, { rejectWithValue }) => {
+    try {
+      const { data } = await showroomsService.importFile(file);
+      return data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const downloadShowroomTemplate = createAsyncThunk(
+  "showrooms/downloadTemplate",
+  async (_, { rejectWithValue }) => {
+    try {
+      await showroomsService.downloadTemplate();
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);

@@ -4,9 +4,8 @@ import BaseTableComponent from "@/libs/components/ui/base-table";
 import BaseDrawer from "@/libs/components/ui/base-drawer";
 import BaseFormComponent from "@/libs/components/ui/base-form";
 import ImportButton from "@/libs/components/ui/import-button";
-import { carModelsService } from "../shell/car-model.service";
 import { useAppDispatch } from "@/shell/redux/hooks";
-import { getCarModels } from "../shell/car-models.slice";
+import { getCarModels, importCarModels, downloadCarModelTemplate } from "../shell/car-models.slice";
 import {
   getCarModelColumns,
   getCarModelFormConfig,
@@ -51,10 +50,8 @@ const CarModelsPage = () => {
         extra={
           <div style={{ display: "flex", gap: 8 }}>
             <ImportButton
-              onImport={(file) =>
-                carModelsService.importFile(file).then((r) => r?.data)
-              }
-              onDownloadTemplate={() => carModelsService.downloadTemplate()}
+              onImport={(file) => dispatch(importCarModels(file)).unwrap()}
+              onDownloadTemplate={() => dispatch(downloadCarModelTemplate())}
               onSuccess={() => dispatch(getCarModels(initCarModelSearchForm))}
             />
             <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>

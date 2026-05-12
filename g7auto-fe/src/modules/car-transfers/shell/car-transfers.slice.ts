@@ -113,6 +113,18 @@ export const cancelTransfer = createAsyncThunk(
   },
 );
 
+export const exportCarTransfers = createAsyncThunk(
+  "carTransfers/export",
+  async (_, { rejectWithValue }) => {
+    try {
+      await carTransfersService.exportExcel();
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const carTransfersSlice = createSlice({
   name: "carTransfers",
   initialState,

@@ -7,8 +7,8 @@ import {
   deleteCarModel,
   getCarModelById,
   clearSelectedCarModel,
+  exportCarModels,
 } from "../shell/car-models.slice";
-import { carModelsService } from "../shell/car-model.service";
 import { useConfirm } from "@/libs/components/ui/confirm-dialog";
 import { carModelInitialValues, initCarModelSearchForm } from "./car-models.config";
 import {
@@ -118,9 +118,7 @@ export const useCarModels = () => {
     [BTN_REFRESH]: () => {
       setSearchQuery(initCarModelSearchForm);
     },
-    [BTN_EXPORT]: async () => {
-      await carModelsService.exportExcel(toExportPayload(searchQuery));
-    },
+    [BTN_EXPORT]: async () => { await dispatch(exportCarModels(toExportPayload(searchQuery))); },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };

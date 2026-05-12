@@ -35,6 +35,9 @@ public class Employee extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
 
+  @Column(unique = true, length = 20, comment = "Mã nhân viên (G7A00001)")
+  String code;
+
   @Column(nullable = false, length = 150, comment = "Họ và tên nhân viên")
   String fullName;
 

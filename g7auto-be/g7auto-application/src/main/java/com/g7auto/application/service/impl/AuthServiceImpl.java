@@ -10,14 +10,11 @@ import com.g7auto.application.mapper.AccountMapper;
 import com.g7auto.application.service.AuthService;
 import com.g7auto.core.constant.codes.AuthErrorCode;
 import com.g7auto.core.entity.AccountStatus;
-import com.g7auto.core.entity.Role;
 import com.g7auto.core.exception.BadRequestException;
-import com.g7auto.core.exception.ConflictException;
 import com.g7auto.core.exception.NotFoundException;
 import com.g7auto.domain.entity.Account;
 import com.g7auto.infrastructure.persistence.postgresql.AccountRepository;
 import com.g7auto.infrastructure.security.JwtService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -121,23 +118,4 @@ public class AuthServiceImpl implements AuthService {
     accountRepository.save(account);
   }
 
-  @Override
-  @Transactional
-  public AccountResponse initSuperAdmin() {
-    if (accountRepository.existsByUsername("superadmin")) {
-      log.error("Đã tồn tại tài khoản SUPERADMIN trên hệ thống");
-      throw new ConflictException(AuthErrorCode.G7_AUTO_00213);
-    }
-
-    Account superAdmin = new Account();
-    superAdmin.setUsername("thanhvv");
-    superAdmin.setPassword(passwordEncoder.encode("1234567890"));
-    superAdmin.setEmail("admin@g7auto.com.vn");
-    superAdmin.setFullName("Vũ Văn Thanh");
-    superAdmin.setRoles(List.of(Role.SUPERADMIN));
-    superAdmin.setStatus(AccountStatus.ACTIVE);
-    superAdmin.setFailedLoginAttempts(0);
-
-    return accountMapper.toResponse(accountRepository.save(superAdmin));
-  }
 }

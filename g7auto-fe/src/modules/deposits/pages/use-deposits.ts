@@ -8,8 +8,8 @@ import {
   convertDepositToContract,
   getDepositsById,
   clearSelectedDeposits,
+  exportDeposits,
 } from "../shell/deposits.slice";
-import { depositsService } from "../shell/deposits.service";
 import type { DepositRequest, DepositSearchForm } from "../shell/deposits.type";
 import { depositsInitialValues, initDepositSearchForm } from "./deposits.config";
 import {
@@ -101,7 +101,7 @@ export const useDeposits = () => {
     [BTN_REFRESH]: () => {
       setSearchQuery(initDepositSearchForm);
     },
-    [BTN_EXPORT]: async () => { await depositsService.exportExcel(); },
+    [BTN_EXPORT]: async () => { await dispatch(exportDeposits()); },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };

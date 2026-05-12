@@ -25,9 +25,21 @@ import type { BaseTableColumn } from "@/libs/types/table.type";
 
 export const getQuotationColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
-  { name: "customerFullName", label: "COMMON_LABEL_CUSTOMER", type: TBL_STRING },
-  { name: "carChassisNumber", label: "CARS_FIELD_CHASSIS_NUMBER", type: TBL_STRING },
-  { name: "totalAmount", label: "QUOTATIONS_FIELD_TOTAL_AMOUNT", type: TBL_NUMBER },
+  {
+    name: "customerFullName",
+    label: "COMMON_LABEL_CUSTOMER",
+    type: TBL_STRING,
+  },
+  {
+    name: "carChassisNumber",
+    label: "CARS_FIELD_CHASSIS_NUMBER",
+    type: TBL_STRING,
+  },
+  {
+    name: "totalAmount",
+    label: "QUOTATIONS_FIELD_TOTAL_AMOUNT",
+    type: TBL_NUMBER,
+  },
   { name: "status", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
   {
     name: "action",
@@ -41,13 +53,53 @@ export const getQuotationColumns = (): BaseTableColumn[] => [
 
 export const getQuotationsFormConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: NUMBER_INPUT, name: "customerId", label: "CONTRACTS_FIELD_CUSTOMER_ID", required: true, size: 6 },
-    { type: NUMBER_INPUT, name: "carId", label: "CONTRACTS_FIELD_CAR_ID", required: true, size: 6 },
-    { type: NUMBER_INPUT, name: "employeeId", label: "CONTRACTS_FIELD_EMPLOYEE_ID", size: 6 },
-    { type: NUMBER_INPUT, name: "carPrice", label: "QUOTATIONS_FIELD_CAR_PRICE", size: 6 },
-    { type: NUMBER_INPUT, name: "accessories", label: "QUOTATIONS_FIELD_ACCESSORIES", size: 4 },
-    { type: NUMBER_INPUT, name: "promotion", label: "QUOTATIONS_FIELD_PROMOTION", size: 4 },
-    { type: NUMBER_INPUT, name: "otherCosts", label: "QUOTATIONS_FIELD_OTHER_COSTS", size: 4 },
+    {
+      type: SELECT,
+      name: "customerId",
+      label: "COMMON_LABEL_CUSTOMER",
+      option: "customerOptions",
+      required: true,
+      size: 6,
+    },
+    {
+      type: SELECT,
+      name: "carId",
+      label: "COMMON_LABEL_CAR",
+      option: "carOptions",
+      required: true,
+      size: 6,
+    },
+    {
+      type: SELECT,
+      name: "employeeId",
+      label: "COMMON_LABEL_EMPLOYEE",
+      option: "employeeOptions",
+      size: 6,
+    },
+    {
+      type: NUMBER_INPUT,
+      name: "carPrice",
+      label: "QUOTATIONS_FIELD_CAR_PRICE",
+      size: 6,
+    },
+    {
+      type: NUMBER_INPUT,
+      name: "accessories",
+      label: "QUOTATIONS_FIELD_ACCESSORIES",
+      size: 4,
+    },
+    {
+      type: NUMBER_INPUT,
+      name: "promotion",
+      label: "QUOTATIONS_FIELD_PROMOTION",
+      size: 4,
+    },
+    {
+      type: NUMBER_INPUT,
+      name: "otherCosts",
+      label: "QUOTATIONS_FIELD_OTHER_COSTS",
+      size: 4,
+    },
     { type: TEXT, name: "notes", label: "CONTRACTS_FIELD_NOTES", size: 12 },
     {
       type: BUTTON,
@@ -66,9 +118,24 @@ export const getQuotationsDetailFormConfig = (): IBaseFormConfig => ({
       type: BUTTON,
       size: 12,
       childs: [
-        { title: "QUOTATIONS_BTN_SEND", type: "button", action: BTN_SEND, style: { background: "#1976d2", color: "#fff" } },
-        { title: "QUOTATIONS_BTN_ACCEPT", type: "button", action: BTN_ACCEPT, style: { background: "#2e7d32", color: "#fff" } },
-        { title: "QUOTATIONS_BTN_CANCEL", type: "button", action: BTN_CANCEL, style: { background: "#d32f2f", color: "#fff" } },
+        {
+          title: "QUOTATIONS_BTN_SEND",
+          type: "button",
+          action: BTN_SEND,
+          style: { background: "#1976d2", color: "#fff" },
+        },
+        {
+          title: "QUOTATIONS_BTN_ACCEPT",
+          type: "button",
+          action: BTN_ACCEPT,
+          style: { background: "#2e7d32", color: "#fff" },
+        },
+        {
+          title: "QUOTATIONS_BTN_CANCEL",
+          type: "button",
+          action: BTN_CANCEL,
+          style: { background: "#d32f2f", color: "#fff" },
+        },
       ],
     },
   ],
@@ -77,13 +144,13 @@ export const getQuotationsDetailFormConfig = (): IBaseFormConfig => ({
 export const initQuotationSearchForm = { status: "", page: 1, size: 10 };
 
 export const quotationsInitialValues = {
-  customerId: "",
-  carId: "",
-  employeeId: "",
-  carPrice: "",
-  accessories: "",
-  promotion: "",
-  otherCosts: "",
+  customerId: null,
+  carId: null,
+  employeeId: null,
+  carPrice: 0,
+  accessories: 0,
+  promotion: 0,
+  otherCosts: 0,
   notes: "",
 };
 

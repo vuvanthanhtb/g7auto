@@ -4,6 +4,7 @@ import type {
   CarModelPayload,
   CarModelRequest,
   CarModelResponse,
+  CarModelExportPayload,
 } from "./car-model.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
@@ -110,6 +111,43 @@ export const deleteCarModel = createAsyncThunk(
       await carModelsService.delete(id);
       toastSuccess(SUCCESS_CODE.DELETE);
       return id;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const exportCarModels = createAsyncThunk(
+  "carModels/export",
+  async (params: CarModelExportPayload, { rejectWithValue }) => {
+    try {
+      await carModelsService.exportExcel(params);
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const importCarModels = createAsyncThunk(
+  "carModels/import",
+  async (file: File, { rejectWithValue }) => {
+    try {
+      const { data } = await carModelsService.importFile(file);
+      return data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const downloadCarModelTemplate = createAsyncThunk(
+  "carModels/downloadTemplate",
+  async (_, { rejectWithValue }) => {
+    try {
+      await carModelsService.downloadTemplate();
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);

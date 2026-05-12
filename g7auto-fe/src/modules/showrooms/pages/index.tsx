@@ -4,9 +4,8 @@ import BaseTableComponent from "@/libs/components/ui/base-table";
 import BaseDrawer from "@/libs/components/ui/base-drawer";
 import BaseFormComponent from "@/libs/components/ui/base-form";
 import ImportButton from "@/libs/components/ui/import-button";
-import { showroomsService } from "../shell/showroom.service";
 import { useAppDispatch } from "@/shell/redux/hooks";
-import { getShowrooms } from "../shell/showrooms.slice";
+import { getShowrooms, importShowrooms, downloadShowroomTemplate } from "../shell/showrooms.slice";
 import {
   getShowroomColumns,
   getShowroomFormConfig,
@@ -49,10 +48,8 @@ const ShowroomsPage = () => {
         extra={
           <div style={{ display: "flex", gap: 8 }}>
             <ImportButton
-              onImport={(file) =>
-                showroomsService.importFile(file).then((r) => r?.data)
-              }
-              onDownloadTemplate={() => showroomsService.downloadTemplate()}
+              onImport={(file) => dispatch(importShowrooms(file)).unwrap()}
+              onDownloadTemplate={() => dispatch(downloadShowroomTemplate())}
               onSuccess={() => dispatch(getShowrooms(searchQuery))}
             />
             <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>

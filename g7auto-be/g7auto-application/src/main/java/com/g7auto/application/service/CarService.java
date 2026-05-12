@@ -7,9 +7,12 @@ import com.g7auto.application.dto.response.CarImportResultResponse;
 import com.g7auto.application.dto.response.CarResponse;
 import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CarService {
+
+  List<CarResponse> getAvailable();
 
   Page<CarResponse> search(CarSearchRequest request);
 

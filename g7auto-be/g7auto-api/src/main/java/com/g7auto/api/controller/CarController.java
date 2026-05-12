@@ -8,6 +8,7 @@ import com.g7auto.application.dto.response.CarResponse;
 import com.g7auto.application.service.CarService;
 import com.g7auto.core.response.ApiResponse;
 import com.g7auto.core.response.Page;
+import java.util.List;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class CarController {
 
   private final CarService carService;
+
+  @GetMapping("/list")
+  public ResponseEntity<ApiResponse<List<CarResponse>>> getAvailable() {
+    return ResponseEntity.ok(ApiResponse.ok(carService.getAvailable()));
+  }
 
   @GetMapping
   public ResponseEntity<ApiResponse<Page<CarResponse>>> search(

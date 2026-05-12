@@ -55,6 +55,18 @@ export const createServiceHistory = createAsyncThunk(
   },
 );
 
+export const exportServiceHistory = createAsyncThunk(
+  "serviceHistory/export",
+  async (_, { rejectWithValue }) => {
+    try {
+      await serviceHistoryService.exportExcel();
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const serviceHistorySlice = createSlice({
   name: "serviceHistory",
   initialState,

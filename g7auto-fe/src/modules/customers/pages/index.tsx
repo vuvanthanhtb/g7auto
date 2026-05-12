@@ -4,9 +4,8 @@ import BaseTableComponent from "@/libs/components/ui/base-table";
 import BaseDrawer from "@/libs/components/ui/base-drawer";
 import BaseFormComponent from "@/libs/components/ui/base-form";
 import ImportButton from "@/libs/components/ui/import-button";
-import { customersService } from "../services/customers.service";
 import { useAppDispatch } from "@/shell/redux/hooks";
-import { getCustomers } from "../shell/customers.slice";
+import { getCustomers, importCustomers, downloadCustomerTemplate } from "../shell/customers.slice";
 import {
   getCustomerColumns,
   getCustomerFormConfig,
@@ -52,10 +51,8 @@ const CustomersPage = () => {
         extra={
           <div style={{ display: "flex", gap: 8 }}>
             <ImportButton
-              onImport={(file) =>
-                customersService.importFile(file).then((r) => r?.data)
-              }
-              onDownloadTemplate={() => customersService.downloadTemplate()}
+              onImport={(file) => dispatch(importCustomers(file)).unwrap()}
+              onDownloadTemplate={() => dispatch(downloadCustomerTemplate())}
               onSuccess={() => dispatch(getCustomers(searchQuery))}
             />
             <Button

@@ -7,8 +7,8 @@ import {
   deleteContracts,
   getContractsById,
   clearSelectedContracts,
+  exportContracts,
 } from "../shell/contracts.slice";
-import { contractsService } from "../shell/contracts.service";
 import type { ContractRequest, ContractUpdateRequest, ContractSearchForm } from "../shell/contracts.type";
 import { contractsInitialValues, initContractSearchForm } from "./contracts.config";
 import {
@@ -87,7 +87,7 @@ export const useContracts = () => {
     [BTN_REFRESH]: () => {
       setSearchQuery(initContractSearchForm);
     },
-    [BTN_EXPORT]: async () => { await contractsService.exportExcel(); },
+    [BTN_EXPORT]: async () => { await dispatch(exportContracts()); },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };

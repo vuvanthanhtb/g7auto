@@ -47,6 +47,7 @@ export const getEmployeeListColumns = (): BaseTableColumn[] => [
     name: "action",
     label: "COMMON_LABEL_ACTION",
     type: TBL_BUTTON,
+    styleCell: { justifyContent: "center" },
     btnGroup: [
       {
         title: "COMMON_BTN_EDIT",

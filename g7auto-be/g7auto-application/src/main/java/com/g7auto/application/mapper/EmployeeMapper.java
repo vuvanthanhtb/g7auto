@@ -22,6 +22,7 @@ public interface EmployeeMapper {
   EmployeeResponse toResponse(Employee employee);
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "code", ignore = true)
   @Mapping(target = "employeeStatus", ignore = true)
   @Mapping(target = "showroom", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
@@ -32,6 +33,7 @@ public interface EmployeeMapper {
 
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "code", ignore = true)
   @Mapping(target = "employeeStatus", ignore = true)
   @Mapping(target = "showroom", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
@@ -42,6 +44,7 @@ public interface EmployeeMapper {
 
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(target = "id", ignore = true)
+  @Mapping(source = "code", target = "code")
   @Mapping(target = "showroom", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/shell/redux/hooks";
-import { getServiceHistory, createServiceHistory, getServiceHistoryById, clearSelectedServiceHistory } from "../shell/service-history.slice";
-import { serviceHistoryService } from "../shell/service-history.service";
+import { getServiceHistory, createServiceHistory, getServiceHistoryById, clearSelectedServiceHistory, exportServiceHistory } from "../shell/service-history.slice";
 import type { ServiceHistoryRequest, ServiceHistorySearchForm } from "../shell/service-history.type";
 import { serviceHistoryInitialValues, initServiceHistorySearchForm } from "./service-history.config";
 import { BTN_REFRESH, BTN_EXPORT, BTN_DETAIL, BTN_SUBMIT } from "@/libs/constants/button.constant";
@@ -55,7 +54,7 @@ export const useServiceHistory = () => {
 
   const searchHandlers = {
     [BTN_REFRESH]: () => { setSearchQuery(initServiceHistorySearchForm); },
-    [BTN_EXPORT]: async () => { await serviceHistoryService.exportExcel(); },
+    [BTN_EXPORT]: async () => { await dispatch(exportServiceHistory()); },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };

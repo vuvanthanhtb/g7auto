@@ -27,8 +27,13 @@ export interface CarUpdateRequest {
   status?: string;
   notes?: string;
 }
+type SelectOption = { label: string; value: string | number };
+
 export interface CarSearchForm {
-  status: string;
+  status: SelectOption | null;
+  showroom: SelectOption | null;
+  carModel: SelectOption | null;
+  licensePlate: string;
   page: number;
   size: number;
 }
@@ -37,6 +42,7 @@ export interface CarQuery {
   status?: string;
   showroomId?: number;
   carModelId?: number;
+  licensePlate?: string;
   page?: number;
   size?: number;
 }

@@ -36,6 +36,7 @@ export const en: Record<string, string> = {
   COMMON_LABEL_CAR_MODEL: "Car model",
   COMMON_LABEL_COLOR: "Color",
   COMMON_LABEL_CUSTOMER: "Customer",
+  COMMON_LABEL_EMPLOYEE: "Employee",
   COMMON_LABEL_CAR: "Car",
   COMMON_LABEL_SALE_PRICE: "Sale price",
   COMMON_LABEL_CONTRACT_CODE: "Contract #",

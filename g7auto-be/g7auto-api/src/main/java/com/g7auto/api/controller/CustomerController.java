@@ -8,6 +8,7 @@ import com.g7auto.application.service.CustomerService;
 import com.g7auto.core.response.ApiResponse;
 import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class CustomerController {
 
   private final CustomerService customerService;
+
+  @GetMapping("/list")
+  public ResponseEntity<ApiResponse<List<CustomerResponse>>> getAll() {
+    return ResponseEntity.ok(ApiResponse.ok(customerService.getAll()));
+  }
 
   @GetMapping
   public ResponseEntity<ApiResponse<Page<CustomerResponse>>> search(

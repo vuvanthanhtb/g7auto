@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 public record EmployeeResponse(
     Long id,
+    @ExcelColumn(header = "Mã nhân viên", order = 0) String code,
     @ExcelColumn(header = "Họ và tên", order = 1) String fullName,
     @ExcelColumn(header = "Số điện thoại", order = 2) String phone,
     @ExcelColumn(header = "Email", order = 3) String email,

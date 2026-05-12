@@ -26,8 +26,16 @@ import type { BaseTableColumn } from "@/libs/types/table.type";
 
 export const getDepositColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
-  { name: "customerFullName", label: "COMMON_LABEL_CUSTOMER", type: TBL_STRING },
-  { name: "carChassisNumber", label: "CARS_FIELD_CHASSIS_NUMBER", type: TBL_STRING },
+  {
+    name: "customerFullName",
+    label: "COMMON_LABEL_CUSTOMER",
+    type: TBL_STRING,
+  },
+  {
+    name: "carChassisNumber",
+    label: "CARS_FIELD_CHASSIS_NUMBER",
+    type: TBL_STRING,
+  },
   { name: "amount", label: "COMMON_LABEL_AMOUNT", type: TBL_NUMBER },
   { name: "depositDate", label: "DEPOSITS_FIELD_DATE", type: TBL_STRING },
   { name: "status", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
@@ -35,25 +43,73 @@ export const getDepositColumns = (): BaseTableColumn[] => [
     name: "action",
     label: "COMMON_LABEL_ACTION",
     type: TBL_BUTTON,
-    btnGroup: [{ title: "COMMON_BTN_DETAIL", type: "button", action: BTN_DETAIL }],
+    btnGroup: [
+      { title: "COMMON_BTN_DETAIL", type: "button", action: BTN_DETAIL },
+    ],
   },
 ];
 
 export const getDepositsFormConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: NUMBER_INPUT, name: "customerId", label: "CONTRACTS_FIELD_CUSTOMER_ID", required: true, size: 6 },
-    { type: NUMBER_INPUT, name: "carId", label: "CONTRACTS_FIELD_CAR_ID", required: true, size: 6 },
-    { type: NUMBER_INPUT, name: "employeeId", label: "CONTRACTS_FIELD_EMPLOYEE_ID", size: 6 },
-    { type: NUMBER_INPUT, name: "quotationId", label: "DEPOSITS_FIELD_QUOTATION_ID", size: 6 },
-    { type: NUMBER_INPUT, name: "amount", label: "DEPOSITS_FIELD_AMOUNT", required: true, size: 12 },
+    {
+      type: NUMBER_INPUT,
+      name: "customerId",
+      label: "CONTRACTS_FIELD_CUSTOMER_ID",
+      required: true,
+      size: 6,
+    },
+    {
+      type: NUMBER_INPUT,
+      name: "carId",
+      label: "CONTRACTS_FIELD_CAR_ID",
+      required: true,
+      size: 6,
+    },
+    {
+      type: NUMBER_INPUT,
+      name: "employeeId",
+      label: "CONTRACTS_FIELD_EMPLOYEE_ID",
+      size: 6,
+    },
+    {
+      type: NUMBER_INPUT,
+      name: "quotationId",
+      label: "DEPOSITS_FIELD_QUOTATION_ID",
+      size: 6,
+    },
+    {
+      type: NUMBER_INPUT,
+      name: "amount",
+      label: "DEPOSITS_FIELD_AMOUNT",
+      required: true,
+      size: 12,
+    },
     { type: DATE, name: "depositDate", label: "DEPOSITS_FIELD_DATE", size: 6 },
-    { type: DATE, name: "expiryDate", label: "DEPOSITS_FIELD_EXPIRED_DATE", size: 6 },
-    { type: SELECT, name: "depositPaymentMethod", label: "DEPOSITS_FIELD_PAYMENT_METHOD", option: "depositPaymentMethodOptions", required: true, size: 12 },
+    {
+      type: DATE,
+      name: "expiryDate",
+      label: "DEPOSITS_FIELD_EXPIRED_DATE",
+      size: 6,
+    },
+    {
+      type: SELECT,
+      name: "depositPaymentMethod",
+      label: "DEPOSITS_FIELD_PAYMENT_METHOD",
+      option: "depositPaymentMethodOptions",
+      required: true,
+      size: 12,
+    },
     { type: TEXT, name: "notes", label: "CONTRACTS_FIELD_NOTES", size: 12 },
     {
       type: BUTTON,
       size: 12,
-      childs: [{ title: "DEPOSITS_BTN_CREATE_ORDER", type: "submit", action: BTN_SUBMIT }],
+      childs: [
+        {
+          title: "DEPOSITS_BTN_CREATE_ORDER",
+          type: "submit",
+          action: BTN_SUBMIT,
+        },
+      ],
     },
   ],
 });
@@ -65,9 +121,24 @@ export const getDepositsDetailFormConfig = (): IBaseFormConfig => ({
       type: BUTTON,
       size: 12,
       childs: [
-        { title: "DEPOSITS_BTN_REFUND", type: "button", action: BTN_REFUND, style: { background: "#ed6c02", color: "#fff" } },
-        { title: "DEPOSITS_BTN_CANCEL", type: "button", action: BTN_CANCEL, style: { background: "#d32f2f", color: "#fff" } },
-        { title: "DEPOSITS_BTN_CONVERT", type: "button", action: BTN_CONVERT, style: { background: "#1976d2", color: "#fff" } },
+        {
+          title: "DEPOSITS_BTN_REFUND",
+          type: "button",
+          action: BTN_REFUND,
+          style: { background: "#ed6c02", color: "#fff" },
+        },
+        {
+          title: "DEPOSITS_BTN_CANCEL",
+          type: "button",
+          action: BTN_CANCEL,
+          style: { background: "#d32f2f", color: "#fff" },
+        },
+        {
+          title: "DEPOSITS_BTN_CONVERT",
+          type: "button",
+          action: BTN_CONVERT,
+          style: { background: "#1976d2", color: "#fff" },
+        },
       ],
     },
   ],
@@ -80,7 +151,7 @@ export const depositsInitialValues = {
   customerId: "",
   carId: "",
   employeeId: "",
-  amount: "",
+  amount: 0,
   depositDate: "",
   expiryDate: "",
   depositPaymentMethod: "",
@@ -89,14 +160,35 @@ export const depositsInitialValues = {
 
 export const getDepositSearchConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: SELECT, name: "status", label: "COMMON_LABEL_STATUS", option: "depositStatusOptions", size: 3 },
+    {
+      type: SELECT,
+      name: "status",
+      label: "COMMON_LABEL_STATUS",
+      option: "depositStatusOptions",
+      size: 3,
+    },
     {
       type: BUTTON,
       size: 9,
       childs: [
-        { title: "COMMON_BTN_REFRESH", type: "button", action: BTN_REFRESH, style: { background: "#757575", color: "#fff" } },
-        { title: "COMMON_BTN_SEARCH", type: "button", action: BTN_SEARCH, style: { background: "#1976d2", color: "#fff" } },
-        { title: "COMMON_BTN_EXPORT", type: "button", action: BTN_EXPORT, style: { background: "#2e7d32", color: "#fff" } },
+        {
+          title: "COMMON_BTN_REFRESH",
+          type: "button",
+          action: BTN_REFRESH,
+          style: { background: "#757575", color: "#fff" },
+        },
+        {
+          title: "COMMON_BTN_SEARCH",
+          type: "button",
+          action: BTN_SEARCH,
+          style: { background: "#1976d2", color: "#fff" },
+        },
+        {
+          title: "COMMON_BTN_EXPORT",
+          type: "button",
+          action: BTN_EXPORT,
+          style: { background: "#2e7d32", color: "#fff" },
+        },
       ],
     },
   ],

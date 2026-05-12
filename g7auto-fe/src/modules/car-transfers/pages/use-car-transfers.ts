@@ -8,8 +8,8 @@ import {
   confirmReceiveTransfer,
   cancelTransfer,
   clearSelectedCarTransfers,
+  exportCarTransfers,
 } from "@/modules/car-transfers/shell/car-transfers.slice";
-import { carTransfersService } from "@/modules/car-transfers/shell/car-transfers.service";
 import { useConfirm } from "@/libs/components/ui/confirm-dialog";
 import type { CarTransferRequest } from "@/modules/car-transfers/shell/car-transfers.type";
 import { BTN_SEARCH, BTN_REFRESH, BTN_EXPORT, BTN_DETAIL, BTN_SUBMIT } from "@/libs/constants/button.constant";
@@ -99,9 +99,7 @@ export const useCarTransfers = () => {
       setSearchParams(searchInitialValues);
       refresh(searchInitialValues);
     },
-    [BTN_EXPORT]: async () => {
-      await carTransfersService.exportExcel();
-    },
+    [BTN_EXPORT]: async () => { await dispatch(exportCarTransfers()); },
   };
 
   const createHandlers = { [BTN_SUBMIT]: handleCreate };

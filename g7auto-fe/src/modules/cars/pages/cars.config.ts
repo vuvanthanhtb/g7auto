@@ -4,8 +4,6 @@ import {
   BTN_SEARCH,
   BTN_REFRESH,
   BTN_EXPORT,
-  BTN_IMPORT,
-  BTN_TEMPLATE,
 } from "@/libs/constants/button.constant";
 import {
   BUTTON,
@@ -14,6 +12,7 @@ import {
   SELECT,
   TEXTAREA,
 } from "@/libs/constants/form.constant";
+import { defaultSelectOption } from "@/libs/constants/options.constant";
 import {
   NUMERICAL_ORDER,
   TBL_BUTTON,
@@ -74,16 +73,18 @@ export const getCarCreateFormConfig = (): IBaseFormConfig => ({
       size: 6,
     },
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "carModelId",
-      label: "CARS_FIELD_MODEL_ID",
+      label: "COMMON_LABEL_CAR_MODEL",
+      option: "carModelOptions",
       required: true,
       size: 6,
     },
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "showroomId",
-      label: "CARS_FIELD_SHOWROOM_ID",
+      label: "COMMON_LABEL_SHOWROOM",
+      option: "showroomOptions",
       required: true,
       size: 6,
     },
@@ -113,9 +114,10 @@ export const getCarEditFormConfig = (): IBaseFormConfig => ({
       size: 6,
     },
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "showroomId",
-      label: "CARS_FIELD_SHOWROOM_ID",
+      label: "COMMON_LABEL_SHOWROOM",
+      option: "showroomOptions",
       size: 6,
     },
     {
@@ -136,28 +138,55 @@ export const getCarEditFormConfig = (): IBaseFormConfig => ({
   ],
 });
 
-export const initCarSearchForm = { status: "", page: 1, size: 10 };
+export const initCarSearchForm = {
+  status: defaultSelectOption,
+  showroom: null,
+  carModel: null,
+  licensePlate: "",
+  page: 1,
+  size: 10,
+};
 
 export const carCreateInitialValues = {
   chassisNumber: "",
   engineNumber: "",
   licensePlate: "",
-  carModelId: "",
-  showroomId: "",
+  carModelId: null,
+  showroomId: null,
   salePrice: "",
   notes: "",
 };
 
 export const carEditInitialValues = {
   licensePlate: "",
-  showroomId: "",
+  showroomId: null,
   salePrice: "",
-  status: "",
+  status: null,
   notes: "",
 };
 
 export const getCarSearchConfig = (): IBaseFormConfig => ({
   fields: [
+    {
+      type: SELECT,
+      name: "showroom",
+      label: "COMMON_LABEL_SHOWROOM",
+      option: "showroomOptions",
+      size: 3,
+    },
+    {
+      type: SELECT,
+      name: "carModel",
+      label: "COMMON_LABEL_CAR_MODEL",
+      option: "carModelOptions",
+      size: 3,
+    },
+    {
+      type: TEXT,
+      name: "licensePlate",
+      label: "COMMON_LABEL_LICENSE_PLATE",
+      size: 3,
+    },
     {
       type: SELECT,
       name: "status",
@@ -167,7 +196,7 @@ export const getCarSearchConfig = (): IBaseFormConfig => ({
     },
     {
       type: BUTTON,
-      size: 9,
+      size: 12,
       childs: [
         {
           title: "COMMON_BTN_REFRESH",
@@ -186,18 +215,6 @@ export const getCarSearchConfig = (): IBaseFormConfig => ({
           type: "button",
           action: BTN_EXPORT,
           style: { background: "#2e7d32", color: "#fff" },
-        },
-        {
-          title: "CARS_BTN_TEMPLATE",
-          type: "button",
-          action: BTN_TEMPLATE,
-          style: { background: "#0288d1", color: "#fff" },
-        },
-        {
-          title: "CARS_BTN_IMPORT",
-          type: "button",
-          action: BTN_IMPORT,
-          style: { background: "#e65100", color: "#fff" },
         },
       ],
     },

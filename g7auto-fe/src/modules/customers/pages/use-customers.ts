@@ -7,8 +7,8 @@ import {
   deleteCustomer,
   getCustomerById,
   clearSelectedCustomer,
+  exportCustomers,
 } from "../shell/customers.slice";
-import { customersService } from "../services/customers.service";
 import { useConfirm } from "@/libs/components/ui/confirm-dialog";
 import type {
   CustomerFormValues,
@@ -126,7 +126,7 @@ export const useCustomers = () => {
       dispatch(getCustomers(initCustomerSearchForm));
     },
     [BTN_EXPORT]: async () => {
-      await customersService.export(parseCustomerExport(searchQuery));
+      await dispatch(exportCustomers(parseCustomerExport(searchQuery)));
     },
   };
 

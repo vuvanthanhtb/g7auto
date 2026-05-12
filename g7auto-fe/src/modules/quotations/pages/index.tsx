@@ -17,6 +17,7 @@ import { t } from "@/libs/i18n";
 const QuotationsPage = () => {
   const {
     drawerOpen, editId, formValues, searchQuery,
+    customerOptions, carOptions, employeeOptions,
     openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers, detailHandlers,
     setFormValues, handlePageChange,
   } = useQuotations();
@@ -55,6 +56,7 @@ const QuotationsPage = () => {
             formConfig={getQuotationsFormConfig()}
             validationSchema={quotationsValidation}
             values={formValues}
+            options={{ customerOptions, carOptions, employeeOptions }}
             onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
             handlers={formHandlers}
           />

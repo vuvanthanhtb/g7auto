@@ -8,25 +8,41 @@ import {
   sendQuotation,
   acceptQuotation,
   cancelQuotation,
+  exportQuotations,
 } from "../shell/quotations.slice";
-import { quotationsService } from "../shell/quotations.service";
 import type { QuotationRequest, QuotationSearchForm } from "../shell/quotations.type";
 import { quotationsInitialValues, initQuotationSearchForm } from "./quotations.config";
 import { BTN_SEARCH, BTN_REFRESH, BTN_EXPORT, BTN_DETAIL, BTN_SUBMIT, BTN_SEND, BTN_ACCEPT, BTN_CANCEL } from "@/libs/constants/button.constant";
+import { getAllCustomers } from "@/modules/customers/shell/customers.slice";
+import { getAllCars } from "@/modules/cars/shell/cars.slice";
+import { getAllEmployees } from "@/modules/employees/shell/employees.slice";
 
 type TableRow = Record<string, unknown>;
+
+const toId = (v: unknown): number | undefined =>
+  (v as { value?: number } | null)?.value ?? undefined;
 
 export const useQuotations = () => {
   const dispatch = useAppDispatch();
   const { selected } = useAppSelector((s) => s.quotations);
+  const customerAll = useAppSelector((s) => s.customers.customerAll) ?? [];
+  const carAll = useAppSelector((s) => s.cars.carAll) ?? [];
+  const employeeAll = useAppSelector((s) => s.employees.employeeAll) ?? [];
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
   const [formValues, setFormValues] = useState<Record<string, unknown>>(quotationsInitialValues);
   const [searchQuery, setSearchQuery] = useState<QuotationSearchForm>(initQuotationSearchForm);
 
+  const customerOptions = customerAll.map((c) => ({ label: c.fullName, value: c.id }));
+  const carOptions = carAll.map((c) => ({ label: `${c.chassisNumber}${c.licensePlate ? ` — ${c.licensePlate}` : ""}`, value: c.id }));
+  const employeeOptions = employeeAll.map((e) => ({ label: e.fullName, value: e.id }));
+
   useEffect(() => {
     document.title = "Báo giá — G7Auto";
-  }, []);
+    dispatch(getAllCustomers());
+    dispatch(getAllCars());
+    dispatch(getAllEmployees());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getQuotations(searchQuery));
@@ -56,7 +72,19 @@ export const useQuotations = () => {
   };
 
   const handleSubmit = async (data: Record<string, unknown>) => {
-    if (!editId) await dispatch(createQuotations(data as unknown as QuotationRequest));
+    if (!editId) {
+      const payload: QuotationRequest = {
+        customerId: toId(data.customerId)!,
+        carId: toId(data.carId)!,
+        employeeId: toId(data.employeeId),
+        carPrice: data.carPrice as number,
+        accessories: data.accessories as number,
+        promotion: data.promotion as number,
+        otherCosts: data.otherCosts as number,
+        notes: data.notes as string,
+      };
+      await dispatch(createQuotations(payload));
+    }
     closeDrawer();
     dispatch(getQuotations(searchQuery));
   };
@@ -89,7 +117,7 @@ export const useQuotations = () => {
     [BTN_REFRESH]: () => {
       setSearchQuery(initQuotationSearchForm);
     },
-    [BTN_EXPORT]: async () => { await quotationsService.exportExcel(); },
+    [BTN_EXPORT]: async () => { await dispatch(exportQuotations()); },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };
@@ -106,6 +134,7 @@ export const useQuotations = () => {
 
   return {
     drawerOpen, editId, formValues, searchQuery,
+    customerOptions, carOptions, employeeOptions,
     openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers, detailHandlers,
     setFormValues, handlePageChange,
   };

@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { customersService } from "../services/customers.service";
+import { customersService } from "./customers.service";
 import type {
   CustomerRequest,
   CustomerResponse,
   CustomerSearchForm,
+  CustomerExportPayload,
 } from "./customers.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
@@ -21,6 +22,7 @@ type PageState = {
 
 interface CustomersState {
   customerTable: PageState;
+  customerAll: CustomerResponse[];
   selected: CustomerResponse | null;
 }
 
@@ -34,8 +36,22 @@ const emptyPage: PageState = {
 
 const initialState: CustomersState = {
   customerTable: emptyPage,
+  customerAll: [],
   selected: null,
 };
+
+export const getAllCustomers = createAsyncThunk(
+  "customers/getAll",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await customersService.getAll();
+      return data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
 export const getCustomers = createAsyncThunk(
   "customers/getList",
@@ -113,6 +129,43 @@ export const deleteCustomer = createAsyncThunk(
   },
 );
 
+export const exportCustomers = createAsyncThunk(
+  "customers/export",
+  async (params: CustomerExportPayload, { rejectWithValue }) => {
+    try {
+      await customersService.export(params);
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const importCustomers = createAsyncThunk(
+  "customers/import",
+  async (file: File, { rejectWithValue }) => {
+    try {
+      const { data } = await customersService.importFile(file);
+      return data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const downloadCustomerTemplate = createAsyncThunk(
+  "customers/downloadTemplate",
+  async (_, { rejectWithValue }) => {
+    try {
+      await customersService.downloadTemplate();
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const customersSlice = createSlice({
   name: "customers",
   initialState,
@@ -123,6 +176,9 @@ const customersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getAllCustomers.fulfilled, (state, action) => {
+        state.customerAll = action.payload as CustomerResponse[];
+      })
       .addCase(getCustomers.fulfilled, (state, action) => {
         state.customerTable = action.payload;
       })

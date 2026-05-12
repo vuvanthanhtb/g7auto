@@ -5,8 +5,8 @@ import {
   resignEmployee,
   createEmployeeApproving,
   updateEmployeeApproving,
+  exportEmployees,
 } from "@/modules/employees/shell/employees.slice";
-import { employeesService } from "@/modules/employees/services/employees.service";
 import {
   BTN_SEARCH,
   BTN_REFRESH,
@@ -154,7 +154,7 @@ export const useEmployeesList = () => {
       refresh(employeeListInitialValues);
     },
     [BTN_EXPORT]: async () => {
-      await employeesService.export();
+      await dispatch(exportEmployees());
     },
   };
 

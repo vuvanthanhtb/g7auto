@@ -83,6 +83,18 @@ export const cancelPayment = createAsyncThunk(
   },
 );
 
+export const exportPayments = createAsyncThunk(
+  "payments/export",
+  async (_, { rejectWithValue }) => {
+    try {
+      await paymentsService.exportExcel();
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const paymentsSlice = createSlice({
   name: "payments",
   initialState,

@@ -3,8 +3,8 @@ import { useAppDispatch } from "@/shell/redux/hooks";
 import {
   changeUserStatus,
   searchAccounts,
+  exportAccounts,
 } from "@/modules/accounts/shell/accounts.slice";
-import { accountsService } from "@/modules/accounts/services/accounts.service";
 import {
   BTN_SEARCH,
   BTN_REFRESH,
@@ -76,7 +76,7 @@ export const useAccountList = () => {
     },
     [BTN_REFRESH]: () => refresh(),
     [BTN_EXPORT]: async () => {
-      await accountsService.exportExcel();
+      await dispatch(exportAccounts());
     },
   };
 

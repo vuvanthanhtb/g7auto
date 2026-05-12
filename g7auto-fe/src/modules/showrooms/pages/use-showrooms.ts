@@ -7,9 +7,9 @@ import {
   deleteShowroom,
   getShowroomById,
   clearSelectedShowroom,
+  exportShowrooms,
 } from "../shell/showrooms.slice";
 import { getAllEmployees } from "@/modules/employees/shell/employees.slice";
-import { showroomsService } from "../shell/showroom.service";
 import { parseShowroomExport } from "../shell/showrooms.utils";
 import { useConfirm } from "@/libs/components/ui/confirm-dialog";
 import type {
@@ -116,9 +116,7 @@ export const useShowrooms = () => {
     [BTN_REFRESH]: () => {
       setSearchQuery(initShowroomSearchForm);
     },
-    [BTN_EXPORT]: async () => {
-      await showroomsService.exportExcel(parseShowroomExport(searchQuery));
-    },
+    [BTN_EXPORT]: async () => { await dispatch(exportShowrooms(parseShowroomExport(searchQuery))); },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };

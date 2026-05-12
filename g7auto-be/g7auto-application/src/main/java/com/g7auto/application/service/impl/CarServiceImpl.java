@@ -57,11 +57,18 @@ public class CarServiceImpl implements CarService {
   private final CarMapper carMapper;
 
   @Override
+  @Transactional(readOnly = true)
+  public List<CarResponse> getAvailable() {
+    return carRepository.findByStatus(CarStatus.AVAILABLE).stream()
+        .map(carMapper::toResponse).toList();
+  }
+
+  @Override
   public Page<CarResponse> search(CarSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
     return Page.of(
         carQueryRepository.search(request.getStatus(), request.getShowroomId(),
-            request.getCarModelId(), request.getFromDate(), request.getToDate(), pageable),
+            request.getCarModelId(), request.getLicensePlate(), request.getFromDate(), request.getToDate(), pageable),
         carMapper::toResponse,
         request.getFromDate(), request.getToDate());
   }
@@ -164,7 +171,6 @@ public class CarServiceImpl implements CarService {
   }
 
   @Override
-  @Transactional
   public CarImportResultResponse importCars(MultipartFile file) {
     int success = 0;
     List<String> errors = new ArrayList<>();

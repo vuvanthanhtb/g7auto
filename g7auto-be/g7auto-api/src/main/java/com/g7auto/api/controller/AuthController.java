@@ -65,9 +65,4 @@ public class AuthController {
   public ResponseEntity<ApiResponse<Void>> logout() {
     return ResponseEntity.ok(ApiResponse.ok(null));
   }
-
-  @PostMapping("/init-superadmin")
-  public ResponseEntity<ApiResponse<AccountResponse>> initSuperAdmin() {
-    return ResponseEntity.ok(ApiResponse.ok(authService.initSuperAdmin()));
-  }
 }

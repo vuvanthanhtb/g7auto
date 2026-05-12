@@ -21,4 +21,7 @@ public class CarSearchRequest extends BaseSearchRequest {
   @Schema(description = "ID Mẫu xe")
   Long carModelId;
 
+  @Schema(description = "Biển số xe (tìm kiếm gần đúng)")
+  String licensePlate;
+
 }

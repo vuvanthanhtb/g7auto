@@ -34,6 +34,7 @@ import com.g7auto.infrastructure.persistence.postgresql.EmployeeRepository;
 import com.g7auto.infrastructure.persistence.postgresql.ShowroomRepository;
 import com.g7auto.infrastructure.persistence.postgresql.query.EmployeeApprovalQueryRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -85,6 +86,7 @@ public class EmployeeApprovalServiceImpl implements EmployeeApprovalService {
     empl.setStatusApproving(ApprovingStatus.AWAITING_APPROVAL);
     empl.setEmployeeStatus(EmployeeStatus.ACTIVE);
     empl.setUsername(generateUniqueUsername(request.getFullName()));
+    empl.setCode(generateNextCode());
     employeeApprovalRepository.save(empl);
     return SuccessCode.G7_AUTO_00002;
   }
@@ -99,6 +101,19 @@ public class EmployeeApprovalServiceImpl implements EmployeeApprovalService {
     return candidate;
   }
 
+  private String generateNextCode() {
+    int maxNum = 0;
+    Optional<String> fromEmployees = employeeRepository.findMaxCode();
+    Optional<String> fromApprovals = employeeApprovalRepository.findMaxCode();
+    if (fromEmployees.isPresent()) {
+      maxNum = Math.max(maxNum, Integer.parseInt(fromEmployees.get().substring(3)));
+    }
+    if (fromApprovals.isPresent()) {
+      maxNum = Math.max(maxNum, Integer.parseInt(fromApprovals.get().substring(3)));
+    }
+    return String.format("G7A%05d", maxNum + 1);
+  }
+
   @Override
   @Transactional
   public String update(Long id, EmployeeRequest request) {
@@ -109,6 +124,7 @@ public class EmployeeApprovalServiceImpl implements EmployeeApprovalService {
     empl.setStatusApproving(ApprovingStatus.AWAITING_APPROVAL);
     empl.setEmployeeStatus(EmployeeStatus.ACTIVE);
     empl.setUsername(employee.getUsername());
+    empl.setCode(employee.getCode());
     employeeApprovalRepository.save(empl);
     return SuccessCode.G7_AUTO_00002;
   }
