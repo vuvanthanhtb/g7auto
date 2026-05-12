@@ -5,9 +5,6 @@ import com.g7auto.application.dto.request.PaymentSearchRequest;
 import com.g7auto.application.dto.response.PaymentResponse;
 import com.g7auto.application.mapper.PaymentMapper;
 import com.g7auto.application.service.PaymentService;
-import com.g7auto.core.response.PageResponse;
-import com.g7auto.core.utils.PageableUtils;
-import com.g7auto.infrastructure.persistence.query.PaymentQueryRepository;
 import com.g7auto.core.constant.codes.SalesErrorCode;
 import com.g7auto.core.entity.CarStatus;
 import com.g7auto.core.entity.ContractStatus;
@@ -15,13 +12,16 @@ import com.g7auto.core.entity.PaymentStatus;
 import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
+import com.g7auto.core.response.Page;
+import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Car;
 import com.g7auto.domain.entity.Contract;
 import com.g7auto.domain.entity.Payment;
-import com.g7auto.infrastructure.persistence.CarRepository;
-import com.g7auto.infrastructure.persistence.ContractRepository;
-import com.g7auto.infrastructure.persistence.EmployeeRepository;
-import com.g7auto.infrastructure.persistence.PaymentRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CarRepository;
+import com.g7auto.infrastructure.persistence.postgresql.ContractRepository;
+import com.g7auto.infrastructure.persistence.postgresql.EmployeeRepository;
+import com.g7auto.infrastructure.persistence.postgresql.PaymentRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.PaymentQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -44,8 +44,8 @@ public class PaymentServiceImpl implements PaymentService {
   private final PaymentQueryRepository paymentQueryRepository;
 
   @Override
-  public PageResponse<PaymentResponse> search(PaymentSearchRequest request) {
-    return PageResponse.of(
+  public Page<PaymentResponse> search(PaymentSearchRequest request) {
+    return Page.of(
         paymentQueryRepository.search(request.getStatus(), request.getContractId(),
             PageableUtils.from(request)),
         paymentMapper::toResponse);

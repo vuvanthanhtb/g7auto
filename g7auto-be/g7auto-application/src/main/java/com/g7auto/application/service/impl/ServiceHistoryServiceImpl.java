@@ -9,14 +9,14 @@ import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.NotFoundException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Customer;
 import com.g7auto.domain.entity.ServiceHistory;
-import com.g7auto.infrastructure.persistence.CustomerRepository;
-import com.g7auto.infrastructure.persistence.EmployeeRepository;
-import com.g7auto.infrastructure.persistence.ServiceHistoryRepository;
-import com.g7auto.infrastructure.persistence.query.ServiceHistoryQueryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CustomerRepository;
+import com.g7auto.infrastructure.persistence.postgresql.EmployeeRepository;
+import com.g7auto.infrastructure.persistence.postgresql.ServiceHistoryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.ServiceHistoryQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,9 +40,9 @@ public class ServiceHistoryServiceImpl implements ServiceHistoryService {
   private final ServiceHistoryMapper serviceHistoryMapper;
 
   @Override
-  public PageResponse<ServiceHistoryResponse> search(ServiceHistorySearchRequest request) {
+  public Page<ServiceHistoryResponse> search(ServiceHistorySearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
-    return PageResponse.of(
+    return Page.of(
         serviceHistoryQueryRepository.search(
             request.getCustomerId(), request.getFromDate(), request.getToDate(), pageable),
         serviceHistoryMapper::toResponse,

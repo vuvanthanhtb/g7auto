@@ -6,7 +6,7 @@ import com.g7auto.application.dto.response.ContractResponse;
 import com.g7auto.application.dto.response.DepositResponse;
 import com.g7auto.application.service.DepositService;
 import com.g7auto.core.response.ApiResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
@@ -29,13 +29,13 @@ public class DepositController {
   private final DepositService depositService;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<PageResponse<DepositResponse>>> search(
+  public ResponseEntity<ApiResponse<Page<DepositResponse>>> search(
       @ModelAttribute DepositSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(depositService.search(request)));
   }
 
   @GetMapping("/list")
-  public ResponseEntity<ApiResponse<PageResponse<DepositResponse>>> list(
+  public ResponseEntity<ApiResponse<Page<DepositResponse>>> list(
       @ModelAttribute DepositSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(depositService.search(request)));
   }

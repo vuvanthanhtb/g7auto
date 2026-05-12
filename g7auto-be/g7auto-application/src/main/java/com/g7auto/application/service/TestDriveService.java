@@ -3,12 +3,12 @@ package com.g7auto.application.service;
 import com.g7auto.application.dto.request.TestDriveRequest;
 import com.g7auto.application.dto.request.TestDriveSearchRequest;
 import com.g7auto.application.dto.response.TestDriveResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 
 public interface TestDriveService {
 
-  PageResponse<TestDriveResponse> search(TestDriveSearchRequest request);
+  Page<TestDriveResponse> search(TestDriveSearchRequest request);
 
   TestDriveResponse findById(Long id);
 

@@ -1,6 +1,6 @@
 package com.g7auto.infrastructure.security;
 
-import com.g7auto.infrastructure.persistence.AccountRepository;
+import com.g7auto.infrastructure.persistence.postgresql.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

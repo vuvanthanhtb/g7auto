@@ -3,12 +3,12 @@ package com.g7auto.application.service;
 import com.g7auto.application.dto.request.QuotationRequest;
 import com.g7auto.application.dto.request.QuotationSearchRequest;
 import com.g7auto.application.dto.response.QuotationResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 
 public interface QuotationService {
 
-  PageResponse<QuotationResponse> search(QuotationSearchRequest request);
+  Page<QuotationResponse> search(QuotationSearchRequest request);
 
   QuotationResponse findById(Long id);
 

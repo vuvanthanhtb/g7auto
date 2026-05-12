@@ -6,7 +6,7 @@ import com.g7auto.application.dto.response.CarModelResponse;
 import com.g7auto.application.dto.response.ImportResult;
 import com.g7auto.application.service.CarModelService;
 import com.g7auto.core.response.ApiResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import java.util.List;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +32,13 @@ public class CarModelController {
   private final CarModelService carModelService;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<PageResponse<CarModelResponse>>> search(
+  public ResponseEntity<ApiResponse<Page<CarModelResponse>>> search(
       @ModelAttribute CarModelSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(carModelService.search(request)));
   }
 
   @GetMapping("/list")
-  public ResponseEntity<ApiResponse<PageResponse<CarModelResponse>>> list(
+  public ResponseEntity<ApiResponse<Page<CarModelResponse>>> list(
       @ModelAttribute CarModelSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(carModelService.search(request)));
   }

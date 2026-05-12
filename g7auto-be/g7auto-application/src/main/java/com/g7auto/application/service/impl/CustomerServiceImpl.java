@@ -12,13 +12,13 @@ import com.g7auto.core.exception.ConflictException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
 import com.g7auto.core.export.ExcelSupport;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Customer;
 import com.g7auto.domain.entity.Employee;
-import com.g7auto.infrastructure.persistence.CustomerRepository;
-import com.g7auto.infrastructure.persistence.EmployeeRepository;
-import com.g7auto.infrastructure.persistence.query.CustomerQueryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CustomerRepository;
+import com.g7auto.infrastructure.persistence.postgresql.EmployeeRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.CustomerQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -48,9 +48,9 @@ public class CustomerServiceImpl implements CustomerService {
   private final CustomerMapper customerMapper;
 
   @Override
-  public PageResponse<CustomerResponse> search(CustomerSearchRequest request) {
+  public Page<CustomerResponse> search(CustomerSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
-    return PageResponse.of(
+    return Page.of(
         customerQueryRepository.search(request.getFullName(), request.getPhone(),
             request.getEmail(), request.getNationalId(),
             request.getFromDate(), request.getToDate(), pageable),
@@ -150,7 +150,8 @@ public class CustomerServiceImpl implements CustomerService {
     try (SXSSFWorkbook workbook = ExcelSupport.createWorkbook()) {
       Sheet sheet = workbook.createSheet("Customers");
       Row header = sheet.createRow(0);
-      String[] cols = {"fullName", "phone", "email", "address", "birthDate", "nationalId", "sourceType", "carInterest", "assignedEmployeeId", "notes"};
+      String[] cols = {"fullName", "phone", "email", "address", "birthDate", "nationalId",
+          "sourceType", "carInterest", "assignedEmployeeId", "notes"};
       for (int i = 0; i < cols.length; i++) {
         header.createCell(i).setCellValue(cols[i]);
       }

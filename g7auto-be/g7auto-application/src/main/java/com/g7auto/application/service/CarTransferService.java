@@ -3,12 +3,12 @@ package com.g7auto.application.service;
 import com.g7auto.application.dto.request.CarTransferRequest;
 import com.g7auto.application.dto.request.CarTransferSearchRequest;
 import com.g7auto.application.dto.response.CarTransferResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 
 public interface CarTransferService {
 
-  PageResponse<CarTransferResponse> search(CarTransferSearchRequest request);
+  Page<CarTransferResponse> search(CarTransferSearchRequest request);
 
   CarTransferResponse findById(Long id);
 

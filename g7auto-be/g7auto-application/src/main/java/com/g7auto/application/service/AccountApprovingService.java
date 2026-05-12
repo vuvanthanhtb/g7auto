@@ -3,16 +3,16 @@ package com.g7auto.application.service;
 import com.g7auto.application.dto.request.AccountApprovingSearchRequest;
 import com.g7auto.application.dto.request.StatusRequest;
 import com.g7auto.application.dto.response.AccountApprovingResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 
 public interface AccountApprovingService {
 
-  PageResponse<AccountApprovingResponse> search(AccountApprovingSearchRequest request);
+  Page<AccountApprovingResponse> search(AccountApprovingSearchRequest request);
 
-  PageResponse<AccountApprovingResponse> searchPendingAccounts(
+  Page<AccountApprovingResponse> searchPendingAccounts(
       AccountApprovingSearchRequest request);
 
-  PageResponse<AccountApprovingResponse> searchApprovedAccounts(
+  Page<AccountApprovingResponse> searchApprovedAccounts(
       AccountApprovingSearchRequest request);
 
   String requestAccountStatusChange(StatusRequest request);

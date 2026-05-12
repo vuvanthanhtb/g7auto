@@ -5,11 +5,11 @@ import com.g7auto.application.dto.request.EmployeeApprovalSearchRequest;
 import com.g7auto.application.dto.request.EmployeeRequest;
 import com.g7auto.application.dto.request.StatusRequest;
 import com.g7auto.application.dto.response.EmployeeResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 
 public interface EmployeeApprovalService {
 
-  PageResponse<EmployeeResponse> search(EmployeeApprovalSearchRequest request);
+  Page<EmployeeResponse> search(EmployeeApprovalSearchRequest request);
 
   String create(EmployeeRequest request);
 

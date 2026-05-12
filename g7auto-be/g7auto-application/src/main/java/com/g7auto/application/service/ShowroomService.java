@@ -4,14 +4,14 @@ import com.g7auto.application.dto.request.ShowroomRequest;
 import com.g7auto.application.dto.request.ShowroomSearchRequest;
 import com.g7auto.application.dto.response.ImportResult;
 import com.g7auto.application.dto.response.ShowroomResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ShowroomService {
 
-  PageResponse<ShowroomResponse> search(ShowroomSearchRequest request);
+  Page<ShowroomResponse> search(ShowroomSearchRequest request);
 
   ShowroomResponse findById(Long id);
 

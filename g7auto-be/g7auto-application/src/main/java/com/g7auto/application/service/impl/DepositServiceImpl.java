@@ -15,7 +15,7 @@ import com.g7auto.core.entity.DepositStatus;
 import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Car;
 import com.g7auto.domain.entity.Contract;
@@ -23,13 +23,13 @@ import com.g7auto.domain.entity.Customer;
 import com.g7auto.domain.entity.Deposit;
 import com.g7auto.domain.entity.Employee;
 import com.g7auto.domain.entity.Quotation;
-import com.g7auto.infrastructure.persistence.CarRepository;
-import com.g7auto.infrastructure.persistence.ContractRepository;
-import com.g7auto.infrastructure.persistence.CustomerRepository;
-import com.g7auto.infrastructure.persistence.DepositRepository;
-import com.g7auto.infrastructure.persistence.EmployeeRepository;
-import com.g7auto.infrastructure.persistence.QuotationRepository;
-import com.g7auto.infrastructure.persistence.query.DepositQueryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CarRepository;
+import com.g7auto.infrastructure.persistence.postgresql.ContractRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CustomerRepository;
+import com.g7auto.infrastructure.persistence.postgresql.DepositRepository;
+import com.g7auto.infrastructure.persistence.postgresql.EmployeeRepository;
+import com.g7auto.infrastructure.persistence.postgresql.QuotationRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.DepositQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -58,9 +58,9 @@ public class DepositServiceImpl implements DepositService {
   private final ContractMapper contractMapper;
 
   @Override
-  public PageResponse<DepositResponse> search(DepositSearchRequest request) {
+  public Page<DepositResponse> search(DepositSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
-    return PageResponse.of(
+    return Page.of(
         depositQueryRepository.search(request.getStatus(), request.getCustomerId(),
             request.getFromDate(), request.getToDate(), pageable),
         depositMapper::toResponse,

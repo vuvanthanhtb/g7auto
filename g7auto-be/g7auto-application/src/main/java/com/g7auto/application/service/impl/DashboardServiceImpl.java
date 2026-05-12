@@ -2,12 +2,12 @@ package com.g7auto.application.service.impl;
 
 import com.g7auto.application.dto.response.DashboardStatsResponse;
 import com.g7auto.application.service.DashboardService;
-import com.g7auto.infrastructure.persistence.CarRepository;
-import com.g7auto.infrastructure.persistence.ContractRepository;
-import com.g7auto.infrastructure.persistence.CustomerRepository;
-import com.g7auto.infrastructure.persistence.DepositRepository;
-import com.g7auto.infrastructure.persistence.QuotationRepository;
-import com.g7auto.infrastructure.persistence.ShowroomRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CarRepository;
+import com.g7auto.infrastructure.persistence.postgresql.ContractRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CustomerRepository;
+import com.g7auto.infrastructure.persistence.postgresql.DepositRepository;
+import com.g7auto.infrastructure.persistence.postgresql.QuotationRepository;
+import com.g7auto.infrastructure.persistence.postgresql.ShowroomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -6,7 +6,7 @@ import com.g7auto.application.dto.request.ContractUpdateRequest;
 import com.g7auto.application.dto.response.ContractResponse;
 import com.g7auto.application.service.ContractService;
 import com.g7auto.core.response.ApiResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,13 +29,13 @@ public class ContractController {
   private final ContractService contractService;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<PageResponse<ContractResponse>>> search(
+  public ResponseEntity<ApiResponse<Page<ContractResponse>>> search(
       @ModelAttribute ContractSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(contractService.search(request)));
   }
 
   @GetMapping("/list")
-  public ResponseEntity<ApiResponse<PageResponse<ContractResponse>>> list(
+  public ResponseEntity<ApiResponse<Page<ContractResponse>>> list(
       @ModelAttribute ContractSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(contractService.search(request)));
   }

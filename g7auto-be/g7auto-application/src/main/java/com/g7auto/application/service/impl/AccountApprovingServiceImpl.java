@@ -15,13 +15,13 @@ import com.g7auto.core.entity.AccountStatus;
 import com.g7auto.core.entity.ApprovingStatus;
 import com.g7auto.core.entity.Role;
 import com.g7auto.core.exception.BadRequestException;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Account;
 import com.g7auto.domain.entity.AccountApproving;
-import com.g7auto.infrastructure.persistence.AccountApprovingRepository;
-import com.g7auto.infrastructure.persistence.AccountRepository;
-import com.g7auto.infrastructure.persistence.query.AccountApprovingQueryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.AccountApprovingRepository;
+import com.g7auto.infrastructure.persistence.postgresql.AccountRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.AccountApprovingQueryRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +39,8 @@ public class AccountApprovingServiceImpl implements AccountApprovingService {
   private final AccountApprovingMapper accountApprovingMapper;
 
   @Override
-  public PageResponse<AccountApprovingResponse> search(AccountApprovingSearchRequest request) {
-    return PageResponse.of(
+  public Page<AccountApprovingResponse> search(AccountApprovingSearchRequest request) {
+    return Page.of(
         accountApprovingQueryRepository.search(
             request.getUsername(),
             request.getFullName(),
@@ -56,9 +56,9 @@ public class AccountApprovingServiceImpl implements AccountApprovingService {
   }
 
   @Override
-  public PageResponse<AccountApprovingResponse> searchPendingAccounts(
+  public Page<AccountApprovingResponse> searchPendingAccounts(
       AccountApprovingSearchRequest request) {
-    return PageResponse.of(
+    return Page.of(
         accountApprovingQueryRepository.search(
             request.getUsername(),
             request.getFullName(),
@@ -74,7 +74,7 @@ public class AccountApprovingServiceImpl implements AccountApprovingService {
   }
 
   @Override
-  public PageResponse<AccountApprovingResponse> searchApprovedAccounts(
+  public Page<AccountApprovingResponse> searchApprovedAccounts(
       AccountApprovingSearchRequest request) {
     List<String> statusApprove = List.of(ApprovingStatus.APPROVED.name(),
         ApprovingStatus.REJECTED.name());
@@ -85,7 +85,7 @@ public class AccountApprovingServiceImpl implements AccountApprovingService {
       statusApprove = List.of(request.getStatusApproving());
     }
 
-    return PageResponse.of(
+    return Page.of(
         accountApprovingQueryRepository.search(
             request.getUsername(),
             request.getFullName(),
@@ -144,8 +144,6 @@ public class AccountApprovingServiceImpl implements AccountApprovingService {
     if (!isApproved && !action.equalsIgnoreCase("REJECT")) {
       throw new BadRequestException("");
     }
-
-//    if (action.equalsIgnoreCase("REJECT"))
 
     String username = request.getUsername();
     AccountApproving approving =

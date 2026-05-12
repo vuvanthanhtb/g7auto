@@ -11,17 +11,17 @@ import com.g7auto.core.entity.ContractStatus;
 import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Car;
 import com.g7auto.domain.entity.Contract;
 import com.g7auto.domain.entity.Customer;
 import com.g7auto.domain.entity.Employee;
-import com.g7auto.infrastructure.persistence.CarRepository;
-import com.g7auto.infrastructure.persistence.ContractRepository;
-import com.g7auto.infrastructure.persistence.CustomerRepository;
-import com.g7auto.infrastructure.persistence.EmployeeRepository;
-import com.g7auto.infrastructure.persistence.query.ContractQueryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CarRepository;
+import com.g7auto.infrastructure.persistence.postgresql.ContractRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CustomerRepository;
+import com.g7auto.infrastructure.persistence.postgresql.EmployeeRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.ContractQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -45,9 +45,9 @@ public class ContractServiceImpl implements ContractService {
   private final ContractMapper contractMapper;
 
   @Override
-  public PageResponse<ContractResponse> search(ContractSearchRequest request) {
+  public Page<ContractResponse> search(ContractSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
-    return PageResponse.of(
+    return Page.of(
         contractQueryRepository.search(request.getStatus(), request.getCustomerId(),
             request.getCarId(), request.getFromDate(), request.getToDate(), pageable),
         contractMapper::toResponse,

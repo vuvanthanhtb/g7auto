@@ -5,7 +5,7 @@ import com.g7auto.application.dto.request.StatusRequest;
 import com.g7auto.application.dto.response.AccountApprovingResponse;
 import com.g7auto.application.service.AccountApprovingService;
 import com.g7auto.core.response.ApiResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,20 +23,20 @@ public class AccountApprovingController {
   private final AccountApprovingService accountApprovingService;
 
   @GetMapping("/search")
-  public ResponseEntity<ApiResponse<PageResponse<AccountApprovingResponse>>> search(
+  public ResponseEntity<ApiResponse<Page<AccountApprovingResponse>>> search(
       @ModelAttribute AccountApprovingSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(accountApprovingService.search(request)));
   }
 
   @GetMapping("/search-pending")
-  public ResponseEntity<ApiResponse<PageResponse<AccountApprovingResponse>>> searchPendingAccounts(
+  public ResponseEntity<ApiResponse<Page<AccountApprovingResponse>>> searchPendingAccounts(
       @ModelAttribute AccountApprovingSearchRequest request) {
     return ResponseEntity.ok(
         ApiResponse.ok(accountApprovingService.searchPendingAccounts(request)));
   }
 
   @GetMapping("/search-approved")
-  public ResponseEntity<ApiResponse<PageResponse<AccountApprovingResponse>>> searchApprovedAccounts(
+  public ResponseEntity<ApiResponse<Page<AccountApprovingResponse>>> searchApprovedAccounts(
       @ModelAttribute AccountApprovingSearchRequest request) {
     return ResponseEntity.ok(
         ApiResponse.ok(accountApprovingService.searchApprovedAccounts(request)));

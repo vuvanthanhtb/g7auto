@@ -10,19 +10,19 @@ import com.g7auto.core.entity.TestDriveStatus;
 import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Car;
 import com.g7auto.domain.entity.Customer;
 import com.g7auto.domain.entity.Employee;
 import com.g7auto.domain.entity.Showroom;
 import com.g7auto.domain.entity.TestDrive;
-import com.g7auto.infrastructure.persistence.CarRepository;
-import com.g7auto.infrastructure.persistence.CustomerRepository;
-import com.g7auto.infrastructure.persistence.EmployeeRepository;
-import com.g7auto.infrastructure.persistence.ShowroomRepository;
-import com.g7auto.infrastructure.persistence.TestDriveRepository;
-import com.g7auto.infrastructure.persistence.query.TestDriveQueryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CarRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CustomerRepository;
+import com.g7auto.infrastructure.persistence.postgresql.EmployeeRepository;
+import com.g7auto.infrastructure.persistence.postgresql.ShowroomRepository;
+import com.g7auto.infrastructure.persistence.postgresql.TestDriveRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.TestDriveQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,10 +46,10 @@ public class TestDriveServiceImpl implements TestDriveService {
   private final TestDriveMapper testDriveMapper;
 
   @Override
-  public PageResponse<TestDriveResponse> search(
+  public Page<TestDriveResponse> search(
       TestDriveSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
-    return PageResponse.of(
+    return Page.of(
         testDriveQueryRepository.search(request.getStatus(),
             request.getCustomerId(),
             request.getShowroomId(), request.getFromDate(), request.getToDate(), pageable),

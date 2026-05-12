@@ -6,7 +6,7 @@ import com.g7auto.application.dto.response.CustomerResponse;
 import com.g7auto.application.dto.response.ImportResult;
 import com.g7auto.application.service.CustomerService;
 import com.g7auto.core.response.ApiResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ public class CustomerController {
   private final CustomerService customerService;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<PageResponse<CustomerResponse>>> search(
+  public ResponseEntity<ApiResponse<Page<CustomerResponse>>> search(
       @ModelAttribute CustomerSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(customerService.search(request)));
   }

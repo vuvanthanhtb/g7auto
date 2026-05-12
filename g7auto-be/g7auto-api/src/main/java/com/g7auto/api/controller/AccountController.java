@@ -4,7 +4,7 @@ import com.g7auto.application.dto.request.AccountSearchRequest;
 import com.g7auto.application.dto.response.AccountResponse;
 import com.g7auto.application.service.AccountService;
 import com.g7auto.core.response.ApiResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class AccountController {
   private final AccountService accountService;
 
   @GetMapping("/search")
-  public ResponseEntity<ApiResponse<PageResponse<AccountResponse>>> search(
+  public ResponseEntity<ApiResponse<Page<AccountResponse>>> search(
       @ModelAttribute
       AccountSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(accountService.search(request)));

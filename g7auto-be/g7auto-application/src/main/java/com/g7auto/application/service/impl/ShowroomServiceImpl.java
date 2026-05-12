@@ -14,11 +14,11 @@ import com.g7auto.core.exception.ConflictException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
 import com.g7auto.core.export.ExcelSupport;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Showroom;
-import com.g7auto.infrastructure.persistence.ShowroomRepository;
-import com.g7auto.infrastructure.persistence.query.ShowroomQueryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.ShowroomRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.ShowroomQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,9 +46,9 @@ public class ShowroomServiceImpl implements ShowroomService {
   private final ShowroomMapper showroomMapper;
 
   @Override
-  public PageResponse<ShowroomResponse> search(ShowroomSearchRequest request) {
+  public Page<ShowroomResponse> search(ShowroomSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
-    return PageResponse.of(
+    return Page.of(
         showroomQueryRepository.search(request.getName(), request.getPhone(),
             request.getFromDate(), request.getToDate(), pageable),
         showroomMapper::toResponse,
@@ -119,8 +119,10 @@ public class ShowroomServiceImpl implements ShowroomService {
           req.setEmail(getCellString(row, 3));
           String managerIdStr = getCellString(row, 4);
           if (!managerIdStr.isBlank()) {
-            try { req.setManagerId(Long.parseLong(managerIdStr)); }
-            catch (NumberFormatException ignored) {}
+            try {
+              req.setManagerId(Long.parseLong(managerIdStr));
+            } catch (NumberFormatException ignored) {
+            }
           }
           create(req);
           success++;

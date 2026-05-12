@@ -5,7 +5,7 @@ import com.g7auto.application.dto.request.CarTransferSearchRequest;
 import com.g7auto.application.dto.response.CarTransferResponse;
 import com.g7auto.application.service.CarTransferService;
 import com.g7auto.core.response.ApiResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class CarTransferController {
   private final CarTransferService carTransferService;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<PageResponse<CarTransferResponse>>> search(
+  public ResponseEntity<ApiResponse<Page<CarTransferResponse>>> search(
       @ModelAttribute CarTransferSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(carTransferService.search(request)));
   }

@@ -21,18 +21,18 @@ import com.g7auto.core.entity.Role;
 import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.ConflictUtils;
 import com.g7auto.core.exception.NotFoundUtils;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.DataUtils;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Account;
 import com.g7auto.domain.entity.Employee;
 import com.g7auto.domain.entity.EmployeeApproval;
 import com.g7auto.domain.entity.Showroom;
-import com.g7auto.infrastructure.persistence.AccountRepository;
-import com.g7auto.infrastructure.persistence.EmployeeApprovalRepository;
-import com.g7auto.infrastructure.persistence.EmployeeRepository;
-import com.g7auto.infrastructure.persistence.ShowroomRepository;
-import com.g7auto.infrastructure.persistence.query.EmployeeApprovalQueryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.AccountRepository;
+import com.g7auto.infrastructure.persistence.postgresql.EmployeeApprovalRepository;
+import com.g7auto.infrastructure.persistence.postgresql.EmployeeRepository;
+import com.g7auto.infrastructure.persistence.postgresql.ShowroomRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.EmployeeApprovalQueryRepository;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -58,8 +58,8 @@ public class EmployeeApprovalServiceImpl implements EmployeeApprovalService {
   PasswordEncoder passwordEncoder;
 
   @Override
-  public PageResponse<EmployeeResponse> search(EmployeeApprovalSearchRequest request) {
-    return PageResponse.of(
+  public Page<EmployeeResponse> search(EmployeeApprovalSearchRequest request) {
+    return Page.of(
         employeeApprovalQueryRepository.search(
             request.getFullName(),
             request.getShowroomId(),

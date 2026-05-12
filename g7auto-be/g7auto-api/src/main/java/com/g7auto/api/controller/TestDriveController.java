@@ -5,7 +5,7 @@ import com.g7auto.application.dto.request.TestDriveSearchRequest;
 import com.g7auto.application.dto.response.TestDriveResponse;
 import com.g7auto.application.service.TestDriveService;
 import com.g7auto.core.response.ApiResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,13 +27,13 @@ public class TestDriveController {
   private final TestDriveService testDriveService;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<PageResponse<TestDriveResponse>>> search(
+  public ResponseEntity<ApiResponse<Page<TestDriveResponse>>> search(
       @ModelAttribute TestDriveSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(testDriveService.search(request)));
   }
 
   @GetMapping("/list")
-  public ResponseEntity<ApiResponse<PageResponse<TestDriveResponse>>> list(
+  public ResponseEntity<ApiResponse<Page<TestDriveResponse>>> list(
       @ModelAttribute TestDriveSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(testDriveService.search(request)));
   }

@@ -4,13 +4,13 @@ import com.g7auto.application.dto.request.CustomerRequest;
 import com.g7auto.application.dto.request.CustomerSearchRequest;
 import com.g7auto.application.dto.response.CustomerResponse;
 import com.g7auto.application.dto.response.ImportResult;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CustomerService {
 
-  PageResponse<CustomerResponse> search(CustomerSearchRequest request);
+  Page<CustomerResponse> search(CustomerSearchRequest request);
 
   CustomerResponse findById(Long id);
 

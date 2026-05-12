@@ -10,16 +10,16 @@ import com.g7auto.core.entity.QuotationStatus;
 import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Car;
 import com.g7auto.domain.entity.Customer;
 import com.g7auto.domain.entity.Quotation;
-import com.g7auto.infrastructure.persistence.CarRepository;
-import com.g7auto.infrastructure.persistence.CustomerRepository;
-import com.g7auto.infrastructure.persistence.EmployeeRepository;
-import com.g7auto.infrastructure.persistence.QuotationRepository;
-import com.g7auto.infrastructure.persistence.query.QuotationQueryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CarRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CustomerRepository;
+import com.g7auto.infrastructure.persistence.postgresql.EmployeeRepository;
+import com.g7auto.infrastructure.persistence.postgresql.QuotationRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.QuotationQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -43,10 +43,10 @@ public class QuotationServiceImpl implements QuotationService {
   private final QuotationMapper quotationMapper;
 
   @Override
-  public PageResponse<QuotationResponse> search(
+  public Page<QuotationResponse> search(
       QuotationSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
-    return PageResponse.of(
+    return Page.of(
         quotationQueryRepository.search(request.getStatus(),
             request.getCustomerId(),
             request.getFromDate(), request.getToDate(), pageable),

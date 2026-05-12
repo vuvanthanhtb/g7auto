@@ -7,7 +7,7 @@ import com.g7auto.application.dto.response.CarImportResultResponse;
 import com.g7auto.application.dto.response.CarResponse;
 import com.g7auto.application.service.CarService;
 import com.g7auto.core.response.ApiResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ public class CarController {
   private final CarService carService;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<PageResponse<CarResponse>>> search(
+  public ResponseEntity<ApiResponse<Page<CarResponse>>> search(
       @ModelAttribute CarSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(carService.search(request)));
   }

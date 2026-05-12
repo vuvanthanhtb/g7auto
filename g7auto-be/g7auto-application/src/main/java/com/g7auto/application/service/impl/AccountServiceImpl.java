@@ -10,12 +10,12 @@ import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportEngine;
 import com.g7auto.core.export.ExcelSupport;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.ExportUtils;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Account;
-import com.g7auto.infrastructure.persistence.AccountRepository;
-import com.g7auto.infrastructure.persistence.query.AccountQueryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.AccountRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.AccountQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -24,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -39,15 +38,15 @@ public class AccountServiceImpl implements AccountService {
   final AccountMapper accountMapper;
 
   @Override
-  public PageResponse<AccountResponse> search(AccountSearchRequest request) {
+  public Page<AccountResponse> search(AccountSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
 
-    Page<Account> accounts = accountQueryRepository.search(
+    org.springframework.data.domain.Page<Account> accounts = accountQueryRepository.search(
         request.getUsername(), request.getFullName(), request.getStatus(), request.getFromDate()
         , request.getToDate(),
         pageable);
 
-    return PageResponse.of(accounts, accountMapper::toResponse,
+    return Page.of(accounts, accountMapper::toResponse,
         request.getFromDate(), request.getToDate());
   }
 

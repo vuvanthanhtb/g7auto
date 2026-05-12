@@ -4,14 +4,14 @@ import com.g7auto.application.dto.request.CarModelRequest;
 import com.g7auto.application.dto.request.CarModelSearchRequest;
 import com.g7auto.application.dto.response.CarModelResponse;
 import com.g7auto.application.dto.response.ImportResult;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CarModelService {
 
-  PageResponse<CarModelResponse> search(CarModelSearchRequest request);
+  Page<CarModelResponse> search(CarModelSearchRequest request);
 
   List<CarModelResponse> findAllList();
 

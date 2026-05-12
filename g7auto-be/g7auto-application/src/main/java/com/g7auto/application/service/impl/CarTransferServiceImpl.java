@@ -11,15 +11,15 @@ import com.g7auto.core.entity.TransferStatus;
 import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Car;
 import com.g7auto.domain.entity.CarTransfer;
 import com.g7auto.domain.entity.Showroom;
-import com.g7auto.infrastructure.persistence.CarRepository;
-import com.g7auto.infrastructure.persistence.CarTransferRepository;
-import com.g7auto.infrastructure.persistence.ShowroomRepository;
-import com.g7auto.infrastructure.persistence.query.CarTransferQueryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CarRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CarTransferRepository;
+import com.g7auto.infrastructure.persistence.postgresql.ShowroomRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.CarTransferQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.List;
@@ -41,10 +41,10 @@ public class CarTransferServiceImpl implements CarTransferService {
   private final CarTransferMapper carTransferMapper;
 
   @Override
-  public PageResponse<CarTransferResponse> search(
+  public Page<CarTransferResponse> search(
       CarTransferSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
-    return PageResponse.of(
+    return Page.of(
         carTransferQueryRepository.search(request.getStatus(), request.getShowroomId(),
             request.getFromDate(), request.getToDate(), pageable),
         carTransferMapper::toResponse,

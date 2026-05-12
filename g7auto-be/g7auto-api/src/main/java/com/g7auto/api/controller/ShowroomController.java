@@ -6,7 +6,7 @@ import com.g7auto.application.dto.response.ImportResult;
 import com.g7auto.application.dto.response.ShowroomResponse;
 import com.g7auto.application.service.ShowroomService;
 import com.g7auto.core.response.ApiResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +32,13 @@ public class ShowroomController {
   private final ShowroomService showroomService;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<PageResponse<ShowroomResponse>>> search(
+  public ResponseEntity<ApiResponse<Page<ShowroomResponse>>> search(
       @ModelAttribute ShowroomSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(showroomService.search(request)));
   }
 
   @GetMapping("/list")
-  public ResponseEntity<ApiResponse<PageResponse<ShowroomResponse>>> list(
+  public ResponseEntity<ApiResponse<Page<ShowroomResponse>>> list(
       @ModelAttribute ShowroomSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(showroomService.search(request)));
   }

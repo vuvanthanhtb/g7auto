@@ -4,7 +4,7 @@ import com.g7auto.application.dto.request.EmployeeSearchRequest;
 import com.g7auto.application.dto.response.EmployeeResponse;
 import com.g7auto.application.service.EmployeeService;
 import com.g7auto.core.response.ApiResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class EmployeeController {
   private final EmployeeService employeeService;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<PageResponse<EmployeeResponse>>> search(
+  public ResponseEntity<ApiResponse<Page<EmployeeResponse>>> search(
       @ModelAttribute EmployeeSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(employeeService.search(request)));
   }

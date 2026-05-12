@@ -10,14 +10,13 @@ import com.g7auto.core.entity.EmployeeStatus;
 import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Employee;
 import com.g7auto.domain.entity.Showroom;
-import com.g7auto.infrastructure.persistence.AccountRepository;
-import com.g7auto.infrastructure.persistence.EmployeeRepository;
-import com.g7auto.infrastructure.persistence.ShowroomRepository;
-import com.g7auto.infrastructure.persistence.query.EmployeeQueryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.EmployeeRepository;
+import com.g7auto.infrastructure.persistence.postgresql.ShowroomRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.EmployeeQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -33,14 +32,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   private final EmployeeRepository employeeRepository;
   private final ShowroomRepository showroomRepository;
-  private final AccountRepository accountRepository;
   private final EmployeeQueryRepository employeeQueryRepository;
   private final EmployeeMapper employeeMapper;
 
   @Override
-  public PageResponse<EmployeeResponse> search(EmployeeSearchRequest request) {
+  public Page<EmployeeResponse> search(EmployeeSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
-    return PageResponse.of(
+    return Page.of(
         employeeQueryRepository.search(request.getFullName(),
             request.getShowroomId(),
             request.getEmployeeStatus(), request.getFromDate(), request.getToDate(), pageable),

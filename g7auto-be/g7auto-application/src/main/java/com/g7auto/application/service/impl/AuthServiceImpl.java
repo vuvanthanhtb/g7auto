@@ -15,7 +15,7 @@ import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.ConflictException;
 import com.g7auto.core.exception.NotFoundException;
 import com.g7auto.domain.entity.Account;
-import com.g7auto.infrastructure.persistence.AccountRepository;
+import com.g7auto.infrastructure.persistence.postgresql.AccountRepository;
 import com.g7auto.infrastructure.security.JwtService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -102,8 +102,12 @@ public class AuthServiceImpl implements AuthService {
   @Override
   @Transactional
   public AccountResponse updateProfile(Account account, UpdateProfileRequest request) {
-    if (request.getFullName() != null) account.setFullName(request.getFullName());
-    if (request.getEmail() != null) account.setEmail(request.getEmail());
+    if (request.getFullName() != null) {
+      account.setFullName(request.getFullName());
+    }
+    if (request.getEmail() != null) {
+      account.setEmail(request.getEmail());
+    }
     return accountMapper.toResponse(accountRepository.save(account));
   }
 

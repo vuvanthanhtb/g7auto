@@ -12,11 +12,11 @@ import com.g7auto.core.exception.BadRequestException;
 import com.g7auto.core.exception.NotFoundUtils;
 import com.g7auto.core.export.ExcelExportHelper;
 import com.g7auto.core.export.ExcelSupport;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.CarModel;
-import com.g7auto.infrastructure.persistence.CarModelRepository;
-import com.g7auto.infrastructure.persistence.query.CarModelQueryRepository;
+import com.g7auto.infrastructure.persistence.postgresql.CarModelRepository;
+import com.g7auto.infrastructure.persistence.postgresql.query.CarModelQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -31,7 +31,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,11 +46,11 @@ public class CarModelServiceImpl implements CarModelService {
   private final CarModelMapper carModelMapper;
 
   @Override
-  public PageResponse<CarModelResponse> search(CarModelSearchRequest request) {
+  public Page<CarModelResponse> search(CarModelSearchRequest request) {
     Pageable pageable = PageableUtils.from(request);
-    Page<CarModel> carModelPage = carModelQueryRepository.search(
+    org.springframework.data.domain.Page<CarModel> carModelPage = carModelQueryRepository.search(
         request.getName(), request.getManufacturer(), request.getYear(), pageable);
-    return PageResponse.of(carModelPage, carModelMapper::toResponse);
+    return Page.of(carModelPage, carModelMapper::toResponse);
   }
 
   @Override

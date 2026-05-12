@@ -5,7 +5,7 @@ import com.g7auto.application.dto.request.PaymentSearchRequest;
 import com.g7auto.application.dto.response.PaymentResponse;
 import com.g7auto.application.service.PaymentService;
 import com.g7auto.core.response.ApiResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +27,13 @@ public class PaymentController {
   private final PaymentService paymentService;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<PageResponse<PaymentResponse>>> search(
+  public ResponseEntity<ApiResponse<Page<PaymentResponse>>> search(
       @ModelAttribute PaymentSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(paymentService.search(request)));
   }
 
   @GetMapping("/list")
-  public ResponseEntity<ApiResponse<PageResponse<PaymentResponse>>> list(
+  public ResponseEntity<ApiResponse<Page<PaymentResponse>>> list(
       @ModelAttribute PaymentSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(paymentService.search(request)));
   }

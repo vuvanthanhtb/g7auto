@@ -7,7 +7,7 @@ import com.g7auto.application.dto.request.StatusRequest;
 import com.g7auto.application.dto.response.EmployeeResponse;
 import com.g7auto.application.service.EmployeeApprovalService;
 import com.g7auto.core.response.ApiResponse;
-import com.g7auto.core.response.PageResponse;
+import com.g7auto.core.response.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,7 +28,7 @@ public class EmployeeApprovalController {
   private final EmployeeApprovalService employeeApprovalService;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<PageResponse<EmployeeResponse>>> search(
+  public ResponseEntity<ApiResponse<Page<EmployeeResponse>>> search(
       @ModelAttribute EmployeeApprovalSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(employeeApprovalService.search(request)));
   }
