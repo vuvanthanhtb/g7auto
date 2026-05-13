@@ -10,8 +10,8 @@ import {
   cancelTestDrive,
   exportTestDrives,
 } from "../shell/test-drives.slice";
-import type { TestDriveRequest, TestDriveSearchForm } from "../shell/test-drives.type";
-import { testDrivesInitialValues, initTestDriveSearchForm } from "./test-drives.config";
+import type { TestDriveCreateFormValues, TestDriveDetailFormValues, TestDriveRequest, TestDriveSearchForm } from "../shell/test-drives.type";
+import { testDrivesInitialValues, testDriveDetailInitialValues, initTestDriveSearchForm } from "./test-drives.config";
 import { BTN_SEARCH, BTN_REFRESH, BTN_EXPORT, BTN_DETAIL, BTN_SUBMIT, BTN_CONFIRM, BTN_COMPLETE, BTN_CANCEL } from "@/libs/constants/button.constant";
 
 type TableRow = Record<string, unknown>;
@@ -21,7 +21,8 @@ export const useTestDrives = () => {
   const { selected } = useAppSelector((s) => s.testDrives);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
-  const [formValues, setFormValues] = useState<Record<string, unknown>>(testDrivesInitialValues);
+  const [createFormValues, setCreateFormValues] = useState<TestDriveCreateFormValues>(testDrivesInitialValues);
+  const [detailFormValues, setDetailFormValues] = useState<TestDriveDetailFormValues>(testDriveDetailInitialValues);
   const [searchQuery, setSearchQuery] = useState<TestDriveSearchForm>(initTestDriveSearchForm);
 
   useEffect(() => {
@@ -33,12 +34,12 @@ export const useTestDrives = () => {
   }, [dispatch, searchQuery]);
 
   useEffect(() => {
-    if (selected && editId) setFormValues(selected as unknown as Record<string, unknown>);
+    if (selected && editId) setDetailFormValues({ notes: selected.notes ?? "" });
   }, [selected, editId]);
 
   const openCreate = () => {
     setEditId(null);
-    setFormValues(testDrivesInitialValues);
+    setCreateFormValues(testDrivesInitialValues);
     setDrawerOpen(true);
   };
 
@@ -105,8 +106,8 @@ export const useTestDrives = () => {
   };
 
   return {
-    drawerOpen, editId, formValues, searchQuery,
+    drawerOpen, editId, createFormValues, detailFormValues, searchQuery,
     openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers, detailHandlers,
-    setFormValues, handlePageChange,
+    setCreateFormValues, setDetailFormValues, handlePageChange,
   };
 };

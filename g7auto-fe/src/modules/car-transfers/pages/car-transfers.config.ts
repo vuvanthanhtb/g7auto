@@ -7,7 +7,6 @@ import {
 } from "@/libs/constants/button.constant";
 import {
   BUTTON,
-  NUMBER_INPUT,
   SELECT,
   TEXT,
   DATE,
@@ -24,7 +23,10 @@ import {
 } from "@/libs/constants/options.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
-import type { CarTransferSearchForm } from "./car-transfers.type";
+import type {
+  CarTransferSearchForm,
+  CarTransferCreateFormValues,
+} from "../shell/car-transfers.type";
 
 export const getCarTransferColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
@@ -40,7 +42,7 @@ export const getCarTransferColumns = (): BaseTableColumn[] => [
     type: TBL_STRING,
   },
   { name: "reason", label: "TRANSFERS_FIELD_REASON", type: TBL_STRING },
-  { name: "status", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
+  { name: "statusDisplay", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
   {
     name: "transferDate",
     label: "COMMON_LABEL_TRANSFER_DATE",
@@ -113,23 +115,26 @@ export const getCarTransferSearchConfig = (): IBaseFormConfig => ({
 export const getCarTransfersFormConfig = (): IBaseFormConfig => ({
   fields: [
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "carId",
       label: "COMMON_LABEL_CAR",
+      option: "carOptions",
       required: true,
       size: 12,
     },
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "fromShowroomId",
       label: "TRANSFERS_FIELD_FROM_SHOWROOM",
+      option: "showroomOptions",
       required: true,
       size: 6,
     },
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "toShowroomId",
       label: "TRANSFERS_FIELD_TO_SHOWROOM",
+      option: "showroomOptions",
       required: true,
       size: 6,
     },
@@ -157,10 +162,10 @@ export const getCarTransfersFormConfig = (): IBaseFormConfig => ({
   ],
 });
 
-export const createInitialValues = {
-  carId: "",
-  fromShowroomId: "",
-  toShowroomId: "",
+export const createInitialValues: CarTransferCreateFormValues = {
+  carId: null,
+  fromShowroomId: null,
+  toShowroomId: null,
   reason: "",
   expectedReceiveDate: "",
   notes: "",

@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface DepositRepository extends JpaRepository<Deposit, Long> {
 
   List<Deposit> findByCarIdAndStatus(Long carId, DepositStatus status);
+
+  List<Deposit> findByStatusNotIn(List<DepositStatus> statuses);
 }

@@ -11,12 +11,14 @@ import {
   downloadCarTemplate,
 } from "../shell/cars.slice";
 import type {
+  CarCreateFormValues,
+  CarEditFormValues,
   CarRequest,
   CarQuery,
   CarSearchForm,
   CarUpdateRequest,
 } from "../shell/cars.type";
-import { carCreateInitialValues, initCarSearchForm } from "./cars.config";
+import { carCreateInitialValues, carEditInitialValues, initCarSearchForm } from "./cars.config";
 import {
   BTN_SEARCH,
   BTN_REFRESH,
@@ -50,9 +52,8 @@ export const useCars = () => {
   const carModelAll = useAppSelector((s) => s.carModels.carModelAll) ?? [];
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
-  const [formValues, setFormValues] = useState<Record<string, unknown>>(
-    carCreateInitialValues,
-  );
+  const [createFormValues, setCreateFormValues] = useState<CarCreateFormValues>(carCreateInitialValues);
+  const [editFormValues, setEditFormValues] = useState<CarEditFormValues>(carEditInitialValues);
   const [searchQuery, setSearchQuery] =
     useState<CarSearchForm>(initCarSearchForm);
   const importInputRef = useRef<HTMLInputElement>(null);
@@ -78,7 +79,7 @@ export const useCars = () => {
 
   useEffect(() => {
     if (selected && editId) {
-      setFormValues({
+      setEditFormValues({
         licensePlate: selected.licensePlate ?? "",
         showroomId: selected.showroomId
           ? { label: selected.showroomName, value: selected.showroomId }
@@ -94,7 +95,7 @@ export const useCars = () => {
 
   const openCreate = () => {
     setEditId(null);
-    setFormValues(carCreateInitialValues);
+    setCreateFormValues(carCreateInitialValues);
     setDrawerOpen(true);
   };
 
@@ -176,7 +177,8 @@ export const useCars = () => {
   return {
     drawerOpen,
     editId,
-    formValues,
+    createFormValues,
+    editFormValues,
     searchQuery,
     showroomOptions,
     carModelOptions,
@@ -185,7 +187,8 @@ export const useCars = () => {
     handleCellAction,
     searchHandlers,
     formHandlers,
-    setFormValues,
+    setCreateFormValues,
+    setEditFormValues,
     handlePageChange,
     importInputRef,
     handleImportFile,

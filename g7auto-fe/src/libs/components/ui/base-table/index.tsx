@@ -137,7 +137,8 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
         {t("COMMON_LABEL_TOTAL_RECORDS")}:&nbsp;<span>{totalElements}</span>
       </div>
 
-      <Table bordered responsive className={styles["table-container"]}>
+      <div className={styles["table-scroll-wrapper"]}>
+      <Table bordered className={styles["table-container"]}>
         <thead>
           <tr>
             {tableConfig.map((col, index) => {
@@ -238,6 +239,17 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
                       color: colorCell?.(col.refColor, row) ?? "unset",
                     };
                   }
+
+                  let dataCell = row[col.name];
+
+                  if (col?.formatter) {
+                    dataCell = col.formatter(row[col.name]);
+                  } else if (col.type === TBL_NUMBER) {
+                    dataCell = formatNumber(row[col.name] as number);
+                  } else {
+                    dataCell = String(row[col.name] ?? "");
+                  }
+
                   return (
                     <td
                       key={`cell-${colIndex}-str`}
@@ -248,9 +260,7 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
                       }
                       className="align-middle"
                     >
-                      {col.type === TBL_NUMBER
-                        ? formatNumber(row[col.name] as number)
-                        : String(row[col.name] ?? "")}
+                      {dataCell as React.ReactNode}
                     </td>
                   );
                 }
@@ -301,6 +311,7 @@ const BaseTableComponent: React.FC<BaseTableProps> = (props) => {
           ))}
         </tbody>
       </Table>
+      </div>
 
       {totalPages > 1 && (
         <Stack alignItems="center" sx={{ py: 2 }}>

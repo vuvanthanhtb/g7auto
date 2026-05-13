@@ -10,6 +10,8 @@ import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type {
   UpdateProfileRequest,
   ChangePasswordRequest,
+  ProfileDrawerFormValues,
+  PasswordFormValues,
 } from "@/modules/auth/shell/auth.type";
 import * as Yup from "yup";
 import { t } from "@/libs/i18n";
@@ -66,33 +68,25 @@ const ProfileDrawer: React.FC<Props> = ({ open, onClose }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((s) => s.auth.user);
 
-  const [profileValues, setProfileValues] = useState({
+  const [profileValues, setProfileValues] = useState<ProfileDrawerFormValues>({
     username: user?.username ?? "",
     fullName: user?.fullName ?? "",
     email: user?.email ?? "",
   });
 
-  const passwordValues = {
+  const [passwordValues] = useState<PasswordFormValues>({
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
+  });
+
+  const handleUpdateProfile = async (data: ProfileDrawerFormValues) => {
+    await dispatch(updateProfile({ fullName: data.fullName, email: data.email } as UpdateProfileRequest));
   };
 
-  const handleUpdateProfile = async (data: Record<string, unknown>) => {
-    await dispatch(
-      updateProfile({
-        fullName: data.fullName as string,
-        email: data.email as string,
-      } as UpdateProfileRequest),
-    );
-  };
-
-  const handleChangePassword = async (data: Record<string, unknown>) => {
+  const handleChangePassword = async (data: PasswordFormValues) => {
     const result = await dispatch(
-      changePassword({
-        currentPassword: data.currentPassword as string,
-        newPassword: data.newPassword as string,
-      } as ChangePasswordRequest),
+      changePassword({ currentPassword: data.currentPassword, newPassword: data.newPassword } as ChangePasswordRequest),
     );
     if (changePassword.rejected.match(result)) return false;
   };
@@ -102,14 +96,12 @@ const ProfileDrawer: React.FC<Props> = ({ open, onClose }) => {
       <Typography variant="subtitle2" fontWeight={600} sx={{ mb: 1 }}>
         {t("PROFILE_PERSONAL_INFO")}
       </Typography>
-      <BaseFormComponent
+      <BaseFormComponent<ProfileDrawerFormValues>
         formConfig={getProfileFormConfig()}
         validationSchema={getProfileValidation()}
         values={profileValues}
-        onChange={(d) =>
-          setProfileValues((p) => ({ ...p, ...d }) as typeof profileValues)
-        }
-        handlers={{ [BTN_SUBMIT]: handleUpdateProfile }}
+        onChange={setProfileValues}
+        handlers={{ [BTN_SUBMIT]: handleUpdateProfile as (data: unknown) => Promise<void> }}
       />
 
       <Divider sx={{ my: 2 }} />
@@ -117,11 +109,11 @@ const ProfileDrawer: React.FC<Props> = ({ open, onClose }) => {
       <Typography variant="subtitle2" fontWeight={600} sx={{ mb: 1 }}>
         {t("PROFILE_CHANGE_PASSWORD")}
       </Typography>
-      <BaseFormComponent
+      <BaseFormComponent<PasswordFormValues>
         formConfig={getPasswordFormConfig()}
         validationSchema={getPasswordValidation()}
         values={passwordValues}
-        handlers={{ [BTN_SUBMIT]: handleChangePassword }}
+        handlers={{ [BTN_SUBMIT]: handleChangePassword as (data: unknown) => Promise<void | boolean> }}
       />
     </BaseDrawer>
   );

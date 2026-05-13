@@ -41,6 +41,12 @@ admin:
 
 superadmin:
   username: ${SUPERADMIN_USERNAME}
-  email: ${SUPERADMIN_EMAIL}
   password: ${SUPERADMIN_PASSWORD}
+  email: ${SUPERADMIN_EMAIL}
   full-name: ${SUPERADMIN_FULLNAME}
+  phone: ${SUPERADMIN_PHONE:}
+  address: ${SUPERADMIN_ADDRESS:}
+  birth-date: ${SUPERADMIN_BIRTH_DATE:}
+  gender: ${SUPERADMIN_GENDER:}
+  national-id: ${SUPERADMIN_NATIONAL_ID:}
+  join-date: ${SUPERADMIN_JOIN_DATE:}

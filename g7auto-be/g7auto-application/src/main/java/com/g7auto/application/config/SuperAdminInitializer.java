@@ -53,6 +53,12 @@ public class SuperAdminInitializer implements ApplicationRunner {
     employee.setUsername(props.getUsername());
     employee.setFullName(props.getFullName());
     employee.setEmail(props.getEmail());
+    employee.setPhone(props.getPhone());
+    employee.setAddress(props.getAddress());
+    employee.setBirthDate(props.getBirthDate());
+    employee.setGender(props.getGender());
+    employee.setNationalId(props.getNationalId());
+    employee.setJoinDate(props.getJoinDate());
     employee.setEmployeeStatus(EmployeeStatus.ACTIVE);
     employeeRepository.save(employee);
 

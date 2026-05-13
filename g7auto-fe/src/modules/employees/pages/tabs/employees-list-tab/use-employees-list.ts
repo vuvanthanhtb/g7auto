@@ -6,7 +6,10 @@ import {
   createEmployeeApproving,
   updateEmployeeApproving,
   exportEmployees,
+  importEmployeeApprovals,
+  downloadEmployeeApprovalTemplate,
 } from "@/modules/employees/shell/employees.slice";
+import type { EmployeeImportResult } from "@/modules/employees/shell/employees.type";
 import {
   BTN_SEARCH,
   BTN_REFRESH,
@@ -166,6 +169,17 @@ export const useEmployeesList = () => {
     setSearchParams(values);
   };
 
+  const handleImport = async (file: File): Promise<EmployeeImportResult | undefined> => {
+    const result = await dispatch(importEmployeeApprovals(file));
+    if (importEmployeeApprovals.fulfilled.match(result)) {
+      return result.payload;
+    }
+  };
+
+  const handleTemplate = async () => {
+    await dispatch(downloadEmployeeApprovalTemplate());
+  };
+
   return {
     searchParams,
     employeeStatusOptions,
@@ -181,5 +195,7 @@ export const useEmployeesList = () => {
     closeDrawer,
     setFormValues,
     onchange,
+    handleImport,
+    handleTemplate,
   };
 };

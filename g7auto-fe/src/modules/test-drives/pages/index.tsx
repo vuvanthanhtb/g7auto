@@ -9,21 +9,40 @@ import {
   getTestDrivesDetailFormConfig,
   getTestDriveSearchConfig,
 } from "./test-drives.config";
-import { testDrivesValidation, testDrivesDetailValidation } from "./test-drives.validation";
+import {
+  testDrivesValidation,
+  testDrivesDetailValidation,
+} from "./test-drives.validation";
 import { testDriveStatusOptions } from "@/libs/constants/options.constant";
 import { useTestDrives } from "./use-test-drives";
 import { t } from "@/libs/i18n";
+import type {
+  TestDriveSearchForm,
+  TestDriveCreateFormValues,
+  TestDriveDetailFormValues,
+} from "../shell/test-drives.type";
 
 const TestDrivesPage = () => {
   const {
-    drawerOpen, editId, formValues, searchQuery,
-    openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers, detailHandlers,
-    setFormValues, handlePageChange,
+    drawerOpen,
+    editId,
+    createFormValues,
+    detailFormValues,
+    searchQuery,
+    openCreate,
+    closeDrawer,
+    handleCellAction,
+    searchHandlers,
+    formHandlers,
+    detailHandlers,
+    setCreateFormValues,
+    setDetailFormValues,
+    handlePageChange,
   } = useTestDrives();
 
   return (
     <Box sx={{ p: 3 }}>
-      <BaseFormComponent
+      <BaseFormComponent<TestDriveSearchForm>
         formConfig={getTestDriveSearchConfig()}
         options={{ testDriveStatusOptions }}
         values={searchQuery}
@@ -35,7 +54,11 @@ const TestDrivesPage = () => {
         state="testDriveTable"
         title={t("TEST_DRIVES_PAGE_HEADER")}
         extra={
-          <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={openCreate}
+          >
             {t("TEST_DRIVES_BTN_REGISTER")}
           </Button>
         }
@@ -44,23 +67,27 @@ const TestDrivesPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("TEST_DRIVES_DRAWER_DETAIL") : t("TEST_DRIVES_BTN_REGISTER")}
+        title={
+          editId
+            ? t("TEST_DRIVES_DRAWER_DETAIL")
+            : t("TEST_DRIVES_BTN_REGISTER")
+        }
         onClose={closeDrawer}
       >
         {editId ? (
-          <BaseFormComponent
+          <BaseFormComponent<TestDriveDetailFormValues>
             formConfig={getTestDrivesDetailFormConfig()}
             validationSchema={testDrivesDetailValidation}
-            values={formValues}
-            onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+            values={detailFormValues}
+            onChange={setDetailFormValues}
             handlers={detailHandlers}
           />
         ) : (
-          <BaseFormComponent
+          <BaseFormComponent<TestDriveCreateFormValues>
             formConfig={getTestDrivesFormConfig()}
             validationSchema={testDrivesValidation}
-            values={formValues}
-            onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+            values={createFormValues}
+            onChange={setCreateFormValues}
             handlers={formHandlers}
           />
         )}

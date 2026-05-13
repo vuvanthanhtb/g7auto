@@ -9,8 +9,23 @@ import {
   clearSelectedContracts,
   exportContracts,
 } from "../shell/contracts.slice";
-import type { ContractRequest, ContractUpdateRequest, ContractSearchForm } from "../shell/contracts.type";
-import { contractsInitialValues, initContractSearchForm } from "./contracts.config";
+import { getAllCustomers } from "@/modules/customers/shell/customers.slice";
+import { getAllCars } from "@/modules/cars/shell/cars.slice";
+import { getAllEmployees } from "@/modules/employees/shell/employees.slice";
+import { getAllDeposits } from "@/modules/deposits/shell/deposits.slice";
+import type {
+  ContractCreateFormValues,
+  ContractUpdateFormValues,
+  ContractRequest,
+  ContractUpdateRequest,
+  ContractSearchForm,
+} from "../shell/contracts.type";
+import {
+  contractsInitialValues,
+  contractsUpdateInitialValues,
+  initContractSearchForm,
+} from "./contracts.config";
+import { contractStatusOptions } from "@/libs/constants/options.constant";
 import {
   BTN_SEARCH,
   BTN_REFRESH,
@@ -23,29 +38,70 @@ import {
 
 type TableRow = Record<string, unknown>;
 
+const toId = (v: unknown) => (v as { value?: number } | null)?.value;
+
 export const useContracts = () => {
   const dispatch = useAppDispatch();
   const { selected } = useAppSelector((s) => s.contracts);
+  const customerAll = useAppSelector((s) => s.customers.customerAll) ?? [];
+  const carAll = useAppSelector((s) => s.cars.carAll) ?? [];
+  const employeeAll = useAppSelector((s) => s.employees.employeeAll) ?? [];
+  const depositAll = useAppSelector((s) => s.deposits.depositAll) ?? [];
+
+  const customerOptions = customerAll.map((c) => ({
+    label: c.fullName,
+    value: c.id,
+  }));
+  const carOptions = carAll.map((c) => ({
+    label: `${c.chassisNumber}${c.licensePlate ? ` — ${c.licensePlate}` : ""}`,
+    value: c.id,
+  }));
+  const employeeOptions = employeeAll.map((e) => ({
+    label: e.fullName,
+    value: e.id,
+  }));
+  const depositOptions = depositAll.map((d) => ({
+    label: `#${d.id} — ${d.customerFullName} — ${d.carChassisNumber}`,
+    value: d.id,
+  }));
+
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
-  const [formValues, setFormValues] = useState<Record<string, unknown>>(contractsInitialValues);
-  const [searchQuery, setSearchQuery] = useState<ContractSearchForm>(initContractSearchForm);
+  const [createFormValues, setCreateFormValues] =
+    useState<ContractCreateFormValues>(contractsInitialValues);
+  const [updateFormValues, setUpdateFormValues] =
+    useState<ContractUpdateFormValues>(contractsUpdateInitialValues);
+  const [searchQuery, setSearchQuery] = useState<ContractSearchForm>(
+    initContractSearchForm,
+  );
 
   useEffect(() => {
     document.title = "Hợp đồng — G7Auto";
-  }, []);
+    dispatch(getAllCustomers());
+    dispatch(getAllCars());
+    dispatch(getAllEmployees());
+    dispatch(getAllDeposits());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getContracts(searchQuery));
   }, [dispatch, searchQuery]);
 
   useEffect(() => {
-    if (selected && editId) setFormValues(selected as unknown as Record<string, unknown>);
+    if (selected && editId)
+      setUpdateFormValues({
+        actualDeliveryDate: selected.actualDeliveryDate ?? "",
+        status: selected.status
+          ? (contractStatusOptions.find((o) => o.value === selected.status) ??
+            null)
+          : null,
+        notes: selected.notes ?? "",
+      });
   }, [selected, editId]);
 
   const openCreate = () => {
     setEditId(null);
-    setFormValues(contractsInitialValues);
+    setCreateFormValues(contractsInitialValues);
     setDrawerOpen(true);
   };
 
@@ -66,15 +122,35 @@ export const useContracts = () => {
     }
   };
 
-  const handleSubmit = async (data: Record<string, unknown>) => {
-    await dispatch(createContracts(data as unknown as ContractRequest));
+  const handleCreate = async (data: ContractCreateFormValues) => {
+    const body: ContractRequest = {
+      customerId: toId(data.customerId)!,
+      carId: toId(data.carId)!,
+      employeeId: toId(data.employeeId),
+      depositId: toId(data.depositId),
+      signDate: data.signDate,
+      expectedDeliveryDate: data.expectedDeliveryDate || undefined,
+      contractValue: Number(data.contractValue),
+      notes: data.notes || undefined,
+    };
+    await dispatch(createContracts(body));
     closeDrawer();
     dispatch(getContracts(searchQuery));
   };
 
-  const handleUpdate = async (data: Record<string, unknown>) => {
+  const handleUpdate = async (data: ContractUpdateFormValues) => {
     if (editId) {
-      await dispatch(updateContracts({ id: editId, data: data as unknown as ContractUpdateRequest }));
+      const body: ContractUpdateRequest = {
+        actualDeliveryDate: data.actualDeliveryDate,
+        status: data.status?.value as any,
+        notes: data.notes,
+      };
+      await dispatch(
+        updateContracts({
+          id: editId,
+          data: body,
+        }),
+      );
       closeDrawer();
       dispatch(getContracts(searchQuery));
     }
@@ -87,10 +163,14 @@ export const useContracts = () => {
     [BTN_REFRESH]: () => {
       setSearchQuery(initContractSearchForm);
     },
-    [BTN_EXPORT]: async () => { await dispatch(exportContracts()); },
+    [BTN_EXPORT]: async () => {
+      await dispatch(exportContracts());
+    },
   };
 
-  const formHandlers = { [BTN_SUBMIT]: handleSubmit };
+  const createFormHandlers = {
+    [BTN_SUBMIT]: handleCreate as (data: unknown) => Promise<void>,
+  };
   const updateFormHandlers = { [BTN_UPDATE]: handleUpdate };
 
   const handlePageChange = (page: number) => {
@@ -98,9 +178,23 @@ export const useContracts = () => {
   };
 
   return {
-    drawerOpen, editId, formValues, searchQuery,
-    openCreate, closeDrawer, handleCellAction,
-    searchHandlers, formHandlers, updateFormHandlers,
-    setFormValues, handlePageChange,
+    drawerOpen,
+    editId,
+    createFormValues,
+    updateFormValues,
+    searchQuery,
+    customerOptions,
+    carOptions,
+    employeeOptions,
+    depositOptions,
+    openCreate,
+    closeDrawer,
+    handleCellAction,
+    searchHandlers,
+    createFormHandlers,
+    updateFormHandlers,
+    setCreateFormValues,
+    setUpdateFormValues,
+    handlePageChange,
   };
 };

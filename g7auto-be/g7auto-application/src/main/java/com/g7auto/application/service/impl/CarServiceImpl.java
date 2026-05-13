@@ -68,7 +68,8 @@ public class CarServiceImpl implements CarService {
     Pageable pageable = PageableUtils.from(request);
     return Page.of(
         carQueryRepository.search(request.getStatus(), request.getShowroomId(),
-            request.getCarModelId(), request.getLicensePlate(), request.getFromDate(), request.getToDate(), pageable),
+            request.getCarModelId(), request.getLicensePlate(), request.getFromDate(),
+            request.getToDate(), pageable),
         carMapper::toResponse,
         request.getFromDate(), request.getToDate());
   }

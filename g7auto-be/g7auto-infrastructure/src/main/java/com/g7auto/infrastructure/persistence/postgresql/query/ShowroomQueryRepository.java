@@ -4,13 +4,14 @@ import com.g7auto.core.entity.ShowroomStatus;
 import com.g7auto.core.sql.DynamicSqlBuilder;
 import com.g7auto.core.sql.PagingJdbcExecutor;
 import com.g7auto.core.utils.DateParserUtils;
-import org.springframework.util.StringUtils;
+import com.g7auto.domain.entity.Employee;
 import com.g7auto.domain.entity.Showroom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 @Repository
 @RequiredArgsConstructor
@@ -33,8 +34,12 @@ public class ShowroomQueryRepository {
     s.setPhone(rs.getString("phone"));
     s.setEmail(rs.getString("email"));
     long managerId = rs.getLong("manager_id");
-    if (!rs.wasNull()) s.setManagerId(managerId);
-    s.setManagerName(rs.getString("manager_name"));
+    if (!rs.wasNull()) {
+      Employee manager = new Employee();
+      manager.setId(managerId);
+      manager.setFullName(rs.getString("manager_name"));
+      s.setManager(manager);
+    }
     String status = rs.getString("status");
     if (status != null) {
       s.setStatus(ShowroomStatus.valueOf(status));

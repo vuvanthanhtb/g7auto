@@ -4,7 +4,7 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import { useAppDispatch, useAppSelector } from "@/shell/redux/hooks";
 import { loginUser } from "@/modules/auth/shell/auth.slice";
 import BaseFormComponent from "@/libs/components/ui/base-form";
-import type { LoginRequest } from "../../shell/auth.type";
+import type { LoginFormValues } from "../../shell/auth.type";
 import { getLoginConfig, initialValues } from "./login.config";
 import { loginValidation } from "./login.validation";
 import { HOME_PATH } from "@/modules/home/shell/home.route";
@@ -16,8 +16,7 @@ const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  const [formValues, setFormValues] =
-    useState<Record<string, unknown>>(initialValues);
+  const [formValues, setFormValues] = useState<LoginFormValues>(initialValues);
 
   useEffect(() => {
     document.title = t("LOGIN_PAGE_TITLE");
@@ -25,8 +24,8 @@ const LoginPage = () => {
 
   if (isAuthenticated) return <Navigate to={HOME_PATH.BASE} replace />;
 
-  const handleLogin = async (data: Record<string, unknown>) => {
-    const result = await dispatch(loginUser(data as unknown as LoginRequest));
+  const handleLogin = async (data: LoginFormValues) => {
+    const result = await dispatch(loginUser(data));
     if (loginUser.fulfilled.match(result))
       navigate(HOME_PATH.BASE, { replace: true });
   };
@@ -40,12 +39,12 @@ const LoginPage = () => {
         </div>
         <p className={styles["form-login__subtitle"]}>{t("LOGIN_SUBTITLE")}</p>
         <div className={styles["form-login__form"]}>
-          <BaseFormComponent
+          <BaseFormComponent<LoginFormValues>
             formConfig={getLoginConfig()}
             validationSchema={loginValidation}
             values={formValues}
-            onChange={(data) => setFormValues((prev) => ({ ...prev, ...data }))}
-            handlers={{ [BTN_SUBMIT]: handleLogin }}
+            onChange={setFormValues}
+            handlers={{ [BTN_SUBMIT]: handleLogin as (data: unknown) => Promise<void> }}
           />
         </div>
       </div>

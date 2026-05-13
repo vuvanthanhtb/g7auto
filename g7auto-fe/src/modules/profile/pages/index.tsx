@@ -17,6 +17,8 @@ import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type {
   UpdateProfileRequest,
   ChangePasswordRequest,
+  ProfilePageFormValues,
+  PasswordFormValues,
 } from "@/modules/auth/shell/auth.type";
 import * as Yup from "yup";
 
@@ -113,27 +115,24 @@ const ProfilePage = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((s) => s.auth.user);
 
-  const [profileValues, setProfileValues] = useState({
+  const [profileValues, setProfileValues] = useState<ProfilePageFormValues>({
     fullName: user?.fullName ?? "",
     email: user?.email ?? "",
   });
 
-  const [passwordValues] = useState({
+  const [passwordValues] = useState<PasswordFormValues>({
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
 
-  const handleUpdateProfile = async (data: Record<string, unknown>) => {
-    await dispatch(updateProfile(data as unknown as UpdateProfileRequest));
+  const handleUpdateProfile = async (data: ProfilePageFormValues) => {
+    await dispatch(updateProfile(data as UpdateProfileRequest));
   };
 
-  const handleChangePassword = async (data: Record<string, unknown>) => {
+  const handleChangePassword = async (data: PasswordFormValues) => {
     const result = await dispatch(
-      changePassword({
-        currentPassword: data.currentPassword as string,
-        newPassword: data.newPassword as string,
-      } as ChangePasswordRequest),
+      changePassword({ currentPassword: data.currentPassword, newPassword: data.newPassword } as ChangePasswordRequest),
     );
     if (changePassword.rejected.match(result)) return false;
   };
@@ -177,16 +176,12 @@ const ProfilePage = () => {
             <Typography fontWeight={600} sx={{ mb: 2 }}>
               {t("PROFILE_PERSONAL_INFO")}
             </Typography>
-            <BaseFormComponent
+            <BaseFormComponent<ProfilePageFormValues>
               formConfig={getProfileFormConfig()}
               validationSchema={profileValidation}
               values={profileValues}
-              onChange={(d) =>
-                setProfileValues(
-                  (p) => ({ ...p, ...d }) as typeof profileValues,
-                )
-              }
-              handlers={{ [BTN_SUBMIT]: handleUpdateProfile }}
+              onChange={setProfileValues}
+              handlers={{ [BTN_SUBMIT]: handleUpdateProfile as (data: unknown) => Promise<void> }}
             />
           </CardContent>
         </Card>
@@ -197,11 +192,11 @@ const ProfilePage = () => {
               {t("PROFILE_CHANGE_PASSWORD")}
             </Typography>
             <Divider sx={{ mb: 2 }} />
-            <BaseFormComponent
+            <BaseFormComponent<PasswordFormValues>
               formConfig={getPasswordFormConfig()}
               validationSchema={passwordValidation}
               values={passwordValues}
-              handlers={{ [BTN_SUBMIT]: handleChangePassword }}
+              handlers={{ [BTN_SUBMIT]: handleChangePassword as (data: unknown) => Promise<void | boolean> }}
             />
           </CardContent>
         </Card>

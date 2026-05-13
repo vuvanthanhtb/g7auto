@@ -9,30 +9,44 @@ import {
   getContractsUpdateFormConfig,
   getContractSearchConfig,
 } from "./contracts.config";
-import { contractsValidation, contractsUpdateValidation } from "./contracts.validation";
+import {
+  contractsValidation,
+  contractsUpdateValidation,
+} from "./contracts.validation";
 import { contractStatusOptions } from "@/libs/constants/options.constant";
 import { useContracts } from "./use-contracts";
 import { t } from "@/libs/i18n";
+import type {
+  ContractSearchForm,
+  ContractCreateFormValues,
+  ContractUpdateFormValues,
+} from "../shell/contracts.type";
 
 const ContractsPage = () => {
   const {
     drawerOpen,
     editId,
-    formValues,
+    createFormValues,
+    updateFormValues,
     searchQuery,
+    customerOptions,
+    carOptions,
+    employeeOptions,
+    depositOptions,
     openCreate,
     closeDrawer,
     handleCellAction,
     searchHandlers,
-    formHandlers,
+    createFormHandlers,
     updateFormHandlers,
-    setFormValues,
+    setCreateFormValues,
+    setUpdateFormValues,
     handlePageChange,
   } = useContracts();
 
   return (
     <Box sx={{ p: 3 }}>
-      <BaseFormComponent
+      <BaseFormComponent<ContractSearchForm>
         formConfig={getContractSearchConfig()}
         options={{ contractStatusOptions }}
         values={searchQuery}
@@ -44,7 +58,11 @@ const ContractsPage = () => {
         state="contractTable"
         title={t("CONTRACTS_PAGE_HEADER")}
         extra={
-          <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={openCreate}
+          >
             {t("CONTRACTS_BTN_CREATE")}
           </Button>
         }
@@ -53,25 +71,28 @@ const ContractsPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("CONTRACTS_DRAWER_DETAIL") : t("CONTRACTS_BTN_CREATE")}
+        title={
+          editId ? t("CONTRACTS_DRAWER_DETAIL") : t("CONTRACTS_BTN_CREATE")
+        }
         onClose={closeDrawer}
       >
         {editId ? (
-          <BaseFormComponent
+          <BaseFormComponent<ContractUpdateFormValues>
             formConfig={getContractsUpdateFormConfig()}
             validationSchema={contractsUpdateValidation}
-            values={formValues}
+            values={updateFormValues}
             options={{ contractStatusOptions }}
-            onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+            onChange={setUpdateFormValues}
             handlers={updateFormHandlers}
           />
         ) : (
-          <BaseFormComponent
+          <BaseFormComponent<ContractCreateFormValues>
             formConfig={getContractsFormConfig()}
             validationSchema={contractsValidation}
-            values={formValues}
-            onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
-            handlers={formHandlers}
+            options={{ customerOptions, carOptions, employeeOptions, depositOptions }}
+            values={createFormValues}
+            onChange={setCreateFormValues}
+            handlers={createFormHandlers}
           />
         )}
       </BaseDrawer>

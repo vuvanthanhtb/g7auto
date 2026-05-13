@@ -39,6 +39,13 @@ export interface EmployeeQuery {
   size?: number;
 }
 
+export interface EmployeeImportResult {
+  total: number;
+  success: number;
+  failed: number;
+  errors: string[];
+}
+
 export interface EmployeeApprovingQuery {
   fullName?: string;
   showroomId?: number;

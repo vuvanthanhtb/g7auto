@@ -7,10 +7,13 @@ import com.g7auto.application.dto.response.DepositResponse;
 import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
+import java.util.List;
 
 public interface DepositService {
 
   Page<DepositResponse> search(DepositSearchRequest request);
+
+  List<DepositResponse> findAllList();
 
   DepositResponse findById(Long id);
 

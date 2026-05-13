@@ -9,29 +9,59 @@ import {
   getQuotationsDetailFormConfig,
   getQuotationSearchConfig,
 } from "./quotations.config";
-import { quotationsValidation, quotationsDetailValidation } from "./quotations.validation";
+import {
+  quotationsValidation,
+  quotationsDetailValidation,
+} from "./quotations.validation";
 import { quotationStatusOptions } from "@/libs/constants/options.constant";
 import { useQuotations } from "./use-quotations";
 import { t } from "@/libs/i18n";
+import type {
+  QuotationSearchForm,
+  QuotationCreateFormValues,
+  QuotationDetailFormValues,
+} from "../shell/quotations.type";
 
 const QuotationsPage = () => {
   const {
-    drawerOpen, editId, formValues, searchQuery,
-    customerOptions, carOptions, employeeOptions,
-    openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers, detailHandlers,
-    setFormValues, handlePageChange,
+    drawerOpen,
+    editId,
+    createFormValues,
+    detailFormValues,
+    searchQuery,
+    customerOptions,
+    carOptions,
+    employeeOptions,
+    openCreate,
+    closeDrawer,
+    handleCellAction,
+    searchHandlers,
+    formHandlers,
+    detailHandlers,
+    setCreateFormValues,
+    setDetailFormValues,
+    handlePageChange,
   } = useQuotations();
 
   return (
     <Box sx={{ p: 3 }}>
-      <BaseFormComponent formConfig={getQuotationSearchConfig()} options={{ quotationStatusOptions }} values={searchQuery} handlers={searchHandlers} />
+      <BaseFormComponent<QuotationSearchForm>
+        formConfig={getQuotationSearchConfig()}
+        options={{ quotationStatusOptions }}
+        values={searchQuery}
+        handlers={searchHandlers}
+      />
       <BaseTableComponent
         tableConfig={getQuotationColumns()}
         reducer="quotations"
         state="quotationTable"
         title={t("QUOTATIONS_PAGE_HEADER")}
         extra={
-          <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={openCreate}
+          >
             {t("QUOTATIONS_BTN_CREATE")}
           </Button>
         }
@@ -40,24 +70,26 @@ const QuotationsPage = () => {
       />
       <BaseDrawer
         open={drawerOpen}
-        title={editId ? t("QUOTATIONS_DRAWER_DETAIL") : t("QUOTATIONS_BTN_CREATE")}
+        title={
+          editId ? t("QUOTATIONS_DRAWER_DETAIL") : t("QUOTATIONS_BTN_CREATE")
+        }
         onClose={closeDrawer}
       >
         {editId ? (
-          <BaseFormComponent
+          <BaseFormComponent<QuotationDetailFormValues>
             formConfig={getQuotationsDetailFormConfig()}
             validationSchema={quotationsDetailValidation}
-            values={formValues}
-            onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+            values={detailFormValues}
+            onChange={setDetailFormValues}
             handlers={detailHandlers}
           />
         ) : (
-          <BaseFormComponent
+          <BaseFormComponent<QuotationCreateFormValues>
             formConfig={getQuotationsFormConfig()}
             validationSchema={quotationsValidation}
-            values={formValues}
+            values={createFormValues}
             options={{ customerOptions, carOptions, employeeOptions }}
-            onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+            onChange={setCreateFormValues}
             handlers={formHandlers}
           />
         )}

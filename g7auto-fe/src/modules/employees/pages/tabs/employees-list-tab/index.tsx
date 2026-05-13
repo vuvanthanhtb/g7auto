@@ -1,13 +1,15 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import BaseFormComponent from "@/libs/components/ui/base-form";
 import BaseTableComponent from "@/libs/components/ui/base-table";
 import BaseDrawer from "@/libs/components/ui/base-drawer";
+import ImportButton from "@/libs/components/ui/import-button";
 import {
   getEmployeeListSearchConfig,
   getEmployeeListColumns,
   showButtons,
 } from "./employees-list-tab.config";
+import { BTN_REFRESH } from "@/libs/constants/button.constant";
 import { getEmployeeFormConfig, type EmployeeFormValues } from "../../employees.config";
 import { employeeValidation } from "../../employees.validation";
 import { useEmployeesList } from "./use-employees-list";
@@ -32,6 +34,8 @@ const EmployeesListTab = () => {
     closeDrawer,
     setFormValues,
     onchange,
+    handleImport,
+    handleTemplate,
   } = useEmployeesList();
 
   return (
@@ -53,9 +57,16 @@ const EmployeesListTab = () => {
         showButton={showButtons}
         title={t("EMPLOYEES_PAGE_HEADER")}
         extra={
-          <Button variant="contained" size="small" startIcon={<AddIcon />} onClick={openCreate}>
-            {t("EMPLOYEES_BTN_ADD")}
-          </Button>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <ImportButton
+              onImport={handleImport}
+              onDownloadTemplate={handleTemplate}
+              onSuccess={() => searchHandlers[BTN_REFRESH]?.()}
+            />
+            <Button variant="contained" size="small" startIcon={<AddIcon />} onClick={openCreate}>
+              {t("EMPLOYEES_BTN_ADD")}
+            </Button>
+          </Box>
         }
       />
 

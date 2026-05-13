@@ -15,7 +15,7 @@ import {
 } from "./car-models.config";
 import { carModelValidation } from "./car-models.validation";
 import { useCarModels } from "./use-car-models";
-import type { CarModelSearchForm } from "../shell/car-model.type";
+import type { CarModelFormValues, CarModelSearchForm } from "../shell/car-model.type";
 import { t } from "@/libs/i18n";
 
 const CarModelsPage = () => {
@@ -67,11 +67,11 @@ const CarModelsPage = () => {
         title={editId ? t("CAR_MODELS_DRAWER_EDIT") : t("CAR_MODELS_DRAWER_ADD")}
         onClose={closeDrawer}
       >
-        <BaseFormComponent
+        <BaseFormComponent<CarModelFormValues>
           formConfig={getCarModelFormConfig()}
           validationSchema={carModelValidation}
           values={formValues}
-          onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+          onChange={setFormValues}
           handlers={formHandlers}
         />
       </BaseDrawer>

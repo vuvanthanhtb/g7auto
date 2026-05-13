@@ -55,6 +55,13 @@ public class ContractServiceImpl implements ContractService {
   }
 
   @Override
+  public List<ContractResponse> findAllList() {
+    return contractRepository.findByStatusIn(
+            List.of(ContractStatus.NEW, ContractStatus.IN_PAYMENT)).stream()
+        .map(contractMapper::toResponse).toList();
+  }
+
+  @Override
   public ContractResponse findById(Long id) {
     return contractMapper.toResponse(get(id));
   }

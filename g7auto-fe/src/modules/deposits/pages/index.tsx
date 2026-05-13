@@ -10,29 +10,43 @@ import {
   getDepositSearchConfig,
 } from "./deposits.config";
 import { depositsValidation } from "./deposits.validation";
-import { depositStatusOptions, depositPaymentMethodOptions } from "@/libs/constants/options.constant";
+import {
+  depositStatusOptions,
+  depositPaymentMethodOptions,
+} from "@/libs/constants/options.constant";
 import { useDeposits } from "./use-deposits";
 import { t } from "@/libs/i18n";
+import type {
+  DepositSearchForm,
+  DepositCreateFormValues,
+  DepositDetailFormValues,
+} from "../shell/deposits.type";
 
 const DepositsPage = () => {
   const {
     drawerOpen,
     editId,
-    formValues,
+    createFormValues,
+    detailFormValues,
     searchQuery,
+    customerOptions,
+    carOptions,
+    employeeOptions,
+    quotationOptions,
     openCreate,
     closeDrawer,
     handleCellAction,
     searchHandlers,
     formHandlers,
     detailHandlers,
-    setFormValues,
+    setCreateFormValues,
+    setDetailFormValues,
     handlePageChange,
   } = useDeposits();
 
   return (
     <Box sx={{ p: 3 }}>
-      <BaseFormComponent
+      <BaseFormComponent<DepositSearchForm>
         formConfig={getDepositSearchConfig()}
         options={{ depositStatusOptions }}
         values={searchQuery}
@@ -44,7 +58,11 @@ const DepositsPage = () => {
         state="depositTable"
         title={t("DEPOSITS_PAGE_HEADER")}
         extra={
-          <Button variant="contained" startIcon={<AddIcon />} onClick={openCreate}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={openCreate}
+          >
             {t("DEPOSITS_BTN_CREATE")}
           </Button>
         }
@@ -57,19 +75,19 @@ const DepositsPage = () => {
         onClose={closeDrawer}
       >
         {editId ? (
-          <BaseFormComponent
+          <BaseFormComponent<DepositDetailFormValues>
             formConfig={getDepositsDetailFormConfig()}
-            values={formValues}
-            onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+            values={detailFormValues}
+            onChange={setDetailFormValues}
             handlers={detailHandlers}
           />
         ) : (
-          <BaseFormComponent
+          <BaseFormComponent<DepositCreateFormValues>
             formConfig={getDepositsFormConfig()}
             validationSchema={depositsValidation}
-            values={formValues}
-            options={{ depositPaymentMethodOptions }}
-            onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+            values={createFormValues}
+            options={{ depositPaymentMethodOptions, customerOptions, carOptions, employeeOptions, quotationOptions }}
+            onChange={setCreateFormValues}
             handlers={formHandlers}
           />
         )}

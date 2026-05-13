@@ -22,6 +22,10 @@ import {
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
+import type {
+  QuotationCreateFormValues,
+  QuotationDetailFormValues,
+} from "../shell/quotations.type";
 
 export const getQuotationColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
@@ -40,7 +44,7 @@ export const getQuotationColumns = (): BaseTableColumn[] => [
     label: "QUOTATIONS_FIELD_TOTAL_AMOUNT",
     type: TBL_NUMBER,
   },
-  { name: "status", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
+  { name: "statusDisplay", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
   {
     name: "action",
     label: "COMMON_LABEL_ACTION",
@@ -143,7 +147,7 @@ export const getQuotationsDetailFormConfig = (): IBaseFormConfig => ({
 
 export const initQuotationSearchForm = { status: "", page: 1, size: 10 };
 
-export const quotationsInitialValues = {
+export const quotationsInitialValues: QuotationCreateFormValues = {
   customerId: null,
   carId: null,
   employeeId: null,
@@ -151,6 +155,10 @@ export const quotationsInitialValues = {
   accessories: 0,
   promotion: 0,
   otherCosts: 0,
+  notes: "",
+};
+
+export const quotationDetailInitialValues: QuotationDetailFormValues = {
   notes: "",
 };
 

@@ -6,6 +6,7 @@ import type {
   EmployeeRequest,
   EmployeeResponse,
   EmployeeApprovingQuery,
+  EmployeeImportResult,
 } from "./employees.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
@@ -243,6 +244,34 @@ export const exportEmployees = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await employeesService.export();
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const importEmployeeApprovals = createAsyncThunk<
+  EmployeeImportResult,
+  File
+>(
+  "employees/importApprovals",
+  async (file, { rejectWithValue }) => {
+    try {
+      const { data } = await employeesApprovingService.import(file);
+      return data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const downloadEmployeeApprovalTemplate = createAsyncThunk(
+  "employees/downloadApprovalTemplate",
+  async (_, { rejectWithValue }) => {
+    try {
+      await employeesApprovingService.downloadTemplate();
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);

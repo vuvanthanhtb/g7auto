@@ -11,6 +11,9 @@ class QuotationsRepository {
     if (!QuotationsRepository.instance) QuotationsRepository.instance = new QuotationsRepository();
     return QuotationsRepository.instance;
   }
+  getAll() {
+    return http.call<QuotationResponse[]>({ url: QUOTATIONS_ENDPOINT.ALL, method: "GET" });
+  }
   getList(params?: QuotationPayload) {
     return http.call<QuotationPage>({ url: QUOTATIONS_ENDPOINT.LIST, method: "GET", params });
   }

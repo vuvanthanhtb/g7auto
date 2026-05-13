@@ -49,3 +49,11 @@ export interface CarModelExportPayload {
   manufacturer?: string;
   year?: string;
 }
+
+export interface CarModelFormValues {
+  name: string;
+  manufacturer: string;
+  year: string | number;
+  listedPrice: string | number;
+  description: string;
+}

@@ -14,6 +14,9 @@ class EmployeesRepository {
       EmployeesRepository.instance = new EmployeesRepository();
     return EmployeesRepository.instance;
   }
+  getAll() {
+    return http.call<EmployeeResponse[]>({ url: EMPLOYEES_ENDPOINT.LIST, method: "GET" });
+  }
   getList(params?: EmployeeQuery) {
     return http.call<{
       content: EmployeeResponse[];

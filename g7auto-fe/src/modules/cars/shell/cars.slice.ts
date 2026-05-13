@@ -10,6 +10,7 @@ import type {
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
+import { parseCarStatus } from "./cars.utils";
 
 interface CarsState {
   carTable: {
@@ -34,6 +35,7 @@ export const getAllCars = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await carsService.getAll();
+      console.log("getAllCars", data);
       return data;
     } catch (error) {
       toastError(getApiErrorMessage(error));
@@ -46,8 +48,14 @@ export const getCars = createAsyncThunk(
   "cars/getList",
   async (params: CarQuery, { rejectWithValue }) => {
     try {
-      const res = await carsService.getList(params);
-      return res.data;
+      const { data } = await carsService.getList(params);
+      return {
+        ...data,
+        content: data.content.map((item: CarResponse) => ({
+          ...item,
+          statusDisplay: parseCarStatus(item.status),
+        })),
+      };
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);

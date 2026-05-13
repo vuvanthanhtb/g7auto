@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface QuotationRepository extends JpaRepository<Quotation, Long> {
 
   List<Quotation> findByCarIdAndStatusNot(Long carId, QuotationStatus status);
+
+  List<Quotation> findByStatusIn(List<QuotationStatus> statuses);
 }

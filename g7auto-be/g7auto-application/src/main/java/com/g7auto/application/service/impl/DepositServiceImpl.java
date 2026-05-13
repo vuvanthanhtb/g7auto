@@ -198,6 +198,13 @@ public class DepositServiceImpl implements DepositService {
   }
 
   @Override
+  public List<DepositResponse> findAllList() {
+    return depositRepository.findByStatusNotIn(
+            List.of(DepositStatus.CANCELLED, DepositStatus.REFUNDED))
+        .stream().map(depositMapper::toResponse).toList();
+  }
+
+  @Override
   public void exportDeposits(HttpServletResponse response) {
     List<DepositResponse> data = depositRepository.findAll().stream().map(depositMapper::toResponse)
         .toList();

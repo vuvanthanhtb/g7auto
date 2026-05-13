@@ -32,7 +32,8 @@ public class CustomerQueryRepository {
     c.setPhone(rs.getString("phone"));
     c.setEmail(rs.getString("email"));
     c.setAddress(rs.getString("address"));
-    c.setBirthDate(rs.getDate("birth_date") != null ? rs.getDate("birth_date").toLocalDate() : null);
+    c.setBirthDate(
+        rs.getDate("birth_date") != null ? rs.getDate("birth_date").toLocalDate() : null);
     c.setNationalId(rs.getString("national_id"));
     c.setSourceType(rs.getString("source_type"));
     c.setCarInterest(rs.getString("car_interest"));
@@ -43,9 +44,11 @@ public class CustomerQueryRepository {
     c.setAssignedEmployeeName(rs.getString("assigned_employee_name"));
     c.setNotes(rs.getString("notes"));
     c.setCreatedAt(
-        rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at").toLocalDateTime() : null);
+        rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at").toLocalDateTime()
+            : null);
     c.setUpdatedAt(
-        rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null);
+        rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime()
+            : null);
     c.setCreatedBy(rs.getString("created_by"));
     c.setUpdatedBy(rs.getString("updated_by"));
     return c;

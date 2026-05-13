@@ -9,6 +9,7 @@ import com.g7auto.core.response.ApiResponse;
 import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,6 +74,11 @@ public class DepositController {
         signDate != null ? LocalDate.parse(signDate) : null,
         expectedDeliveryDate != null ? LocalDate.parse(expectedDeliveryDate) : null,
         notes)));
+  }
+
+  @GetMapping("/all")
+  public ResponseEntity<ApiResponse<List<DepositResponse>>> getAll() {
+    return ResponseEntity.ok(ApiResponse.ok(depositService.findAllList()));
   }
 
   @GetMapping("/export")

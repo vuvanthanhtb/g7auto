@@ -10,9 +10,27 @@ import {
   cancelQuotation,
   exportQuotations,
 } from "../shell/quotations.slice";
-import type { QuotationRequest, QuotationSearchForm } from "../shell/quotations.type";
-import { quotationsInitialValues, initQuotationSearchForm } from "./quotations.config";
-import { BTN_SEARCH, BTN_REFRESH, BTN_EXPORT, BTN_DETAIL, BTN_SUBMIT, BTN_SEND, BTN_ACCEPT, BTN_CANCEL } from "@/libs/constants/button.constant";
+import type {
+  QuotationCreateFormValues,
+  QuotationDetailFormValues,
+  QuotationRequest,
+  QuotationSearchForm,
+} from "../shell/quotations.type";
+import {
+  quotationsInitialValues,
+  quotationDetailInitialValues,
+  initQuotationSearchForm,
+} from "./quotations.config";
+import {
+  BTN_SEARCH,
+  BTN_REFRESH,
+  BTN_EXPORT,
+  BTN_DETAIL,
+  BTN_SUBMIT,
+  BTN_SEND,
+  BTN_ACCEPT,
+  BTN_CANCEL,
+} from "@/libs/constants/button.constant";
 import { getAllCustomers } from "@/modules/customers/shell/customers.slice";
 import { getAllCars } from "@/modules/cars/shell/cars.slice";
 import { getAllEmployees } from "@/modules/employees/shell/employees.slice";
@@ -30,31 +48,48 @@ export const useQuotations = () => {
   const employeeAll = useAppSelector((s) => s.employees.employeeAll) ?? [];
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
-  const [formValues, setFormValues] = useState<Record<string, unknown>>(quotationsInitialValues);
-  const [searchQuery, setSearchQuery] = useState<QuotationSearchForm>(initQuotationSearchForm);
+  const [createFormValues, setCreateFormValues] =
+    useState<QuotationCreateFormValues>(quotationsInitialValues);
+  const [detailFormValues, setDetailFormValues] =
+    useState<QuotationDetailFormValues>(quotationDetailInitialValues);
+  const [searchQuery, setSearchQuery] = useState<QuotationSearchForm>(
+    initQuotationSearchForm,
+  );
 
-  const customerOptions = customerAll.map((c) => ({ label: c.fullName, value: c.id }));
-  const carOptions = carAll.map((c) => ({ label: `${c.chassisNumber}${c.licensePlate ? ` — ${c.licensePlate}` : ""}`, value: c.id }));
-  const employeeOptions = employeeAll.map((e) => ({ label: e.fullName, value: e.id }));
+  const customerOptions = customerAll.map((c) => ({
+    label: c.fullName,
+    value: c.id,
+  }));
+  const carOptions = carAll.map((c) => ({
+    label: `${c.chassisNumber}${c.licensePlate ? ` — ${c.licensePlate}` : ""}`,
+    value: c.id,
+  }));
+  const employeeOptions = employeeAll.map((e) => ({
+    label: e.fullName,
+    value: e.id,
+  }));
 
   useEffect(() => {
     document.title = "Báo giá — G7Auto";
-    dispatch(getAllCustomers());
-    dispatch(getAllCars());
-    dispatch(getAllEmployees());
-  }, [dispatch]);
+    if (drawerOpen) {
+      dispatch(getAllCustomers());
+      dispatch(getAllCars());
+      dispatch(getAllEmployees());
+    }
+  }, [dispatch, drawerOpen]);
 
   useEffect(() => {
     dispatch(getQuotations(searchQuery));
   }, [dispatch, searchQuery]);
 
   useEffect(() => {
-    if (selected && editId) setFormValues(selected as unknown as Record<string, unknown>);
+    if (selected && editId)
+      setDetailFormValues({ notes: selected.notes ?? "" });
   }, [selected, editId]);
 
   const openCreate = () => {
     setEditId(null);
-    setFormValues(quotationsInitialValues);
+    setCreateFormValues(quotationsInitialValues);
     setDrawerOpen(true);
   };
 
@@ -117,7 +152,9 @@ export const useQuotations = () => {
     [BTN_REFRESH]: () => {
       setSearchQuery(initQuotationSearchForm);
     },
-    [BTN_EXPORT]: async () => { await dispatch(exportQuotations()); },
+    [BTN_EXPORT]: async () => {
+      await dispatch(exportQuotations());
+    },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };
@@ -133,9 +170,22 @@ export const useQuotations = () => {
   };
 
   return {
-    drawerOpen, editId, formValues, searchQuery,
-    customerOptions, carOptions, employeeOptions,
-    openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers, detailHandlers,
-    setFormValues, handlePageChange,
+    drawerOpen,
+    editId,
+    createFormValues,
+    detailFormValues,
+    searchQuery,
+    customerOptions,
+    carOptions,
+    employeeOptions,
+    openCreate,
+    closeDrawer,
+    handleCellAction,
+    searchHandlers,
+    formHandlers,
+    detailHandlers,
+    setCreateFormValues,
+    setDetailFormValues,
+    handlePageChange,
   };
 };

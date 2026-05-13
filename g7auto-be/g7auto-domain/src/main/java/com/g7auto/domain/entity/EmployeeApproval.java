@@ -20,6 +20,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "employees_approving")
@@ -29,6 +30,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 //Thông tin nhân viên chi tiết
 public class EmployeeApproval extends BaseEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;

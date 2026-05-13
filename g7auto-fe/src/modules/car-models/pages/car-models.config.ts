@@ -7,6 +7,7 @@ import {
   BTN_EXPORT,
 } from "@/libs/constants/button.constant";
 import { BUTTON, TEXT, NUMBER_INPUT, SELECT } from "@/libs/constants/form.constant";
+import type { CarModelFormValues } from "../shell/car-model.type";
 import {
   NUMERICAL_ORDER,
   TBL_BUTTON,
@@ -102,7 +103,7 @@ export const yearOptions = Array.from(
 
 export const initCarModelSearchForm = { name: "", manufacturer: "", year: "", page: 1, size: 10 };
 
-export const carModelInitialValues = {
+export const carModelInitialValues: CarModelFormValues = {
   name: "",
   manufacturer: "",
   year: "",

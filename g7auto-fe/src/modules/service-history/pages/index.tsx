@@ -12,6 +12,7 @@ import { serviceHistoryValidation } from "./service-history.validation";
 import { contactTypeOptions } from "@/libs/constants/options.constant";
 import { useServiceHistory } from "./use-service-history";
 import { t } from "@/libs/i18n";
+import type { ServiceHistoryFormValues, ServiceHistorySearchForm } from "../shell/service-history.type";
 
 const ServiceHistoryPage = () => {
   const {
@@ -22,7 +23,7 @@ const ServiceHistoryPage = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <BaseFormComponent formConfig={getServiceHistorySearchConfig()} values={searchQuery} handlers={searchHandlers} />
+      <BaseFormComponent<ServiceHistorySearchForm> formConfig={getServiceHistorySearchConfig()} values={searchQuery} handlers={searchHandlers} />
       <BaseTableComponent
         tableConfig={getServiceHistoryColumns()}
         reducer="serviceHistory"
@@ -41,12 +42,12 @@ const ServiceHistoryPage = () => {
         title={editId ? t("SERVICE_HISTORY_DRAWER_DETAIL") : t("SERVICE_HISTORY_BTN_ADD")}
         onClose={closeDrawer}
       >
-        <BaseFormComponent
+        <BaseFormComponent<ServiceHistoryFormValues>
           formConfig={getServiceHistoryFormConfig()}
           validationSchema={serviceHistoryValidation}
           options={{ contactTypeOptions }}
           values={formValues}
-          onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+          onChange={setFormValues}
           handlers={formHandlers}
         />
       </BaseDrawer>

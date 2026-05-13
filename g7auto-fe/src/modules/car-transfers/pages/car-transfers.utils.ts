@@ -1,7 +1,7 @@
 import type {
   CarTransferSearchForm,
   CarTransferSearchQuery,
-} from "./car-transfers.type";
+} from "../shell/car-transfers.type";
 
 export const parseFormSearch = (
   data: CarTransferSearchForm,

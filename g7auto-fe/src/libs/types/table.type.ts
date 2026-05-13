@@ -15,6 +15,7 @@ export interface BaseTableColumn {
   colorCustom?: Record<string, string>;
   btnGroup?: ButtonProps[];
   refColor?: string[];
+  formatter?: (value: any) => string;
 }
 
 export interface BaseTableConfig {

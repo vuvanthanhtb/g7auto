@@ -36,3 +36,22 @@ export interface PaymentPayload {
   page?: number;
   size?: number;
 }
+
+type SelectOption = { label: string; value: string | number };
+
+export interface PaymentCreateFormValues {
+  contractId: SelectOption | null;
+  amount: string | number;
+  method: SelectOption | null;
+  bankId: SelectOption | null;
+  bankAccountNo: string;
+  bankContent: string;
+  paymentTime: string;
+  collectorId: string | number;
+  transactionCode: string;
+  notes: string;
+}
+
+export interface PaymentDetailFormValues {
+  notes: string;
+}

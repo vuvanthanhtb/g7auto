@@ -1,9 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { carTransfersService } from "../services/car-transfers.service";
-import type { CarTransferQuery, CarTransferRequest, CarTransferResponse } from "./car-transfers.type";
+import type {
+  CarTransferQuery,
+  CarTransferRequest,
+  CarTransferResponse,
+} from "./car-transfers.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
+import { parseCarTransferStatus } from "./car-transfers.utils";
 
 type PageState = {
   content: CarTransferResponse[];
@@ -35,8 +40,14 @@ export const getCarTransfers = createAsyncThunk(
   "carTransfers/getList",
   async (params: CarTransferQuery, { rejectWithValue }) => {
     try {
-      const res = await carTransfersService.getList(params);
-      return res.data;
+      const { data } = await carTransfersService.getList(params);
+      return {
+        ...data,
+        content: data.content.map((item: CarTransferResponse) => ({
+          ...item,
+          statusDisplay: parseCarTransferStatus(item.status),
+        })),
+      };
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);
@@ -129,17 +140,30 @@ const carTransfersSlice = createSlice({
   name: "carTransfers",
   initialState,
   reducers: {
-    clearSelected: (state) => { state.selected = null; },
+    clearSelected: (state) => {
+      state.selected = null;
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getCarTransfers.fulfilled, (state, action) => { state.carTransferTable = action.payload as any; })
-      .addCase(getCarTransfersById.fulfilled, (state, action) => { state.selected = action.payload; })
-      .addCase(confirmExportTransfer.fulfilled, (state, action) => { state.selected = action.payload; })
-      .addCase(confirmReceiveTransfer.fulfilled, (state, action) => { state.selected = action.payload; })
-      .addCase(cancelTransfer.fulfilled, (state, action) => { state.selected = action.payload; });
+      .addCase(getCarTransfers.fulfilled, (state, action) => {
+        state.carTransferTable = action.payload as any;
+      })
+      .addCase(getCarTransfersById.fulfilled, (state, action) => {
+        state.selected = action.payload;
+      })
+      .addCase(confirmExportTransfer.fulfilled, (state, action) => {
+        state.selected = action.payload;
+      })
+      .addCase(confirmReceiveTransfer.fulfilled, (state, action) => {
+        state.selected = action.payload;
+      })
+      .addCase(cancelTransfer.fulfilled, (state, action) => {
+        state.selected = action.payload;
+      });
   },
 });
 
-export const { clearSelected: clearSelectedCarTransfers } = carTransfersSlice.actions;
+export const { clearSelected: clearSelectedCarTransfers } =
+  carTransfersSlice.actions;
 export default carTransfersSlice.reducer;

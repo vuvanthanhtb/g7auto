@@ -18,6 +18,7 @@ import {
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
+import type { ServiceHistoryFormValues } from "../shell/service-history.type";
 
 export const getServiceHistoryColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
@@ -52,10 +53,10 @@ export const getServiceHistoryFormConfig = (): IBaseFormConfig => ({
 
 export const initServiceHistorySearchForm = { page: 1, size: 10 };
 
-export const serviceHistoryInitialValues = {
+export const serviceHistoryInitialValues: ServiceHistoryFormValues = {
   customerId: "",
   employeeId: "",
-  contactType: "",
+  contactType: null,
   serviceDate: "",
   content: "",
   result: "",

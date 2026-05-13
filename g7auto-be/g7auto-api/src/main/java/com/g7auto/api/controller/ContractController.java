@@ -8,6 +8,7 @@ import com.g7auto.application.service.ContractService;
 import com.g7auto.core.response.ApiResponse;
 import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,11 @@ public class ContractController {
   public ResponseEntity<ApiResponse<Page<ContractResponse>>> list(
       @ModelAttribute ContractSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(contractService.search(request)));
+  }
+
+  @GetMapping("/all")
+  public ResponseEntity<ApiResponse<List<ContractResponse>>> getAll() {
+    return ResponseEntity.ok(ApiResponse.ok(contractService.findAllList()));
   }
 
   @GetMapping("/{id}")

@@ -13,6 +13,7 @@ import {
   TEXT,
   DATETIME,
   SELECT,
+  HIDDEN,
 } from "@/libs/constants/form.constant";
 import {
   NUMERICAL_ORDER,
@@ -22,6 +23,7 @@ import {
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
+import type { PaymentCreateFormValues, PaymentDetailFormValues } from "../shell/payments.type";
 
 export const getPaymentColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
@@ -43,7 +45,7 @@ const isBankTransfer = (values: Record<string, unknown>) =>
 
 export const getPaymentsFormConfig = (): IBaseFormConfig => ({
   fields: [
-    { type: NUMBER_INPUT, name: "contractId", label: "PAYMENTS_FIELD_CONTRACT_ID", required: true, size: 12 },
+    { type: SELECT, name: "contractId", label: "PAYMENTS_FIELD_CONTRACT_ID", option: "contractOptions", required: true, size: 12 },
     { type: NUMBER_INPUT, name: "amount", label: "PAYMENTS_FIELD_AMOUNT", required: true, size: 6 },
     { type: SELECT, name: "method", label: "PAYMENTS_FIELD_METHOD", option: "paymentMethodOptions", required: true, size: 6 },
     { type: SELECT, name: "bankId", label: "PAYMENTS_FIELD_BANK", option: "vietnameseBankOptions", required: true, size: 12, visibleWhen: isBankTransfer },
@@ -51,7 +53,7 @@ export const getPaymentsFormConfig = (): IBaseFormConfig => ({
     { type: TEXT, name: "bankContent", label: "PAYMENTS_FIELD_BANK_CONTENT", size: 6, visibleWhen: isBankTransfer },
     { type: DATETIME, name: "paymentTime", label: "PAYMENTS_FIELD_TIME", size: 6 },
     { type: NUMBER_INPUT, name: "collectorId", label: "PAYMENTS_FIELD_COLLECTOR_ID", size: 6 },
-    { type: TEXT, name: "transactionCode", label: "PAYMENTS_FIELD_TRANSACTION_CODE", size: 12 },
+    { type: HIDDEN, name: "transactionCode", label: "PAYMENTS_FIELD_TRANSACTION_CODE", size: 12 },
     { type: TEXT, name: "notes", label: "CONTRACTS_FIELD_NOTES", size: 12 },
     {
       type: BUTTON,
@@ -77,16 +79,20 @@ export const getPaymentsDetailFormConfig = (): IBaseFormConfig => ({
 
 export const initPaymentSearchForm = { status: "", page: 1, size: 10 };
 
-export const paymentsInitialValues = {
-  contractId: "",
+export const paymentsInitialValues: PaymentCreateFormValues = {
+  contractId: null,
   amount: "",
-  method: "",
-  bankId: "",
+  method: null,
+  bankId: null,
   bankAccountNo: "",
   bankContent: "",
   paymentTime: "",
   collectorId: "",
   transactionCode: "",
+  notes: "",
+};
+
+export const paymentDetailInitialValues: PaymentDetailFormValues = {
   notes: "",
 };
 

@@ -23,6 +23,11 @@ import {
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
+import type {
+  DepositCreateFormValues,
+  DepositDetailFormValues,
+} from "../shell/deposits.type";
+import { formatDate } from "@/libs/utils";
 
 export const getDepositColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
@@ -37,8 +42,21 @@ export const getDepositColumns = (): BaseTableColumn[] => [
     type: TBL_STRING,
   },
   { name: "amount", label: "COMMON_LABEL_AMOUNT", type: TBL_NUMBER },
-  { name: "depositDate", label: "DEPOSITS_FIELD_DATE", type: TBL_STRING },
-  { name: "status", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
+  {
+    name: "depositDate",
+    label: "DEPOSITS_FIELD_DATE",
+    type: TBL_STRING,
+    formatter: formatDate,
+    styleCell: { textAlign: "center" },
+  },
+  {
+    name: "expiryDate",
+    label: "DEPOSITS_FIELD_EXPIRED_DATE",
+    type: TBL_STRING,
+    formatter: formatDate,
+    styleCell: { textAlign: "center" },
+  },
+  { name: "statusDisplay", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
   {
     name: "action",
     label: "COMMON_LABEL_ACTION",
@@ -52,29 +70,33 @@ export const getDepositColumns = (): BaseTableColumn[] => [
 export const getDepositsFormConfig = (): IBaseFormConfig => ({
   fields: [
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "customerId",
       label: "CONTRACTS_FIELD_CUSTOMER_ID",
+      option: "customerOptions",
       required: true,
       size: 6,
     },
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "carId",
       label: "CONTRACTS_FIELD_CAR_ID",
+      option: "carOptions",
       required: true,
       size: 6,
     },
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "employeeId",
       label: "CONTRACTS_FIELD_EMPLOYEE_ID",
+      option: "employeeOptions",
       size: 6,
     },
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "quotationId",
       label: "DEPOSITS_FIELD_QUOTATION_ID",
+      option: "quotationOptions",
       size: 6,
     },
     {
@@ -146,15 +168,19 @@ export const getDepositsDetailFormConfig = (): IBaseFormConfig => ({
 
 export const initDepositSearchForm = { status: "", page: 1, size: 10 };
 
-export const depositsInitialValues = {
-  quotationId: "",
-  customerId: "",
-  carId: "",
-  employeeId: "",
-  amount: 0,
+export const depositsInitialValues: DepositCreateFormValues = {
+  quotationId: null,
+  customerId: null,
+  carId: null,
+  employeeId: null,
+  amount: "",
   depositDate: "",
   expiryDate: "",
-  depositPaymentMethod: "",
+  depositPaymentMethod: null,
+  notes: "",
+};
+
+export const depositDetailInitialValues: DepositDetailFormValues = {
   notes: "",
 };
 

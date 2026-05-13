@@ -5,7 +5,10 @@ import com.g7auto.application.dto.request.EmployeeApprovalSearchRequest;
 import com.g7auto.application.dto.request.EmployeeRequest;
 import com.g7auto.application.dto.request.StatusRequest;
 import com.g7auto.application.dto.response.EmployeeResponse;
+import com.g7auto.application.dto.response.ImportResult;
 import com.g7auto.core.response.Page;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface EmployeeApprovalService {
 
@@ -22,4 +25,8 @@ public interface EmployeeApprovalService {
   String requestApproval(StatusRequest request);
 
   String bulkRequestApproval(BulkStatusRequest request);
+
+  ImportResult importEmployeeApprovals(MultipartFile file);
+
+  void downloadEmployeeApprovalTemplate(HttpServletResponse response);
 }

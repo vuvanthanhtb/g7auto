@@ -13,6 +13,7 @@ import { getAllEmployees } from "@/modules/employees/shell/employees.slice";
 import { parseShowroomExport } from "../shell/showrooms.utils";
 import { useConfirm } from "@/libs/components/ui/confirm-dialog";
 import type {
+  ShowroomFormValues,
   ShowroomRequest,
   ShowroomSearchForm,
 } from "../shell/showroom.type";
@@ -42,7 +43,7 @@ export const useShowrooms = () => {
   }));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
-  const [formValues, setFormValues] = useState<Record<string, unknown>>(
+  const [formValues, setFormValues] = useState<ShowroomFormValues>(
     showroomInitialValues,
   );
   const [searchQuery, setSearchQuery] = useState<ShowroomSearchForm>(
@@ -60,7 +61,15 @@ export const useShowrooms = () => {
 
   useEffect(() => {
     if (selected && editId)
-      setFormValues(selected as unknown as Record<string, unknown>);
+      setFormValues({
+        name: selected.name ?? "",
+        address: selected.address ?? "",
+        phone: selected.phone ?? "",
+        email: selected.email ?? "",
+        managerId: selected.managerId
+          ? { label: selected.managerName ?? "", value: selected.managerId }
+          : null,
+      });
   }, [selected, editId]);
 
   const openCreate = () => {
@@ -93,9 +102,10 @@ export const useShowrooms = () => {
   };
 
   const handleSubmit = async (data: Record<string, unknown>) => {
+    const managerId = (data.managerId as { value?: number } | null)?.value;
     const payload = {
       ...data,
-      managerId: data.managerId ? Number(data.managerId) : undefined,
+      managerId: managerId ?? undefined,
     } as ShowroomRequest;
     if (editId)
       await dispatch(

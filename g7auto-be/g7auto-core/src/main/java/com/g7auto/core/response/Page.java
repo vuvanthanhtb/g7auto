@@ -25,7 +25,8 @@ public record Page<T>(
     );
   }
 
-  public static <T, U> Page<U> of(org.springframework.data.domain.Page<T> page, Function<T, U> mapper) {
+  public static <T, U> Page<U> of(org.springframework.data.domain.Page<T> page,
+      Function<T, U> mapper) {
     return new Page<>(
         page.getContent().stream().map(mapper).toList(),
         page.getNumber() + 1,
@@ -37,7 +38,8 @@ public record Page<T>(
     );
   }
 
-  public static <T, U> Page<U> of(org.springframework.data.domain.Page<T> page, Function<T, U> mapper,
+  public static <T, U> Page<U> of(org.springframework.data.domain.Page<T> page,
+      Function<T, U> mapper,
       String fromDate, String toDate) {
     return new Page<>(
         page.getContent().stream().map(mapper).toList(),

@@ -39,3 +39,21 @@ export interface DepositPayload {
   page?: number;
   size?: number;
 }
+
+type SelectOption = { label: string; value: string | number };
+
+export interface DepositCreateFormValues {
+  quotationId: SelectOption | null;
+  customerId: SelectOption | null;
+  carId: SelectOption | null;
+  employeeId: SelectOption | null;
+  amount: string | number;
+  depositDate: string;
+  expiryDate: string;
+  depositPaymentMethod: SelectOption | null;
+  notes: string;
+}
+
+export interface DepositDetailFormValues {
+  notes: string;
+}

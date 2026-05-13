@@ -20,6 +20,10 @@ import {
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
+import type {
+  CarCreateFormValues,
+  CarEditFormValues,
+} from "../shell/cars.type";
 
 export const getCarColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
@@ -27,15 +31,17 @@ export const getCarColumns = (): BaseTableColumn[] => [
     name: "chassisNumber",
     label: "CARS_FIELD_CHASSIS_NUMBER",
     type: TBL_STRING,
+    styleCell: { textAlign: "center" },
   },
   {
     name: "licensePlate",
     label: "COMMON_LABEL_LICENSE_PLATE",
     type: TBL_STRING,
+    styleCell: { textAlign: "center" },
   },
   { name: "carModelName", label: "COMMON_LABEL_CAR_MODEL", type: TBL_STRING },
   { name: "showroomName", label: "COMMON_LABEL_SHOWROOM", type: TBL_STRING },
-  { name: "status", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
+  { name: "statusDisplay", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
   {
     name: "action",
     label: "COMMON_LABEL_ACTION",
@@ -147,7 +153,7 @@ export const initCarSearchForm = {
   size: 10,
 };
 
-export const carCreateInitialValues = {
+export const carCreateInitialValues: CarCreateFormValues = {
   chassisNumber: "",
   engineNumber: "",
   licensePlate: "",
@@ -157,7 +163,7 @@ export const carCreateInitialValues = {
   notes: "",
 };
 
-export const carEditInitialValues = {
+export const carEditInitialValues: CarEditFormValues = {
   licensePlate: "",
   showroomId: null,
   salePrice: "",

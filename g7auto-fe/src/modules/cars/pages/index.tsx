@@ -15,12 +15,14 @@ import { carCreateValidation, carEditValidation } from "./cars.validation";
 import { carStatusOptions } from "@/libs/constants/options.constant";
 import { useCars } from "./use-cars";
 import { t } from "@/libs/i18n";
+import type { CarCreateFormValues, CarEditFormValues, CarSearchForm } from "../shell/cars.type";
 
 const CarsPage = () => {
   const {
     drawerOpen,
     editId,
-    formValues,
+    createFormValues,
+    editFormValues,
     searchQuery,
     showroomOptions,
     carModelOptions,
@@ -29,7 +31,8 @@ const CarsPage = () => {
     handleCellAction,
     searchHandlers,
     formHandlers,
-    setFormValues,
+    setCreateFormValues,
+    setEditFormValues,
     handlePageChange,
     importInputRef,
     handleImportFile,
@@ -46,7 +49,7 @@ const CarsPage = () => {
         style={{ display: "none" }}
         onChange={handleImportFile}
       />
-      <BaseFormComponent
+      <BaseFormComponent<CarSearchForm>
         formConfig={getCarSearchConfig()}
         options={{ carStatusOptions, showroomOptions, carModelOptions }}
         values={searchQuery}
@@ -90,16 +93,25 @@ const CarsPage = () => {
         title={editId ? t("CARS_DRAWER_EDIT") : t("CARS_DRAWER_ADD")}
         onClose={closeDrawer}
       >
-        <BaseFormComponent
-          formConfig={
-            editId ? getCarEditFormConfig() : getCarCreateFormConfig()
-          }
-          validationSchema={editId ? carEditValidation : carCreateValidation}
-          values={formValues}
-          options={{ carStatusOptions, showroomOptions, carModelOptions }}
-          onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
-          handlers={formHandlers}
-        />
+        {editId ? (
+          <BaseFormComponent<CarEditFormValues>
+            formConfig={getCarEditFormConfig()}
+            validationSchema={carEditValidation}
+            values={editFormValues}
+            options={{ carStatusOptions, showroomOptions, carModelOptions }}
+            onChange={setEditFormValues}
+            handlers={formHandlers}
+          />
+        ) : (
+          <BaseFormComponent<CarCreateFormValues>
+            formConfig={getCarCreateFormConfig()}
+            validationSchema={carCreateValidation}
+            values={createFormValues}
+            options={{ carStatusOptions, showroomOptions, carModelOptions }}
+            onChange={setCreateFormValues}
+            handlers={formHandlers}
+          />
+        )}
       </BaseDrawer>
     </Box>
   );

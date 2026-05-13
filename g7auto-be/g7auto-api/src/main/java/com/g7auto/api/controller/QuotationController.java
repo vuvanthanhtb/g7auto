@@ -7,6 +7,7 @@ import com.g7auto.application.service.QuotationService;
 import com.g7auto.core.response.ApiResponse;
 import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,11 @@ public class QuotationController {
   public ResponseEntity<ApiResponse<Page<QuotationResponse>>> list(
       @ModelAttribute QuotationSearchRequest request) {
     return ResponseEntity.ok(ApiResponse.ok(quotationService.search(request)));
+  }
+
+  @GetMapping("/all")
+  public ResponseEntity<ApiResponse<List<QuotationResponse>>> getAll() {
+    return ResponseEntity.ok(ApiResponse.ok(quotationService.findAllList()));
   }
 
   @GetMapping("/{id}")

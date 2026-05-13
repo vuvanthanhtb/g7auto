@@ -55,6 +55,13 @@ public class QuotationServiceImpl implements QuotationService {
   }
 
   @Override
+  public List<QuotationResponse> findAllList() {
+    return quotationRepository.findByStatusIn(
+            List.of(QuotationStatus.SENT, QuotationStatus.ACCEPTED)).stream()
+        .map(quotationMapper::toResponse).toList();
+  }
+
+  @Override
   public QuotationResponse findById(Long id) {
     return quotationMapper.toResponse(getQuotation(id));
   }

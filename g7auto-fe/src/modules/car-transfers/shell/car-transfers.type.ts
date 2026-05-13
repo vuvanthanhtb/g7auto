@@ -11,6 +11,7 @@ export interface CarTransferResponse {
   expectedReceiveDate: string;
   actualReceiveDate: string;
   status: string;
+  statusDisplay?: string;
   reason: string;
   notes: string;
   createdAt: string;
@@ -30,4 +31,27 @@ export interface CarTransferQuery {
   size?: number;
   status?: string;
   showroomId?: number;
+}
+
+export interface CarTransferSearchForm {
+  status: { label: string; value: string };
+  page: number;
+  size: number;
+}
+
+export interface CarTransferSearchQuery {
+  status?: string;
+  page: number;
+  size: number;
+}
+
+type SelectOption = { label: string; value: string | number };
+
+export interface CarTransferCreateFormValues {
+  carId: SelectOption | null;
+  fromShowroomId: SelectOption | null;
+  toShowroomId: SelectOption | null;
+  reason: string;
+  expectedReceiveDate: string;
+  notes: string;
 }

@@ -36,7 +36,7 @@ public class Payment extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
-  
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "contract_id", nullable = false, comment = "Hợp đồng thanh toán (FK)")
   Contract contract;

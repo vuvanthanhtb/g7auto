@@ -47,3 +47,22 @@ export interface ContractPayload {
   page?: number;
   size?: number;
 }
+
+type SelectOption = { label: string; value: string | number };
+
+export interface ContractCreateFormValues {
+  customerId: SelectOption | null;
+  carId: SelectOption | null;
+  employeeId: SelectOption | null;
+  depositId: SelectOption | null;
+  signDate: string;
+  expectedDeliveryDate: string;
+  contractValue: string | number;
+  notes: string;
+}
+
+export interface ContractUpdateFormValues {
+  actualDeliveryDate: string;
+  status: SelectOption | null;
+  notes: string;
+}

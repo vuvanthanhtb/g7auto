@@ -13,7 +13,11 @@ import {
 import { carTransfersValidation } from "./car-transfers.validation";
 import { useCarTransfers } from "./use-car-transfers";
 import { t } from "@/libs/i18n";
-import type { CarTransferSearchForm } from "./car-transfers.type";
+import type {
+  CarTransferCreateFormValues,
+  CarTransferSearchForm,
+} from "../shell/car-transfers.type";
+import { parseCarTransferStatus } from "../shell/car-transfers.utils";
 
 const CarTransfersPage = () => {
   const {
@@ -23,6 +27,8 @@ const CarTransfersPage = () => {
     selected,
     createOpen,
     createValues,
+    showroomOptions,
+    carOptions,
     searchHandlers,
     createHandlers,
     handlePageChange,
@@ -62,14 +68,23 @@ const CarTransfersPage = () => {
         handlePageChange={handlePageChange}
         title={t("TRANSFERS_PAGE_HEADER")}
         extra={
-          <Button variant="contained" size="small" startIcon={<AddIcon />} onClick={() => setCreateOpen(true)}>
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={<AddIcon />}
+            onClick={() => setCreateOpen(true)}
+          >
             {t("TRANSFERS_BTN_CREATE")}
           </Button>
         }
       />
 
       {/* Detail drawer */}
-      <BaseDrawer open={drawerOpen} title={t("TRANSFERS_DRAWER_DETAIL")} onClose={closeDetail}>
+      <BaseDrawer
+        open={drawerOpen}
+        title={t("TRANSFERS_DRAWER_DETAIL")}
+        onClose={closeDetail}
+      >
         {selected && (
           <Box sx={{ p: 1 }}>
             <Stack spacing={1.5}>
@@ -85,14 +100,32 @@ const CarTransfersPage = () => {
               ]
                 .filter(([, v]) => v)
                 .map(([label, value]) => (
-                  <Box key={label} sx={{ display: "flex", gap: 1, alignItems: "flex-start" }}>
-                    <Typography variant="body2" color="text.secondary" sx={{ minWidth: 140 }}>{label}:</Typography>
+                  <Box
+                    key={label}
+                    sx={{ display: "flex", gap: 1, alignItems: "flex-start" }}
+                  >
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ minWidth: 140 }}
+                    >
+                      {label}:
+                    </Typography>
                     <Typography variant="body2">{value}</Typography>
                   </Box>
                 ))}
               <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                <Typography variant="body2" color="text.secondary" sx={{ minWidth: 140 }}>Trạng thái:</Typography>
-                <Chip label={selected.status} size="small" />
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ minWidth: 140 }}
+                >
+                  Trạng thái:
+                </Typography>
+                <Chip
+                  label={parseCarTransferStatus(selected.status)}
+                  size="small"
+                />
               </Box>
             </Stack>
             {(canConfirmExport || canConfirmReceive || canCancel) && (
@@ -100,17 +133,29 @@ const CarTransfersPage = () => {
                 <Divider sx={{ my: 2 }} />
                 <Stack direction="row" spacing={1} flexWrap="wrap">
                   {canConfirmExport && (
-                    <Button variant="contained" color="primary" onClick={handleConfirmExport}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleConfirmExport}
+                    >
                       {t("TRANSFERS_BTN_CONFIRM_EXPORT")}
                     </Button>
                   )}
                   {canConfirmReceive && (
-                    <Button variant="contained" color="success" onClick={handleConfirmReceive}>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={handleConfirmReceive}
+                    >
                       {t("TRANSFERS_BTN_CONFIRM_RECEIVE")}
                     </Button>
                   )}
                   {canCancel && (
-                    <Button variant="outlined" color="error" onClick={handleCancel}>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      onClick={handleCancel}
+                    >
                       {t("TRANSFERS_BTN_CANCEL")}
                     </Button>
                   )}
@@ -122,12 +167,17 @@ const CarTransfersPage = () => {
       </BaseDrawer>
 
       {/* Create drawer */}
-      <BaseDrawer open={createOpen} title={t("TRANSFERS_DRAWER_CREATE")} onClose={() => setCreateOpen(false)}>
-        <BaseFormComponent
+      <BaseDrawer
+        open={createOpen}
+        title={t("TRANSFERS_DRAWER_CREATE")}
+        onClose={() => setCreateOpen(false)}
+      >
+        <BaseFormComponent<CarTransferCreateFormValues>
           formConfig={getCarTransfersFormConfig()}
           validationSchema={carTransfersValidation}
+          options={{ carOptions, showroomOptions }}
           values={createValues}
-          onChange={(d) => setCreateValues((p) => ({ ...p, ...d }))}
+          onChange={setCreateValues}
           handlers={createHandlers}
         />
       </BaseDrawer>

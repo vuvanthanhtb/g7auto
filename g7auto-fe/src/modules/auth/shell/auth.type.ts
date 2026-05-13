@@ -3,6 +3,25 @@ export interface LoginRequest {
   password: string;
 }
 
+export type LoginFormValues = LoginRequest;
+
+export interface ProfileDrawerFormValues {
+  username: string;
+  fullName: string;
+  email: string;
+}
+
+export interface ProfilePageFormValues {
+  fullName: string;
+  email: string;
+}
+
+export interface PasswordFormValues {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;

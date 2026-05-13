@@ -40,3 +40,20 @@ export interface QuotationPayload {
   page?: number;
   size?: number;
 }
+
+type SelectOption = { label: string; value: string | number };
+
+export interface QuotationCreateFormValues {
+  customerId: SelectOption | null;
+  carId: SelectOption | null;
+  employeeId: SelectOption | null;
+  carPrice: string | number;
+  accessories: string | number;
+  promotion: string | number;
+  otherCosts: string | number;
+  notes: string;
+}
+
+export interface QuotationDetailFormValues {
+  notes: string;
+}

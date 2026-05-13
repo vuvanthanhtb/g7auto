@@ -1,8 +1,8 @@
 package com.g7auto.domain.entity;
 
 import com.g7auto.core.entity.BaseEntity;
-import com.g7auto.core.entity.DepositStatus;
 import com.g7auto.core.entity.DepositPaymentMethod;
+import com.g7auto.core.entity.DepositStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

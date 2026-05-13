@@ -6,10 +6,13 @@ import com.g7auto.application.dto.request.ContractUpdateRequest;
 import com.g7auto.application.dto.response.ContractResponse;
 import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public interface ContractService {
 
   Page<ContractResponse> search(ContractSearchRequest request);
+
+  List<ContractResponse> findAllList();
 
   ContractResponse findById(Long id);
 

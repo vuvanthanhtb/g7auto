@@ -44,7 +44,8 @@ public class EmployeeController {
   @PostMapping("/{id}/transfer-showroom")
   public ResponseEntity<ApiResponse<EmployeeResponse>> transferShowroom(@PathVariable Long id,
       @RequestBody Map<String, Long> body) {
-    return ResponseEntity.ok(ApiResponse.ok(employeeService.transferShowroom(id, body.get("newShowroomId"))));
+    return ResponseEntity.ok(
+        ApiResponse.ok(employeeService.transferShowroom(id, body.get("newShowroomId"))));
   }
 
   @GetMapping("/list")

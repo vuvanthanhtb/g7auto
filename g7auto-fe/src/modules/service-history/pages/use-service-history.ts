@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/shell/redux/hooks";
 import { getServiceHistory, createServiceHistory, getServiceHistoryById, clearSelectedServiceHistory, exportServiceHistory } from "../shell/service-history.slice";
-import type { ServiceHistoryRequest, ServiceHistorySearchForm } from "../shell/service-history.type";
+import type { ServiceHistoryFormValues, ServiceHistoryRequest, ServiceHistorySearchForm } from "../shell/service-history.type";
 import { serviceHistoryInitialValues, initServiceHistorySearchForm } from "./service-history.config";
 import { BTN_REFRESH, BTN_EXPORT, BTN_DETAIL, BTN_SUBMIT } from "@/libs/constants/button.constant";
+import { contactTypeOptions } from "@/libs/constants/options.constant";
 
 type TableRow = Record<string, unknown>;
 
@@ -12,7 +13,7 @@ export const useServiceHistory = () => {
   const { selected } = useAppSelector((s) => s.serviceHistory);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
-  const [formValues, setFormValues] = useState<Record<string, unknown>>(serviceHistoryInitialValues);
+  const [formValues, setFormValues] = useState<ServiceHistoryFormValues>(serviceHistoryInitialValues);
   const [searchQuery, setSearchQuery] = useState<ServiceHistorySearchForm>(initServiceHistorySearchForm);
 
   useEffect(() => {
@@ -24,7 +25,18 @@ export const useServiceHistory = () => {
   }, [dispatch, searchQuery]);
 
   useEffect(() => {
-    if (selected && editId) setFormValues(selected as unknown as Record<string, unknown>);
+    if (selected && editId)
+      setFormValues({
+        customerId: selected.customerId ?? "",
+        employeeId: selected.employeeId ?? "",
+        contactType: selected.contactType
+          ? (contactTypeOptions.find((o) => o.value === selected.contactType) ?? null)
+          : null,
+        serviceDate: selected.serviceDate ?? "",
+        content: selected.content ?? "",
+        result: selected.result ?? "",
+        nextReminderDate: selected.nextReminderDate ?? "",
+      });
   }, [selected, editId]);
 
   const openCreate = () => {

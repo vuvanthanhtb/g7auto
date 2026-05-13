@@ -38,3 +38,17 @@ export interface TestDrivePayload {
   page?: number;
   size?: number;
 }
+
+export interface TestDriveCreateFormValues {
+  customerId: string | number;
+  carId: string | number;
+  showroomId: string | number;
+  employeeId: string | number;
+  startTime: string;
+  endTime: string;
+  notes: string;
+}
+
+export interface TestDriveDetailFormValues {
+  notes: string;
+}

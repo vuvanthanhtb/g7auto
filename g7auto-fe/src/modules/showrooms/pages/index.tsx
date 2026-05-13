@@ -14,7 +14,7 @@ import {
 import { showroomValidation } from "./showrooms.validation";
 import { useShowrooms } from "./use-showrooms";
 import { t } from "@/libs/i18n";
-import type { ShowroomSearchForm } from "../shell/showroom.type";
+import type { ShowroomFormValues, ShowroomSearchForm } from "../shell/showroom.type";
 
 const ShowroomsPage = () => {
   const dispatch = useAppDispatch();
@@ -65,12 +65,12 @@ const ShowroomsPage = () => {
         title={editId ? t("SHOWROOMS_DRAWER_EDIT") : t("SHOWROOMS_DRAWER_ADD")}
         onClose={closeDrawer}
       >
-        <BaseFormComponent
+        <BaseFormComponent<ShowroomFormValues>
           formConfig={getShowroomFormConfig()}
           validationSchema={showroomValidation}
           values={formValues}
           options={{ employeeOptions }}
-          onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+          onChange={setFormValues}
           handlers={formHandlers}
         />
       </BaseDrawer>

@@ -11,6 +11,9 @@ class ContractsRepository {
     if (!ContractsRepository.instance) ContractsRepository.instance = new ContractsRepository();
     return ContractsRepository.instance;
   }
+  getAll() {
+    return http.call<ContractResponse[]>({ url: CONTRACTS_ENDPOINT.ALL, method: "GET" });
+  }
   getList(params?: ContractPayload) {
     return http.call<ContractPage>({ url: CONTRACTS_ENDPOINT.LIST, method: "GET", params });
   }

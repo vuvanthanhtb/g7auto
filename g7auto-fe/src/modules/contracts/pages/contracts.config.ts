@@ -13,6 +13,7 @@ import {
   DATE,
   SELECT,
   TEXT,
+  TEXTAREA,
 } from "@/libs/constants/form.constant";
 import {
   NUMERICAL_ORDER,
@@ -22,6 +23,11 @@ import {
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
+import type {
+  ContractCreateFormValues,
+  ContractUpdateFormValues,
+} from "../shell/contracts.type";
+import { formatDate } from "@/libs/utils";
 
 export const getContractColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
@@ -29,6 +35,7 @@ export const getContractColumns = (): BaseTableColumn[] => [
     name: "contractNumber",
     label: "COMMON_LABEL_CONTRACT_CODE",
     type: TBL_STRING,
+    styleCell: { textAlign: "center" },
   },
   {
     name: "customerFullName",
@@ -40,8 +47,46 @@ export const getContractColumns = (): BaseTableColumn[] => [
     label: "CARS_FIELD_CHASSIS_NUMBER",
     type: TBL_STRING,
   },
-  { name: "contractValue", label: "COMMON_LABEL_SALE_PRICE", type: TBL_NUMBER },
-  { name: "status", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
+  { name: "statusDisplay", label: "COMMON_LABEL_STATUS", type: TBL_STRING },
+  {
+    name: "paidAmount",
+    label: "CONTRACTS_FIELD_PAID_AMOUNT",
+    type: TBL_NUMBER,
+    styleCell: { color: "blue", fontWeight: "bold" },
+  },
+  {
+    name: "remainingAmount",
+    label: "CONTRACTS_FIELD_REMAINING_AMOUNT",
+    type: TBL_NUMBER,
+    styleCell: { color: "#ed6c02", fontWeight: "bold" },
+  },
+  {
+    name: "contractValue",
+    label: "CONTRACTS_FIELD_TOTAL_VALUE",
+    type: TBL_NUMBER,
+    styleCell: { fontWeight: "bold" },
+  },
+  {
+    name: "expectedDeliveryDate",
+    label: "CONTRACTS_FIELD_DELIVERY_DATE",
+    type: TBL_STRING,
+    formatter: formatDate,
+    styleCell: { textAlign: "center" },
+  },
+  {
+    name: "actualDeliveryDate",
+    label: "CONTRACTS_FIELD_ACTUAL_DELIVERY_DATE",
+    type: TBL_STRING,
+    formatter: formatDate,
+    styleCell: { textAlign: "center" },
+  },
+  {
+    name: "signDate",
+    label: "CONTRACTS_FIELD_SIGN_DATE",
+    type: TBL_STRING,
+    formatter: formatDate,
+    styleCell: { textAlign: "center" },
+  },
   {
     name: "action",
     label: "COMMON_LABEL_ACTION",
@@ -61,29 +106,33 @@ export const getContractColumns = (): BaseTableColumn[] => [
 export const getContractsFormConfig = (): IBaseFormConfig => ({
   fields: [
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "customerId",
       label: "CONTRACTS_FIELD_CUSTOMER_ID",
+      option: "customerOptions",
       required: true,
       size: 6,
     },
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "carId",
       label: "CONTRACTS_FIELD_CAR_ID",
+      option: "carOptions",
       required: true,
       size: 6,
     },
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "employeeId",
       label: "CONTRACTS_FIELD_EMPLOYEE_ID",
+      option: "employeeOptions",
       size: 6,
     },
     {
-      type: NUMBER_INPUT,
+      type: SELECT,
       name: "depositId",
       label: "CONTRACTS_FIELD_DEPOSIT_ID",
+      option: "depositOptions",
       size: 6,
     },
     {
@@ -105,7 +154,7 @@ export const getContractsFormConfig = (): IBaseFormConfig => ({
       required: true,
       size: 12,
     },
-    { type: TEXT, name: "notes", label: "CONTRACTS_FIELD_NOTES", size: 12 },
+    { type: TEXTAREA, name: "notes", label: "CONTRACTS_FIELD_NOTES", size: 12 },
     {
       type: BUTTON,
       size: 12,
@@ -144,14 +193,20 @@ export const getContractsUpdateFormConfig = (): IBaseFormConfig => ({
 
 export const initContractSearchForm = { status: "", page: 1, size: 10 };
 
-export const contractsInitialValues = {
-  customerId: "",
-  carId: "",
-  employeeId: "",
-  depositId: "",
+export const contractsInitialValues: ContractCreateFormValues = {
+  customerId: null,
+  carId: null,
+  employeeId: null,
+  depositId: null,
   signDate: "",
   expectedDeliveryDate: "",
   contractValue: "",
+  notes: "",
+};
+
+export const contractsUpdateInitialValues: ContractUpdateFormValues = {
+  actualDeliveryDate: "",
+  status: null,
   notes: "",
 };
 

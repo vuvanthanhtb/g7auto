@@ -1,26 +1,65 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { contractsService } from "./contracts.service";
-import type { ContractPayload, ContractRequest, ContractUpdateRequest, ContractResponse } from "./contracts.type";
+import type {
+  ContractPayload,
+  ContractRequest,
+  ContractUpdateRequest,
+  ContractResponse,
+} from "./contracts.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
+import { parseContractStatus } from "./contracts.utils";
 
 interface ContractsState {
-  contractTable: { content: ContractResponse[]; totalElements: number; totalPages: number; page: number; size: number };
+  contractTable: {
+    content: ContractResponse[];
+    totalElements: number;
+    totalPages: number;
+    page: number;
+    size: number;
+  };
+  contractAll: ContractResponse[];
   selected: ContractResponse | null;
 }
 
 const initialState: ContractsState = {
-  contractTable: { content: [], totalElements: 0, totalPages: 0, page: 1, size: 10 },
+  contractTable: {
+    content: [],
+    totalElements: 0,
+    totalPages: 0,
+    page: 1,
+    size: 10,
+  },
+  contractAll: [],
   selected: null,
 };
+
+export const getAllContracts = createAsyncThunk(
+  "contracts/getAll",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await contractsService.getAll();
+      return data;
+    } catch (error) {
+      toastError(getApiErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
 
 export const getContracts = createAsyncThunk(
   "contracts/getList",
   async (params: ContractPayload, { rejectWithValue }) => {
     try {
-      const res = await contractsService.getList(params);
-      return res.data;
+      const { data } = await contractsService.getList(params);
+      return {
+        ...data,
+        content: data.content.map((item: ContractResponse) => ({
+          ...item,
+          statusDisplay: parseContractStatus(item.status),
+        })),
+      };
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);
@@ -57,7 +96,10 @@ export const createContracts = createAsyncThunk(
 
 export const updateContracts = createAsyncThunk(
   "contracts/update",
-  async ({ id, data }: { id: number; data: ContractUpdateRequest }, { rejectWithValue }) => {
+  async (
+    { id, data }: { id: number; data: ContractUpdateRequest },
+    { rejectWithValue },
+  ) => {
     try {
       const res = await contractsService.update(id, data);
       toastSuccess(SUCCESS_CODE.UPDATE);
@@ -98,12 +140,21 @@ const contractsSlice = createSlice({
   name: "contracts",
   initialState,
   reducers: {
-    clearSelected: (state) => { state.selected = null; },
+    clearSelected: (state) => {
+      state.selected = null;
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getContracts.fulfilled, (state, action) => { state.contractTable = action.payload; })
-      .addCase(getContractsById.fulfilled, (state, action) => { state.selected = action.payload; });
+      .addCase(getAllContracts.fulfilled, (state, action) => {
+        state.contractAll = action.payload as ContractResponse[];
+      })
+      .addCase(getContracts.fulfilled, (state, action) => {
+        state.contractTable = action.payload;
+      })
+      .addCase(getContractsById.fulfilled, (state, action) => {
+        state.selected = action.payload;
+      });
   },
 });
 

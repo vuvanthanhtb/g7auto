@@ -8,6 +8,7 @@ export interface CarResponse {
   showroomId: number;
   showroomName: string;
   status: string;
+  statusDisplay?: string;
   salePrice: number;
   notes: string;
 }
@@ -50,4 +51,22 @@ export interface CarImportResult {
   success: number;
   failed: number;
   errors: string[];
+}
+
+export interface CarCreateFormValues {
+  chassisNumber: string;
+  engineNumber: string;
+  licensePlate: string;
+  carModelId: SelectOption | null;
+  showroomId: SelectOption | null;
+  salePrice: string | number;
+  notes: string;
+}
+
+export interface CarEditFormValues {
+  licensePlate: string;
+  showroomId: SelectOption | null;
+  salePrice: string | number;
+  status: SelectOption | null;
+  notes: string;
 }

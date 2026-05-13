@@ -10,7 +10,10 @@ import {
   exportCarModels,
 } from "../shell/car-models.slice";
 import { useConfirm } from "@/libs/components/ui/confirm-dialog";
-import { carModelInitialValues, initCarModelSearchForm } from "./car-models.config";
+import {
+  carModelInitialValues,
+  initCarModelSearchForm,
+} from "./car-models.config";
 import {
   BTN_SEARCH,
   BTN_REFRESH,
@@ -21,6 +24,7 @@ import {
 } from "@/libs/constants/button.constant";
 import type {
   CarModelExportPayload,
+  CarModelFormValues,
   CarModelPayload,
   CarModelRequest,
   CarModelSearchForm,
@@ -34,7 +38,7 @@ export const useCarModels = () => {
   const { selected } = useAppSelector((s) => s.carModels);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
-  const [formValues, setFormValues] = useState<Record<string, unknown>>(
+  const [formValues, setFormValues] = useState<CarModelFormValues>(
     carModelInitialValues,
   );
   const [searchQuery, setSearchQuery] = useState<CarModelSearchForm>(
@@ -49,7 +53,9 @@ export const useCarModels = () => {
     size: form.size,
   });
 
-  const toExportPayload = (form: CarModelSearchForm): CarModelExportPayload => ({
+  const toExportPayload = (
+    form: CarModelSearchForm,
+  ): CarModelExportPayload => ({
     name: form.name || undefined,
     manufacturer: form.manufacturer || undefined,
     year: form.year || undefined,
@@ -65,7 +71,13 @@ export const useCarModels = () => {
 
   useEffect(() => {
     if (selected && editId)
-      setFormValues(selected as unknown as Record<string, unknown>);
+      setFormValues({
+        name: selected.name ?? "",
+        manufacturer: selected.manufacturer ?? "",
+        year: selected.year ?? "",
+        listedPrice: selected.listedPrice ?? "",
+        description: selected.description ?? "",
+      });
   }, [selected, editId]);
 
   const openCreate = () => {
@@ -97,16 +109,14 @@ export const useCarModels = () => {
     }
   };
 
-  const handleSubmit = async (data: Record<string, unknown>) => {
+  const handleSubmit = async (data: CarModelFormValues) => {
     const payload = {
       ...data,
       listedPrice: data.listedPrice ? Number(data.listedPrice) : undefined,
       year: data.year ? String(data.year) : undefined,
     } as CarModelRequest;
-    if (editId)
-      await dispatch(updateCarModel({ id: editId, data: payload }));
-    else
-      await dispatch(createCarModel(payload));
+    if (editId) await dispatch(updateCarModel({ id: editId, data: payload }));
+    else await dispatch(createCarModel(payload));
     closeDrawer();
     dispatch(getCarModels(toPayload(searchQuery)));
   };
@@ -118,7 +128,9 @@ export const useCarModels = () => {
     [BTN_REFRESH]: () => {
       setSearchQuery(initCarModelSearchForm);
     },
-    [BTN_EXPORT]: async () => { await dispatch(exportCarModels(toExportPayload(searchQuery))); },
+    [BTN_EXPORT]: async () => {
+      await dispatch(exportCarModels(toExportPayload(searchQuery)));
+    },
   };
 
   const formHandlers = { [BTN_SUBMIT]: handleSubmit };

@@ -14,14 +14,22 @@ import {
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
-import type { ShowroomSearchForm } from "../shell/showroom.type";
+import type {
+  ShowroomSearchForm,
+  ShowroomFormValues,
+} from "../shell/showroom.type";
 import { getDateBefore } from "@/libs/utils";
 
 export const getShowroomColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
   { name: "name", label: "COMMON_LABEL_SHOWROOM_NAME", type: TBL_STRING },
   { name: "address", label: "COMMON_LABEL_ADDRESS", type: TBL_STRING },
-  { name: "phoneDisplay", label: "COMMON_LABEL_PHONE", type: TBL_STRING },
+  {
+    name: "phoneDisplay",
+    label: "COMMON_LABEL_PHONE",
+    type: TBL_STRING,
+    styleCell: { textAlign: "center" },
+  },
   { name: "managerName", label: "COMMON_LABEL_MANAGER", type: TBL_STRING },
   {
     name: "action",
@@ -58,7 +66,13 @@ export const getShowroomFormConfig = (): IBaseFormConfig => ({
     },
     { type: TEXT, name: "phone", label: "COMMON_LABEL_PHONE", size: 6 },
     { type: TEXT, name: "email", label: "COMMON_LABEL_EMAIL", size: 6 },
-    { type: SELECT, name: "managerId", label: "COMMON_LABEL_MANAGER", option: "employeeOptions", size: 12 },
+    {
+      type: SELECT,
+      name: "managerId",
+      label: "COMMON_LABEL_MANAGER",
+      option: "employeeOptions",
+      size: 12,
+    },
     {
       type: BUTTON,
       size: 12,
@@ -69,12 +83,12 @@ export const getShowroomFormConfig = (): IBaseFormConfig => ({
   ],
 });
 
-export const showroomInitialValues = {
+export const showroomInitialValues: ShowroomFormValues = {
   name: "",
   address: "",
   phone: "",
   email: "",
-  managerId: "",
+  managerId: null,
 };
 
 export const initShowroomSearchForm: ShowroomSearchForm = {

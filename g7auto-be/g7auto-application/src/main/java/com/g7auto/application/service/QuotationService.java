@@ -5,10 +5,13 @@ import com.g7auto.application.dto.request.QuotationSearchRequest;
 import com.g7auto.application.dto.response.QuotationResponse;
 import com.g7auto.core.response.Page;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public interface QuotationService {
 
   Page<QuotationResponse> search(QuotationSearchRequest request);
+
+  List<QuotationResponse> findAllList();
 
   QuotationResponse findById(Long id);
 

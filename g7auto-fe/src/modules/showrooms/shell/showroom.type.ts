@@ -39,3 +39,13 @@ export interface ShowroomExportPayload {
   fromDate?: string;
   toDate?: string;
 }
+
+type SelectOption = { label: string; value: string | number };
+
+export interface ShowroomFormValues {
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+  managerId: SelectOption | null;
+}

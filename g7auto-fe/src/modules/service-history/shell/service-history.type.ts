@@ -32,3 +32,15 @@ export interface ServiceHistoryPayload {
   page?: number;
   size?: number;
 }
+
+type SelectOption = { label: string; value: string | number };
+
+export interface ServiceHistoryFormValues {
+  customerId: string | number;
+  employeeId: string | number;
+  contactType: SelectOption | null;
+  serviceDate: string;
+  content: string;
+  result: string;
+  nextReminderDate: string;
+}

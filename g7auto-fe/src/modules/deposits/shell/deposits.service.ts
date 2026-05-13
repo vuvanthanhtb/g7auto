@@ -14,6 +14,9 @@ class DepositsRepository {
   getList(params?: DepositPayload) {
     return http.call<DepositPage>({ url: DEPOSITS_ENDPOINT.LIST, method: "GET", params });
   }
+  getAll() {
+    return http.call<DepositResponse[]>({ url: DEPOSITS_ENDPOINT.ALL, method: "GET" });
+  }
   getById(id: number) {
     return http.call<DepositResponse>({ url: `${DEPOSITS_ENDPOINT.BASE}/${id}`, method: "GET" });
   }

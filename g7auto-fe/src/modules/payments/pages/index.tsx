@@ -13,18 +13,20 @@ import { paymentsValidation, paymentsDetailValidation } from "./payments.validat
 import { paymentMethodOptions, paymentStatusOptions, vietnameseBankOptions } from "@/libs/constants/options.constant";
 import { usePayments } from "./use-payments";
 import { t } from "@/libs/i18n";
+import type { PaymentSearchForm, PaymentCreateFormValues, PaymentDetailFormValues } from "../shell/payments.type";
 import BankTransferQR from "../components/BankTransferQR";
 
 const PaymentsPage = () => {
   const {
-    drawerOpen, editId, formValues, searchQuery,
+    drawerOpen, editId, createFormValues, detailFormValues, searchQuery,
+    contractOptions,
     openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers, detailHandlers,
-    setFormValues, handlePageChange,
+    setCreateFormValues, setDetailFormValues, handlePageChange,
   } = usePayments();
 
   return (
     <Box sx={{ p: 3 }}>
-      <BaseFormComponent formConfig={getPaymentSearchConfig()} options={{ paymentStatusOptions }} values={searchQuery} handlers={searchHandlers} />
+      <BaseFormComponent<PaymentSearchForm> formConfig={getPaymentSearchConfig()} options={{ paymentStatusOptions }} values={searchQuery} handlers={searchHandlers} />
       <BaseTableComponent
         tableConfig={getPaymentColumns()}
         reducer="payments"
@@ -44,29 +46,29 @@ const PaymentsPage = () => {
         onClose={closeDrawer}
       >
         {editId ? (
-          <BaseFormComponent
+          <BaseFormComponent<PaymentDetailFormValues>
             formConfig={getPaymentsDetailFormConfig()}
             validationSchema={paymentsDetailValidation}
-            values={formValues}
-            onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+            values={detailFormValues}
+            onChange={setDetailFormValues}
             handlers={detailHandlers}
           />
         ) : (
           <>
-            <BaseFormComponent
+            <BaseFormComponent<PaymentCreateFormValues>
               formConfig={getPaymentsFormConfig()}
               validationSchema={paymentsValidation}
-              options={{ paymentMethodOptions, vietnameseBankOptions }}
-              values={formValues}
-              onChange={(d) => setFormValues((p) => ({ ...p, ...d }))}
+              options={{ paymentMethodOptions, vietnameseBankOptions, contractOptions }}
+              values={createFormValues}
+              onChange={setCreateFormValues}
               handlers={formHandlers}
             />
-            {(formValues.method as { value?: string } | null)?.value === "BANK_TRANSFER" && (
+            {(createFormValues.method as { value?: string } | null)?.value === "BANK_TRANSFER" && (
               <BankTransferQR
-                bankId={formValues.bankId as { label: string; value: string } | null}
-                bankAccountNo={formValues.bankAccountNo as string}
-                bankContent={formValues.bankContent as string}
-                amount={formValues.amount as number | undefined}
+                bankId={createFormValues.bankId as { label: string; value: string } | null}
+                bankAccountNo={createFormValues.bankAccountNo as string}
+                bankContent={createFormValues.bankContent as string}
+                amount={createFormValues.amount as number | undefined}
               />
             )}
           </>

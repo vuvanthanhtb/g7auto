@@ -17,6 +17,7 @@ import com.g7auto.core.export.ExcelSupport;
 import com.g7auto.core.response.Page;
 import com.g7auto.core.utils.PageableUtils;
 import com.g7auto.domain.entity.Showroom;
+import com.g7auto.infrastructure.persistence.postgresql.EmployeeRepository;
 import com.g7auto.infrastructure.persistence.postgresql.ShowroomRepository;
 import com.g7auto.infrastructure.persistence.postgresql.query.ShowroomQueryRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,6 +45,7 @@ public class ShowroomServiceImpl implements ShowroomService {
   private final ShowroomRepository showroomRepository;
   private final ShowroomQueryRepository showroomQueryRepository;
   private final ShowroomMapper showroomMapper;
+  private final EmployeeRepository employeeRepository;
 
   @Override
   public Page<ShowroomResponse> search(ShowroomSearchRequest request) {
@@ -70,6 +72,9 @@ public class ShowroomServiceImpl implements ShowroomService {
     }
     Showroom s = showroomMapper.toEntity(request);
     s.setStatus(ShowroomStatus.ACTIVE);
+    if (request.getManagerId() != null) {
+      employeeRepository.findById(request.getManagerId()).ifPresent(s::setManager);
+    }
     return showroomMapper.toResponse(showroomRepository.save(s));
   }
 
@@ -78,6 +83,11 @@ public class ShowroomServiceImpl implements ShowroomService {
   public ShowroomResponse update(Long id, ShowroomRequest request) {
     Showroom s = get(id);
     showroomMapper.updateEntity(request, s);
+    if (request.getManagerId() != null) {
+      employeeRepository.findById(request.getManagerId()).ifPresent(s::setManager);
+    } else {
+      s.setManager(null);
+    }
     return showroomMapper.toResponse(showroomRepository.save(s));
   }
 

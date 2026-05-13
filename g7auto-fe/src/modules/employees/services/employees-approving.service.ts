@@ -4,6 +4,7 @@ import type {
   EmployeeRequest,
   EmployeeResponse,
   EmployeeApprovingQuery,
+  EmployeeImportResult,
 } from "../shell/employees.type";
 import type { AxiosResponse } from "axios";
 
@@ -25,6 +26,8 @@ interface IEmployeesApprovingRepository {
   deleteApproval(id: number): AR<void>;
   requestApproval(data: { username: string; action: string }): AR<void>;
   bulkRequestApproval(data: { action: string; usernames: string[] }): AR<void>;
+  import(file: File): AR<EmployeeImportResult>;
+  downloadTemplate(): Promise<void>;
 }
 
 class EmployeesApprovingRepository implements IEmployeesApprovingRepository {
@@ -59,6 +62,16 @@ class EmployeesApprovingRepository implements IEmployeesApprovingRepository {
 
   bulkRequestApproval(data: { action: string; usernames: string[] }): AR<void> {
     return http.call<void>({ url: `${BASE}/bulk-approval`, method: "POST", data });
+  }
+
+  import(file: File): AR<EmployeeImportResult> {
+    const formData = new FormData();
+    formData.append("file", file);
+    return http.call<EmployeeImportResult>({ url: `${BASE}/import`, method: "POST", data: formData });
+  }
+
+  downloadTemplate(): Promise<void> {
+    return http.download({ url: `${BASE}/template`, filename: "mau-import-nhan-vien.xlsx" });
   }
 }
 

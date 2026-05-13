@@ -196,12 +196,15 @@ export const vi: Record<string, string> = {
   CONTRACTS_FIELD_EMPLOYEE_ID: "Mã nhân viên",
   CONTRACTS_FIELD_SALE_PRICE: "Giá bán (VND)",
   CONTRACTS_FIELD_DEPOSIT_AMOUNT: "Tiền cọc (VND)",
-  CONTRACTS_FIELD_SIGN_DATE: "Ngày ký",
-  CONTRACTS_FIELD_DELIVERY_DATE: "Ngày giao dự kiến",
-  CONTRACTS_FIELD_ACTUAL_DELIVERY_DATE: "Ngày giao thực tế",
+  CONTRACTS_FIELD_SIGN_DATE: "Ngày ký hợp đồng",
+  CONTRACTS_FIELD_DELIVERY_DATE: "Ngày dự kiến giao xe",
+  CONTRACTS_FIELD_ACTUAL_DELIVERY_DATE: "Ngày thực tế bàn giao xe cho khách",
   CONTRACTS_FIELD_DEPOSIT_ID: "Mã phiếu cọc",
   CONTRACTS_FIELD_NOTES: "Ghi chú",
   CONTRACTS_FIELD_CONTRACT_NUMBER: "Số hợp đồng",
+  CONTRACTS_FIELD_TOTAL_VALUE: "Tổng giá trị hợp đồng",
+  CONTRACTS_FIELD_PAID_AMOUNT: "Số tiền khách đã thanh toán",
+  CONTRACTS_FIELD_REMAINING_AMOUNT: "Số tiền còn nợ lại",
 
   // === QUOTATIONS ===
   QUOTATIONS_PAGE_HEADER: "Quản lý Báo giá",

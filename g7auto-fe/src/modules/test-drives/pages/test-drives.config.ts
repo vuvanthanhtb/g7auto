@@ -22,6 +22,7 @@ import {
 } from "@/libs/constants/table.constant";
 import type { IBaseFormConfig } from "@/libs/types/config-form.type";
 import type { BaseTableColumn } from "@/libs/types/table.type";
+import type { TestDriveCreateFormValues, TestDriveDetailFormValues } from "../shell/test-drives.type";
 
 export const getTestDriveColumns = (): BaseTableColumn[] => [
   { name: "NUMERICAL_ORDER", label: "COMMON_LABEL_STT", type: NUMERICAL_ORDER },
@@ -72,13 +73,17 @@ export const getTestDrivesDetailFormConfig = (): IBaseFormConfig => ({
 
 export const initTestDriveSearchForm = { status: "", page: 1, size: 10 };
 
-export const testDrivesInitialValues = {
+export const testDrivesInitialValues: TestDriveCreateFormValues = {
   customerId: "",
   carId: "",
   showroomId: "",
   employeeId: "",
   startTime: "",
   endTime: "",
+  notes: "",
+};
+
+export const testDriveDetailInitialValues: TestDriveDetailFormValues = {
   notes: "",
 };
 
