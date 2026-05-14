@@ -1,17 +1,34 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { testDrivesService } from "./test-drives.service";
-import type { TestDrivePayload, TestDriveRequest, TestDriveResponse } from "./test-drives.type";
+import type {
+  TestDrivePayload,
+  TestDriveRequest,
+  TestDriveResponse,
+} from "./test-drives.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
+import { parseTestDriveStatus } from "./test-drives.utils";
 
 interface TestDrivesState {
-  testDriveTable: { content: TestDriveResponse[]; totalElements: number; totalPages: number; page: number; size: number };
+  testDriveTable: {
+    content: TestDriveResponse[];
+    totalElements: number;
+    totalPages: number;
+    page: number;
+    size: number;
+  };
   selected: TestDriveResponse | null;
 }
 
 const initialState: TestDrivesState = {
-  testDriveTable: { content: [], totalElements: 0, totalPages: 0, page: 1, size: 10 },
+  testDriveTable: {
+    content: [],
+    totalElements: 0,
+    totalPages: 0,
+    page: 1,
+    size: 10,
+  },
   selected: null,
 };
 
@@ -19,8 +36,16 @@ export const getTestDrives = createAsyncThunk(
   "testDrives/getList",
   async (params: TestDrivePayload, { rejectWithValue }) => {
     try {
-      const res = await testDrivesService.getList(params);
-      return res.data;
+      const {
+        data: { content, ...rest },
+      } = await testDrivesService.getList(params);
+      return {
+        content: content.map((item: TestDriveResponse) => ({
+          ...item,
+          statusDisplay: parseTestDriveStatus(item.status),
+        })),
+        ...rest,
+      };
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);
@@ -71,7 +96,10 @@ export const confirmTestDrive = createAsyncThunk(
 
 export const completeTestDrive = createAsyncThunk(
   "testDrives/complete",
-  async ({ id, notes }: { id: number; notes?: string }, { rejectWithValue }) => {
+  async (
+    { id, notes }: { id: number; notes?: string },
+    { rejectWithValue },
+  ) => {
     try {
       const res = await testDrivesService.complete(id, notes);
       toastSuccess(SUCCESS_CODE.ACTION);
@@ -113,14 +141,21 @@ const testDrivesSlice = createSlice({
   name: "testDrives",
   initialState,
   reducers: {
-    clearSelected: (state) => { state.selected = null; },
+    clearSelected: (state) => {
+      state.selected = null;
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getTestDrives.fulfilled, (state, action) => { state.testDriveTable = action.payload; })
-      .addCase(getTestDrivesById.fulfilled, (state, action) => { state.selected = action.payload; });
+      .addCase(getTestDrives.fulfilled, (state, action) => {
+        state.testDriveTable = action.payload;
+      })
+      .addCase(getTestDrivesById.fulfilled, (state, action) => {
+        state.selected = action.payload;
+      });
   },
 });
 
-export const { clearSelected: clearSelectedTestDrives } = testDrivesSlice.actions;
+export const { clearSelected: clearSelectedTestDrives } =
+  testDrivesSlice.actions;
 export default testDrivesSlice.reducer;

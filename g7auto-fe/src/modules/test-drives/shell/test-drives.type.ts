@@ -39,11 +39,13 @@ export interface TestDrivePayload {
   size?: number;
 }
 
+type SelectOption = { label: string; value: string | number };
+
 export interface TestDriveCreateFormValues {
-  customerId: string | number;
-  carId: string | number;
-  showroomId: string | number;
-  employeeId: string | number;
+  customerId: SelectOption | null;
+  carId: SelectOption | null;
+  showroomId: SelectOption | null;
+  employeeId: SelectOption | null;
   startTime: string;
   endTime: string;
   notes: string;

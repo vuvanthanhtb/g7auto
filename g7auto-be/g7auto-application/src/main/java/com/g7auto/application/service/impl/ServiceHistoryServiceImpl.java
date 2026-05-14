@@ -50,6 +50,7 @@ public class ServiceHistoryServiceImpl implements ServiceHistoryService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public ServiceHistoryResponse findById(Long id) {
     return serviceHistoryMapper.toResponse(
         serviceHistoryRepository.findById(id)

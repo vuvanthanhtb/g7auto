@@ -3,6 +3,7 @@ export interface ServiceHistoryResponse {
   customerId: number;
   customerFullName: string;
   employeeId: number;
+  employeeCode: string;
   employeeFullName: string;
   serviceDate: string;
   contactType: string;
@@ -36,8 +37,8 @@ export interface ServiceHistoryPayload {
 type SelectOption = { label: string; value: string | number };
 
 export interface ServiceHistoryFormValues {
-  customerId: string | number;
-  employeeId: string | number;
+  customerId: SelectOption | null;
+  employeeId: SelectOption | null;
   contactType: SelectOption | null;
   serviceDate: string;
   content: string;

@@ -1,17 +1,34 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { paymentsService } from "./payments.service";
-import type { PaymentPayload, PaymentRequest, PaymentResponse } from "./payments.type";
+import type {
+  PaymentPayload,
+  PaymentRequest,
+  PaymentResponse,
+} from "./payments.type";
 import { getApiErrorMessage } from "@/libs/interceptor/helpers";
 import { SUCCESS_CODE } from "@/libs/constants/error-code.constant";
 import { toastError, toastSuccess } from "@/libs/custom-toast";
+import { parsePaymentStatus, parsePaymentMethod } from "./payments.utils";
 
 interface PaymentsState {
-  paymentTable: { content: PaymentResponse[]; totalElements: number; totalPages: number; page: number; size: number };
+  paymentTable: {
+    content: PaymentResponse[];
+    totalElements: number;
+    totalPages: number;
+    page: number;
+    size: number;
+  };
   selected: PaymentResponse | null;
 }
 
 const initialState: PaymentsState = {
-  paymentTable: { content: [], totalElements: 0, totalPages: 0, page: 1, size: 10 },
+  paymentTable: {
+    content: [],
+    totalElements: 0,
+    totalPages: 0,
+    page: 1,
+    size: 10,
+  },
   selected: null,
 };
 
@@ -19,8 +36,13 @@ export const getPayments = createAsyncThunk(
   "payments/getList",
   async (params: PaymentPayload, { rejectWithValue }) => {
     try {
-      const res = await paymentsService.getList(params);
-      return res.data;
+      const { data } = await paymentsService.getList(params);
+      const list = data.content?.map((item) => ({
+        ...item,
+        statusDisplay: parsePaymentStatus(item.status),
+        methodDisplay: parsePaymentMethod(item.method),
+      }));
+      return { ...data, content: list };
     } catch (error) {
       toastError(getApiErrorMessage(error));
       return rejectWithValue(error);
@@ -99,12 +121,18 @@ const paymentsSlice = createSlice({
   name: "payments",
   initialState,
   reducers: {
-    clearSelected: (state) => { state.selected = null; },
+    clearSelected: (state) => {
+      state.selected = null;
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getPayments.fulfilled, (state, action) => { state.paymentTable = action.payload; })
-      .addCase(getPaymentsById.fulfilled, (state, action) => { state.selected = action.payload; });
+      .addCase(getPayments.fulfilled, (state, action) => {
+        state.paymentTable = action.payload;
+      })
+      .addCase(getPaymentsById.fulfilled, (state, action) => {
+        state.selected = action.payload;
+      });
   },
 });
 

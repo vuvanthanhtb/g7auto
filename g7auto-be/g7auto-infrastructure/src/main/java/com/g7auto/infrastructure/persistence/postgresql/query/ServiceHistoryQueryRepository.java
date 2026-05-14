@@ -19,7 +19,7 @@ public class ServiceHistoryQueryRepository {
   private static final String BASE_SQL = """
       SELECT sh.id,
              sh.customer_id, c.full_name AS customer_name,
-             sh.employee_id, e.full_name AS employee_name,
+             sh.employee_id, e.code AS employee_code, e.full_name AS employee_name,
              sh.service_date, sh.contact_type, sh.content, sh.result,
              sh.next_reminder_date,
              sh.created_at, sh.updated_at,
@@ -47,6 +47,7 @@ public class ServiceHistoryQueryRepository {
     if (!rs.wasNull()) {
       Employee employee = new Employee();
       employee.setId(empId);
+      employee.setCode(rs.getString("employee_code"));
       employee.setFullName(rs.getString("employee_name"));
       sh.setEmployee(employee);
     }

@@ -8,6 +8,7 @@ public record ServiceHistoryResponse(
     Long customerId,
     @ExcelColumn(header = "Khách hàng", order = 1) String customerFullName,
     Long employeeId,
+    String employeeCode,
     @ExcelColumn(header = "Nhân viên", order = 2) String employeeFullName,
     @ExcelColumn(header = "Ngày phục vụ", order = 3) LocalDateTime serviceDate,
     @ExcelColumn(header = "Loại liên hệ", order = 4) String contactType,

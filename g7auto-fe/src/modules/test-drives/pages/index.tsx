@@ -29,11 +29,15 @@ const TestDrivesPage = () => {
     createFormValues,
     detailFormValues,
     searchQuery,
+    customerOptions,
+    carOptions,
+    showroomOptions,
+    employeeOptions,
     openCreate,
     closeDrawer,
     handleCellAction,
     searchHandlers,
-    formHandlers,
+    createHandlers,
     detailHandlers,
     setCreateFormValues,
     setDetailFormValues,
@@ -86,9 +90,10 @@ const TestDrivesPage = () => {
           <BaseFormComponent<TestDriveCreateFormValues>
             formConfig={getTestDrivesFormConfig()}
             validationSchema={testDrivesValidation}
+            options={{ customerOptions, carOptions, showroomOptions, employeeOptions }}
             values={createFormValues}
             onChange={setCreateFormValues}
-            handlers={formHandlers}
+            handlers={createHandlers}
           />
         )}
       </BaseDrawer>

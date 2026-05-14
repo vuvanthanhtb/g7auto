@@ -10,31 +10,86 @@ import {
   cancelTestDrive,
   exportTestDrives,
 } from "../shell/test-drives.slice";
-import type { TestDriveCreateFormValues, TestDriveDetailFormValues, TestDriveRequest, TestDriveSearchForm } from "../shell/test-drives.type";
-import { testDrivesInitialValues, testDriveDetailInitialValues, initTestDriveSearchForm } from "./test-drives.config";
-import { BTN_SEARCH, BTN_REFRESH, BTN_EXPORT, BTN_DETAIL, BTN_SUBMIT, BTN_CONFIRM, BTN_COMPLETE, BTN_CANCEL } from "@/libs/constants/button.constant";
+import { getAllCustomers } from "@/modules/customers/shell/customers.slice";
+import { getAllCars } from "@/modules/cars/shell/cars.slice";
+import { getAllShowrooms } from "@/modules/showrooms/shell/showrooms.slice";
+import { getAllEmployees } from "@/modules/employees/shell/employees.slice";
+import type {
+  TestDriveCreateFormValues,
+  TestDriveDetailFormValues,
+  TestDriveRequest,
+  TestDriveSearchForm,
+} from "../shell/test-drives.type";
+import {
+  testDrivesInitialValues,
+  testDriveDetailInitialValues,
+  initTestDriveSearchForm,
+} from "./test-drives.config";
+import {
+  BTN_SEARCH,
+  BTN_REFRESH,
+  BTN_EXPORT,
+  BTN_DETAIL,
+  BTN_SUBMIT,
+  BTN_CONFIRM,
+  BTN_COMPLETE,
+  BTN_CANCEL,
+} from "@/libs/constants/button.constant";
 
 type TableRow = Record<string, unknown>;
+
+const toId = (v: unknown) => (v as { value?: number } | null)?.value;
 
 export const useTestDrives = () => {
   const dispatch = useAppDispatch();
   const { selected } = useAppSelector((s) => s.testDrives);
+  const customerAll = useAppSelector((s) => s.customers.customerAll) ?? [];
+  const carAll = useAppSelector((s) => s.cars.carAll) ?? [];
+  const showroomAll = useAppSelector((s) => s.showrooms.showroomAll) ?? [];
+  const employeeAll = useAppSelector((s) => s.employees.employeeAll) ?? [];
+
+  const customerOptions = customerAll.map((c) => ({
+    label: c.fullName,
+    value: c.id,
+  }));
+  const carOptions = carAll.map((c) => ({
+    label: `${c.chassisNumber}${c.licensePlate ? ` — ${c.licensePlate}` : ""}`,
+    value: c.id,
+  }));
+  const showroomOptions = showroomAll.map((s) => ({
+    label: s.name,
+    value: s.id,
+  }));
+  const employeeOptions = employeeAll.map((e) => ({
+    label: e.fullName,
+    value: e.id,
+  }));
+
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
-  const [createFormValues, setCreateFormValues] = useState<TestDriveCreateFormValues>(testDrivesInitialValues);
-  const [detailFormValues, setDetailFormValues] = useState<TestDriveDetailFormValues>(testDriveDetailInitialValues);
-  const [searchQuery, setSearchQuery] = useState<TestDriveSearchForm>(initTestDriveSearchForm);
+  const [createFormValues, setCreateFormValues] =
+    useState<TestDriveCreateFormValues>(testDrivesInitialValues);
+  const [detailFormValues, setDetailFormValues] =
+    useState<TestDriveDetailFormValues>(testDriveDetailInitialValues);
+  const [searchQuery, setSearchQuery] = useState<TestDriveSearchForm>(
+    initTestDriveSearchForm,
+  );
 
   useEffect(() => {
     document.title = "Lái thử — G7Auto";
-  }, []);
+    dispatch(getAllCustomers());
+    dispatch(getAllCars());
+    dispatch(getAllShowrooms());
+    dispatch(getAllEmployees());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getTestDrives(searchQuery));
   }, [dispatch, searchQuery]);
 
   useEffect(() => {
-    if (selected && editId) setDetailFormValues({ notes: selected.notes ?? "" });
+    if (selected && editId)
+      setDetailFormValues({ notes: selected.notes ?? "" });
   }, [selected, editId]);
 
   const openCreate = () => {
@@ -56,8 +111,19 @@ export const useTestDrives = () => {
     }
   };
 
-  const handleSubmit = async (data: Record<string, unknown>) => {
-    if (!editId) await dispatch(createTestDrives(data as unknown as TestDriveRequest));
+  const handleCreate = async (data: TestDriveCreateFormValues) => {
+    if (!editId) {
+      const body: TestDriveRequest = {
+        customerId: toId(data.customerId)!,
+        carId: toId(data.carId)!,
+        employeeId: toId(data.employeeId),
+        showroomId: toId(data.showroomId),
+        startTime: data.startTime,
+        endTime: data.endTime,
+        notes: data.notes || undefined,
+      };
+      await dispatch(createTestDrives(body));
+    }
     closeDrawer();
     dispatch(getTestDrives(searchQuery));
   };
@@ -69,9 +135,14 @@ export const useTestDrives = () => {
     dispatch(getTestDrives(searchQuery));
   };
 
-  const handleComplete = async (data: Record<string, unknown>) => {
+  const handleComplete = async (data: TestDriveDetailFormValues) => {
     if (!editId) return;
-    await dispatch(completeTestDrive({ id: editId, notes: data.notes as string | undefined }));
+    await dispatch(
+      completeTestDrive({
+        id: editId,
+        notes: data.notes,
+      }),
+    );
     closeDrawer();
     dispatch(getTestDrives(searchQuery));
   };
@@ -90,10 +161,14 @@ export const useTestDrives = () => {
     [BTN_REFRESH]: () => {
       setSearchQuery(initTestDriveSearchForm);
     },
-    [BTN_EXPORT]: async () => { await dispatch(exportTestDrives()); },
+    [BTN_EXPORT]: async () => {
+      await dispatch(exportTestDrives());
+    },
   };
 
-  const formHandlers = { [BTN_SUBMIT]: handleSubmit };
+  const createHandlers = {
+    [BTN_SUBMIT]: handleCreate as (data: unknown) => Promise<void>,
+  };
 
   const detailHandlers = {
     [BTN_CONFIRM]: handleConfirm,
@@ -106,8 +181,23 @@ export const useTestDrives = () => {
   };
 
   return {
-    drawerOpen, editId, createFormValues, detailFormValues, searchQuery,
-    openCreate, closeDrawer, handleCellAction, searchHandlers, formHandlers, detailHandlers,
-    setCreateFormValues, setDetailFormValues, handlePageChange,
+    drawerOpen,
+    editId,
+    createFormValues,
+    detailFormValues,
+    searchQuery,
+    customerOptions,
+    carOptions,
+    showroomOptions,
+    employeeOptions,
+    openCreate,
+    closeDrawer,
+    handleCellAction,
+    searchHandlers,
+    createHandlers,
+    detailHandlers,
+    setCreateFormValues,
+    setDetailFormValues,
+    handlePageChange,
   };
 };

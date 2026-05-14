@@ -12,6 +12,7 @@ public interface ServiceHistoryMapper {
   @Mapping(source = "customer.id", target = "customerId")
   @Mapping(source = "customer.fullName", target = "customerFullName")
   @Mapping(source = "employee.id", target = "employeeId")
+  @Mapping(source = "employee.code", target = "employeeCode")
   @Mapping(source = "employee.fullName", target = "employeeFullName")
   @Mapping(source = "createdAt", target = "createdAt", qualifiedByName = "formatDateTime")
   ServiceHistoryResponse toResponse(ServiceHistory serviceHistory);
